@@ -1,0 +1,613 @@
+{
+  "eyebrow": "ATOBAR \u00b7 Agentic Teams On BYOK And Repos",
+  "title": "How ATOBAR runs your GitHub issues",
+  "question": "What happens, step by step, across the six user journeys in atobar-flow?",
+  "intro": [
+    "ATOBAR stands for Agentic Teams On BYOK And Repos. Collaborators bring their own encrypted language model keys, plan work in GitHub issues, and let isolated cloud machines write, visually test, and merge code.",
+    "Step through each journey below using Next, Play, or the slider. Every step updates the screen preview and highlights changed database values in yellow."
+  ],
+  "subject": "atobar-flow \u00b7 5-package Python monorepo (contracts, flow-engine, control-panel, flow-agent, atobar-ops)",
+  "roles": [
+    {
+      "id": "human",
+      "name": "Collaborator",
+      "about": "writes GitHub issues and brings model keys"
+    },
+    {
+      "id": "github",
+      "name": "GitHub Repo",
+      "about": "holds code, issues, pull requests, and two workflow files"
+    },
+    {
+      "id": "cp",
+      "name": "Control Panel",
+      "about": "public gateway and KMS key vault"
+    },
+    {
+      "id": "fe",
+      "name": "Flow Engine",
+      "about": "deterministic Python state machine and merge gate"
+    },
+    {
+      "id": "spot",
+      "name": "Spot Sandbox",
+      "about": "isolated cloud virtual machine running one agent role"
+    }
+  ],
+  "terms": {
+    "onboard.sh": "The five-minute setup script that connects a GitHub repository to atobar-flow.",
+    "flow-trigger.yml": "The GitHub Actions workflow file in your repo that forwards issue labels and comments to atobar-flow.",
+    "flow-metrics.yml": "The GitHub Actions workflow file in your repo that runs metric checks and sends numeric results to atobar-flow.",
+    "ATOBAR_TENANT_TOKEN": "The secret token saved in your GitHub repo so its workflows can talk to the Control Panel.",
+    "tenant_llm_keys": "The Control Panel database table that stores encrypted API keys.",
+    "tenant_role_llm": "The Control Panel database table that maps each agent role to a model provider and model name.",
+    "SotaWiki": "The living architecture wiki with a validated Mermaid diagram stored for each repository.",
+    "assess_issue_sufficiency": "The deterministic Python function in flow-engine that checks if an issue is detailed enough to skip planning.",
+    "flow-plan": "The structured markdown checklist comment that the Planner role posts on a GitHub issue.",
+    "flow:needs-approval": "The GitHub label that pauses an issue until a human approves the plan.",
+    "flow:approved": "The GitHub label a human adds to approve a plan and start the Developer role.",
+    "prepare_role_worktree": "The sandbox function that creates a clean git folder for the next role on a warm machine.",
+    "WARM_HANDOVER_FORBIDDEN_ROLES": "The rule in contracts that blocks Evaluator and Arbitrator from reusing a Developer machine.",
+    "flow-ack": "The comment the Developer role posts on a pull request to report which review findings it fixed.",
+    "flow-verdict": "The comment the Evaluator role posts on a pull request after running static and visual checks.",
+    "xwininfo": "The Linux X11 tool that lists real open windows on the display server.",
+    "arbitrate": "The pure Python function in contracts that checks if all business metrics pass before merging.",
+    "loop_rounds": "The Flow Engine database table that records tokens, cost, and state for every agent turn.",
+    "tenant_goals": "The Flow Engine database table that tracks repository metric goals and spend caps.",
+    "goal_step": "The pure Python function in flow-engine that checks if all repository target metrics are met after a merge."
+  },
+  "sections": [
+    {
+      "type": "flow",
+      "id": "j1-onboarding",
+      "eyebrow": "Journey 1 \u00b7 [AS-BUILT] + [VISION]",
+      "title": "J1: Onboarding a repo and encrypting BYOK keys",
+      "intro": [
+        "A repository admin connects a GitHub repo in five minutes and stores encrypted language model keys in the Control Panel vault.",
+        "Today keys route per repo and per role. Per-invoking-user key billing and profile default keys are on the Vision roadmap."
+      ],
+      "lanes": [
+        {
+          "id": "human",
+          "name": "Collaborator",
+          "role": "human"
+        },
+        {
+          "id": "gh",
+          "name": "GitHub Repo",
+          "role": "github"
+        },
+        {
+          "id": "cp",
+          "name": "Control Panel",
+          "role": "cp"
+        },
+        {
+          "id": "fe",
+          "name": "Flow Engine",
+          "role": "fe"
+        },
+        {
+          "id": "spot",
+          "name": "Spot Sandbox",
+          "role": "spot"
+        }
+      ],
+      "screenLabel": "What you see in GitHub & Control Panel",
+      "stateLabel": "Database state right now",
+      "steps": [
+        {
+          "phase": "setup",
+          "tick": "Install App",
+          "from": "human",
+          "to": "gh",
+          "label": "install GitHub App",
+          "say": "You install the atobar-flow-agent GitHub App on your repository and run <code>onboard.sh</code> inside a local clone.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>GitHub App:</b> atobar-flow-agent installed on owner/repo</div><div class='scr-box scr-muted'>$ curl -fsSL .../onboard.sh | bash</div></div>",
+          "state": {
+            "tenants \u00b7 status": "unregistered",
+            "tenant_llm_keys": "0 keys",
+            "client repo files": "standard code only"
+          }
+        },
+        {
+          "from": "human",
+          "to": "cp",
+          "label": "register repo & mint token",
+          "say": "You add the repository in the Control Panel. The Control Panel creates a tenant token and stores only its hash.",
+          "screen": "<div class='scr-col'><div class='scr-box'><b>Control Panel:</b> owner/repo registered</div><div class='scr-box scr-hot'><b>Token minted:</b> atb_9f8a... (shown once)</div></div>",
+          "state": {
+            "tenants \u00b7 status": "onboarding",
+            "tenant_tokens \u00b7 hash": "sha256:4b8e...",
+            "tenant_llm_keys": "0 keys"
+          }
+        },
+        {
+          "from": "human",
+          "to": "gh",
+          "label": "save ATOBAR_TENANT_TOKEN",
+          "say": "The setup script saves <code>ATOBAR_TENANT_TOKEN</code> in your repository's GitHub Actions secrets.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>GitHub Secret saved:</b> ATOBAR_TENANT_TOKEN</div></div>",
+          "state": {
+            "tenants \u00b7 status": "onboarding",
+            "github secret": "ATOBAR_TENANT_TOKEN = set",
+            "tenant_llm_keys": "0 keys"
+          }
+        },
+        {
+          "phase": "byok vault",
+          "tick": "Encrypt BYOK",
+          "from": "human",
+          "to": "cp",
+          "label": "save API key & role models",
+          "say": "You paste your provider key. The Control Panel encrypts it with AWS KMS and saves it in <code>tenant_llm_keys</code>, then maps roles in <code>tenant_role_llm</code>.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>KMS Vault:</b> claude &amp; gemini keys sealed (AES-GCM)</div><div class='scr-box'><b>Role routing:</b> developer &rarr; claude, evaluator &rarr; gemini</div></div>",
+          "state": {
+            "tenant_llm_keys": "sealed (AAD: tenant_id + provider)",
+            "tenant_role_llm": "planner/dev: claude \u00b7 eval: gemini",
+            "vision roadmap": "user_llm_keys + invoking_user (J53)"
+          }
+        },
+        {
+          "phase": "spoke pr",
+          "tick": "SotaWiki & PR",
+          "from": "fe",
+          "to": "spot",
+          "label": "start onboarder role",
+          "say": "Flow Engine starts the onboarder role on a Spot machine. The onboarder scans your repo and builds the initial <code>SotaWiki</code> architecture diagram.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>Spot Onboarder:</b> validated Mermaid SotaWiki generated</div></div>",
+          "state": {
+            "repository_wikis \u00b7 status": "ready (Mermaid validated)",
+            "tenant_llm_keys": "sealed (AAD: tenant_id + provider)",
+            "client repo files": "opening onboarding PR"
+          }
+        },
+        {
+          "from": "spot",
+          "to": "gh",
+          "label": "open 2-file workflow PR",
+          "say": "The onboarder opens a pull request adding <code>flow-trigger.yml</code> and <code>flow-metrics.yml</code>. Merging it finishes setup with zero lock-in.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>PR #1 Merged:</b> .github/workflows/flow-trigger.yml + flow-metrics.yml</div></div>",
+          "state": {
+            "tenants \u00b7 status": "active",
+            "repository_wikis \u00b7 status": "ready (Mermaid validated)",
+            "client repo files": "2 YAML workflows (0 SDK imports)"
+          }
+        }
+      ]
+    },
+    {
+      "type": "flow",
+      "id": "j2-planning",
+      "eyebrow": "Journey 2 \u00b7 [AS-BUILT] + [VISION]",
+      "title": "J2: Jumbo Issue planning and the Spec-Sufficiency Gate",
+      "intro": [
+        "Collaborators plan work directly in GitHub Issues. A deterministic Python check decides whether the issue needs a Planner run first or can go straight to coding."
+      ],
+      "lanes": [
+        {
+          "id": "human",
+          "name": "Collaborator",
+          "role": "human"
+        },
+        {
+          "id": "gh",
+          "name": "GitHub Repo",
+          "role": "github"
+        },
+        {
+          "id": "cp",
+          "name": "Control Panel",
+          "role": "cp"
+        },
+        {
+          "id": "fe",
+          "name": "Flow Engine",
+          "role": "fe"
+        },
+        {
+          "id": "spot",
+          "name": "Spot Planner",
+          "role": "spot"
+        }
+      ],
+      "screenLabel": "What you see on the GitHub Issue",
+      "stateLabel": "Gate & issue state",
+      "steps": [
+        {
+          "phase": "trigger",
+          "tick": "Label Issue",
+          "from": "human",
+          "to": "gh",
+          "label": "add label flow:feature",
+          "say": "You open an issue on GitHub and apply the label <code>flow:needs-approval</code> or a start label, or mention the bot in a comment.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>Issue #42:</b> Add rate-limit circuit breaker \u00b7 <span class='scr-tag'>flow:feature</span></div></div>",
+          "state": {
+            "issue #42 \u00b7 label": "flow:feature",
+            "sufficiency gate": "pending",
+            "llm calls used": "0"
+          }
+        },
+        {
+          "from": "gh",
+          "to": "cp",
+          "label": "POST /v1/events",
+          "say": "The workflow <code>flow-trigger.yml</code> forwards the signed event to the Control Panel, which verifies the token and sends it to Flow Engine.",
+          "screen": "<div class='scr-col'><div class='scr-box'><b>Webhook ingress:</b> POST /v1/events verified</div></div>",
+          "state": {
+            "conductor_events": "deduplicated event_id recorded",
+            "sufficiency gate": "running",
+            "llm calls used": "0"
+          }
+        },
+        {
+          "phase": "gate",
+          "tick": "Sufficiency Gate",
+          "from": "fe",
+          "to": "fe",
+          "label": "assess_issue_sufficiency()",
+          "say": "Flow Engine runs <code>assess_issue_sufficiency</code> in pure Python. Concrete specs with file targets go straight to Developer; broad specs route to Planner.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>Spec-Sufficiency Gate (0 LLM):</b> Broad spec detected &rarr; route to PLANNER</div></div>",
+          "state": {
+            "sufficiency gate": "needs_plan (broad scope)",
+            "next role": "planner",
+            "llm calls used": "0"
+          }
+        },
+        {
+          "from": "fe",
+          "to": "spot",
+          "label": "launch PLANNER with SotaWiki",
+          "say": "Flow Engine starts the Planner role on a Spot machine and injects the repository's <code>SotaWiki</code> architecture map so the agent knows the module layout.",
+          "screen": "<div class='scr-col'><div class='scr-box'><b>Spot Planner running:</b> reading SotaWiki &amp; repo tree (read-only)</div></div>",
+          "state": {
+            "active role": "planner (read-only worktree)",
+            "context loaded": "SotaWiki + TenantManifest",
+            "llm calls used": "1 planning turn"
+          }
+        },
+        {
+          "phase": "ledger",
+          "tick": "Post flow-plan",
+          "from": "spot",
+          "to": "gh",
+          "label": "post flow-plan & pause",
+          "say": "The Planner posts a <code>flow-plan</code> checklist comment naming the target files and acceptance criteria, then sets <code>flow:needs-approval</code> for human review.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>Comment by bot:</b> flow-plan Task Ledger (3 work packages)</div><div class='scr-box'><b>Label updated:</b> <span class='scr-tag'>flow:needs-approval</span></div></div>",
+          "state": {
+            "issue #42 \u00b7 label": "flow:needs-approval",
+            "pinned comment": "flow-plan Task Ledger posted",
+            "vision roadmap": "venture_jumbo_links across repos"
+          }
+        }
+      ]
+    },
+    {
+      "type": "flow",
+      "id": "j3-execution",
+      "eyebrow": "Journey 3 \u00b7 [AS-BUILT]",
+      "title": "J3: Warm worktrees and QA isolation",
+      "intro": [
+        "Approving a plan starts the Developer role. Developer turns can reuse a warm Spot machine inside fresh git worktrees, but Evaluator is strictly blocked from reusing a Developer machine."
+      ],
+      "lanes": [
+        {
+          "id": "human",
+          "name": "Collaborator",
+          "role": "human"
+        },
+        {
+          "id": "gh",
+          "name": "GitHub PR",
+          "role": "github"
+        },
+        {
+          "id": "cp",
+          "name": "Control Panel",
+          "role": "cp"
+        },
+        {
+          "id": "fe",
+          "name": "Flow Engine",
+          "role": "fe"
+        },
+        {
+          "id": "spot",
+          "name": "Warm Dev VM",
+          "role": "spot"
+        }
+      ],
+      "screenLabel": "What you see on the Pull Request",
+      "stateLabel": "Sandbox & credential state",
+      "steps": [
+        {
+          "phase": "approve",
+          "tick": "Approve Plan",
+          "from": "human",
+          "to": "gh",
+          "label": "add label flow:approved",
+          "say": "You review the plan and add <code>flow:approved</code> (or comment approve). Flow Engine mints a single-run credential for the Developer turn.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>Issue #42 approved:</b> dispatching DEVELOPER turn</div></div>",
+          "state": {
+            "run_credentials": "minted (single-use)",
+            "llm_key_claimed": "false",
+            "warm vm worktree": "preparing /worktrees/developer-42"
+          }
+        },
+        {
+          "from": "spot",
+          "to": "cp",
+          "label": "POST /v1/runs/{id}/llm-key",
+          "say": "The Spot machine claims its decrypted model key once, binding the credential to its cloud instance ID so no other machine can reuse it.",
+          "screen": "<div class='scr-col'><div class='scr-box'><b>KMS Key Claimed:</b> bound to EC2 X-Instance-ID i-0a9f...</div></div>",
+          "state": {
+            "run_credentials": "bound to instance i-0a9f...",
+            "llm_key_claimed": "true (single-use locked)",
+            "warm vm worktree": "/worktrees/developer-42 active"
+          }
+        },
+        {
+          "phase": "code & steer",
+          "tick": "Open PR & Steer",
+          "from": "spot",
+          "to": "gh",
+          "label": "push branch & post flow-ack",
+          "say": "The Developer writes tests first, implements the change, opens a pull request, and posts a <code>flow-ack</code> summary while streaming live telemetry.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>PR #48 Opened:</b> feat: add circuit breaker \u00b7 flow-ack posted</div></div>",
+          "state": {
+            "pr #48 \u00b7 head_sha": "9c4e1a2",
+            "loop_rounds \u00b7 role": "developer (round 1)",
+            "telemetry comment": "streaming tool calls & spend"
+          }
+        },
+        {
+          "from": "human",
+          "to": "gh",
+          "label": "comment @atobar-flow-agent",
+          "say": "You can steer an active or paused pull request at any time in plain English by commenting to the agent on the PR thread.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>You commented:</b> @atobar-flow-agent use exponential jitter in store.py</div></div>",
+          "state": {
+            "pr #48 \u00b7 steering": "human directive queued",
+            "warm handover": "prepare_role_worktree() reuses warm VM",
+            "next role after dev": "evaluator"
+          }
+        },
+        {
+          "phase": "isolation wall",
+          "tick": "Hard QA Boundary",
+          "from": "spot",
+          "to": "fe",
+          "label": "POST /turn-complete",
+          "say": "When the Developer finishes, Flow Engine checks <code>WARM_HANDOVER_FORBIDDEN_ROLES</code>. Because the next role is Evaluator, it orders the Developer machine to shut down.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>Zero-Trust Guard:</b> WARM_HANDOVER_FORBIDDEN_ROLES = {evaluator, arbitrator} &rarr; terminate Dev VM</div></div>",
+          "state": {
+            "warm dev vm action": "terminate (handover forbidden)",
+            "evaluator vm": "launching fresh cold Spot VM",
+            "evaluator token": "contents: read only"
+          }
+        }
+      ]
+    },
+    {
+      "type": "flow",
+      "id": "j4-visual-qa",
+      "eyebrow": "Journey 4 \u00b7 [AS-BUILT] Web X11 + [VISION] Android KVM",
+      "title": "J4: Two-stage visual QA on Spot",
+      "intro": [
+        "The Evaluator always boots on a clean Spot machine with a read-only GitHub token. It checks code citations first, then starts the real app inside an X11 desktop to capture verified screenshots."
+      ],
+      "lanes": [
+        {
+          "id": "fe",
+          "name": "Flow Engine",
+          "role": "fe"
+        },
+        {
+          "id": "eval",
+          "name": "Fresh Eval VM",
+          "role": "spot"
+        },
+        {
+          "id": "cp",
+          "name": "Control Panel",
+          "role": "cp"
+        },
+        {
+          "id": "gh",
+          "name": "GitHub PR",
+          "role": "github"
+        }
+      ],
+      "screenLabel": "What happens inside the Evaluator VM",
+      "stateLabel": "Verification & provenance state",
+      "steps": [
+        {
+          "phase": "stage 1",
+          "tick": "Stage 1 Citations",
+          "from": "fe",
+          "to": "eval",
+          "label": "cold boot on head_sha",
+          "say": "The fresh Evaluator machine checks out the exact pull request commit, waits for GitHub Actions CI, and verifies Stage 1 file and line citations.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>Stage 1 Static Check:</b> verified file:src/store.py#L42-L68 on head_sha 9c4e1a2</div></div>",
+          "state": {
+            "github token scope": "contents: read (cannot push)",
+            "stage 1 citations": "verified against head_sha",
+            "stage 2 display": "starting Xvfb :99"
+          }
+        },
+        {
+          "phase": "stage 2 x11",
+          "tick": "X11 Window Proof",
+          "from": "eval",
+          "to": "eval",
+          "label": "boot app in X11 + xwininfo",
+          "say": "In Stage 2, the Evaluator starts the app inside X11. It runs <code>xwininfo</code> and process checks to prove a real window is open.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>X11 Display :99:</b> Chromium window 1440x900 verified via xwininfo &amp; ps</div></div>",
+          "state": {
+            "image profile": "web-x11-arm64 [AS-BUILT]",
+            "x11_windows": "0x400001 Chromium 1440x900",
+            "vision profile": "android-studio-kvm-x86 [VISION]"
+          }
+        },
+        {
+          "from": "eval",
+          "to": "cp",
+          "label": "POST /screenshots (PNG + sha256)",
+          "say": "The Evaluator uploads encrypted PNG screenshots tagged with their SHA-256 digest, window list, and data mode to the Control Panel.",
+          "screen": "<div class='scr-col'><div class='scr-box'><b>Uploaded PNG:</b> sha256:e3b0c4... \u00b7 data_mode: live</div></div>",
+          "state": {
+            "screenshot storage": "AES-GCM encrypted on CP volume",
+            "provenance digest": "sha256:e3b0c442...",
+            "data_mode": "live"
+          }
+        },
+        {
+          "phase": "verdict",
+          "tick": "Post Verdict",
+          "from": "eval",
+          "to": "gh",
+          "label": "post flow-verdict: approved",
+          "say": "Once static and visual checks pass, the Evaluator posts the <code>flow-verdict</code> comment with embedded screenshots and marks the check run green.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>PR #48 Verdict:</b> flow-verdict: approved (with live X11 screenshot proof)</div></div>",
+          "state": {
+            "flow-verdict": "approved (head_sha 9c4e1a2)",
+            "flow/eval check run": "success",
+            "open disputes": "0"
+          }
+        }
+      ]
+    },
+    {
+      "type": "flow",
+      "id": "j5-arbitration",
+      "eyebrow": "Journey 5 \u00b7 [AS-BUILT] + [VISION]",
+      "title": "J5: Deterministic metric gate, auto-merge, and living SotaWiki",
+      "intro": [
+        "No language model ever decides whether code merges. Flow Engine runs a pure Python metric gate on verified CI numbers, merges the PR, and refreshes the repository wiki."
+      ],
+      "lanes": [
+        {
+          "id": "gh",
+          "name": "GitHub CI",
+          "role": "github"
+        },
+        {
+          "id": "cp",
+          "name": "Control Panel",
+          "role": "cp"
+        },
+        {
+          "id": "fe",
+          "name": "Flow Engine",
+          "role": "fe"
+        }
+      ],
+      "screenLabel": "What happens at the merge gate",
+      "stateLabel": "Arbitration & wiki state",
+      "steps": [
+        {
+          "phase": "metrics",
+          "tick": "Ingest Metrics",
+          "from": "gh",
+          "to": "cp",
+          "label": "POST /v1/metrics (flow-metrics.json)",
+          "say": "Your repository's <code>flow-metrics.yml</code> workflow runs on GitHub Actions and sends signed metric observations to the Control Panel.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>CI Metrics Verified:</b> test_pass_rate = 1.0 (threshold &gt;= 1.0)</div></div>",
+          "state": {
+            "metric_observations": "append-only row verified on head_sha",
+            "llm calls in gate": "0",
+            "arbitration mode": "auto_merge"
+          }
+        },
+        {
+          "phase": "arbitrate",
+          "tick": "Pure arbitrate()",
+          "from": "fe",
+          "to": "fe",
+          "label": "arbitrate(policy, observations)",
+          "say": "Flow Engine runs the pure Python function <code>arbitrate</code> to compare every metric observation against the tenant policy and record turn spend in <code>loop_rounds</code>.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>Pure Python Arbitrator:</b> all required metrics &amp; guardrails passed</div></div>",
+          "state": {
+            "arbitration_decisions": "passed = true (0 LLM imports)",
+            "loop_rounds \u00b7 cost_usd": "recorded per turn [AS-BUILT]",
+            "vision ledger": "Fiscal Share + Architectural Yield [VISION]"
+          }
+        },
+        {
+          "phase": "merge & wiki",
+          "tick": "Merge & SotaWiki",
+          "from": "fe",
+          "to": "gh",
+          "label": "squash-merge PR & queue SotaWiki",
+          "say": "Under auto-merge mode, Flow Engine squash-merges the pull request and increments the merge counter on <code>SotaWiki</code> so the architecture diagram stays current.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>PR #48 Squash-Merged:</b> SotaWiki refresh queued after N merges</div></div>",
+          "state": {
+            "pr #48 \u00b7 state": "merged to main",
+            "repository_wikis": "merges_since_refresh += 1 (coalesced)",
+            "issue #42 \u00b7 label": "flow:shipped"
+          }
+        }
+      ]
+    },
+    {
+      "type": "flow",
+      "id": "j6-sunset",
+      "eyebrow": "Journey 6 \u00b7 [AS-BUILT] + [VISION]",
+      "title": "J6: Goal completion, circuit breakers, and 1-commit clean exit",
+      "intro": [
+        "After every merge, Flow Engine checks repository goals and enforces hard cost and round circuit breakers. At any time, deleting two workflow files detaches the repo cleanly."
+      ],
+      "lanes": [
+        {
+          "id": "fe",
+          "name": "Flow Engine",
+          "role": "fe"
+        },
+        {
+          "id": "gh",
+          "name": "GitHub Repo",
+          "role": "github"
+        },
+        {
+          "id": "human",
+          "name": "Collaborator",
+          "role": "human"
+        }
+      ],
+      "screenLabel": "What you see at goal completion & exit",
+      "stateLabel": "Goal & lock-in state",
+      "steps": [
+        {
+          "phase": "goal loop",
+          "tick": "Check Goal",
+          "from": "fe",
+          "to": "fe",
+          "label": "goal_step() & circuit breakers",
+          "say": "After each merge, <code>goal_step</code> checks default-branch metrics against <code>tenant_goals</code> while circuit breakers cap per-PR cost and review rounds.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>Outer Goal Loop:</b> all target metrics met \u00b7 regression guardrails active</div></div>",
+          "state": {
+            "tenant_goals \u00b7 status": "met (guardrails active)",
+            "circuit breakers": "max_pr_cost_usd \u00b7 max_review_rounds",
+            "llm calls in goal_step": "0"
+          }
+        },
+        {
+          "phase": "clean exit",
+          "tick": "1-Commit Exit",
+          "from": "human",
+          "to": "gh",
+          "label": "git rm 2 workflow YAML files",
+          "say": "When you hand off or sunset a repository, you delete <code>flow-trigger.yml</code> and <code>flow-metrics.yml</code> in one commit. Zero lock-in remains.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>1-Commit Clean Exit:</b> git rm .github/workflows/flow-trigger.yml flow-metrics.yml</div></div>",
+          "state": {
+            "client repo workflows": "removed in 1 commit",
+            "runtime sdk imports": "0 (100% standalone repo)",
+            "vendor lock-in": "none"
+          }
+        }
+      ]
+    }
+  ],
+  "takeaway": "ATOBAR (Agentic Teams On BYOK And Repos) keeps your repo 100% standard GitHub. Isolated Spot roles write and visually test code, pure Python gates merge it, and two YAML files detach in one commit.",
+  "footer": "Built with code-slowmo from the real atobar-flow codebase."
+}

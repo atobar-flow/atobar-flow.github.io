@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "code-slowmo": {
+      "source": "precious112/code-slowmo",
+      "sourceType": "github",
+      "skillPath": "skills/code-slowmo/SKILL.md",
+      "computedHash": "6a1a70e55954aca5fbf0772f9e024d06ff7834103292919a5d7220ab3990d9e5"
+    }
+  }
+}
