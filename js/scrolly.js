@@ -1,88 +1,73 @@
 /**
  * ATOBAR-FLOW INTERACTIVE ENGINE (js/scrolly.js)
- * Single-column vertical scroll + embedded code-slowmo User Journey player:
- * 1. code-slowmo step-by-step interactive flow diagrams for User Journeys J1-J6
- * 2. Interactive [AS-BUILT] / [VISION] Reality Filter (grounded against ../atobar-flow)
- * 3. Per-Journey 3-Tab Switcher (1. Slow-Mo Journey / 2. Code Artifact / 3. DB Boundary)
- * 4. Interactive Co-Founder BYOK Equity Simulator (50% Fiscal Share + 50% Architectural Yield, low units)
- * 5. Mermaid Source & CLI One-Liner Clipboard Copy
+ * - Scroll-driven scrollytelling preview + sticky journey rail tracker
+ * - Whole-section hover -> Full-Screen Theater Mode for code-slowmo stages
+ * - Keyboard navigation in Full Screen (Left/Right arrows, Space, Escape)
+ * - [AS-BUILT] / [VISION] Reality Filter & BYOK Contribution Simulator
  */
 
-(function initAtobarSite() {
-  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-  const NS = "http://www.w3.org/2000/svg";
-  const SVGT = new Set(["svg", "g", "rect", "text", "path", "line", "circle", "polygon", "tspan"]);
+(function () {
+  "use strict";
 
-  function el(tag, attrs = {}, parent = null, text = null) {
-    const node = SVGT.has(tag) ? document.createElementNS(NS, tag) : document.createElement(tag);
-    for (const [k, v] of Object.entries(attrs)) {
-      if (v != null) node.setAttribute(k, v);
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  function esc(s) {
+    return String(s ?? "").replace(/[&<>"']/g, (c) => (
+      { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]
+    ));
+  }
+
+  function el(tag, attrs, parent, text) {
+    const isSvg = [
+      "svg", "g", "rect", "line", "path", "polygon", "text", "circle"
+    ].includes(tag);
+    const node = isSvg
+      ? document.createElementNS("http://www.w3.org/2000/svg", tag)
+      : document.createElement(tag);
+    if (attrs) {
+      for (const [k, v] of Object.entries(attrs)) {
+        if (v !== null && v !== undefined) node.setAttribute(k, String(v));
+      }
     }
-    if (text != null) node.textContent = text;
+    if (text !== undefined && text !== null) node.textContent = text;
     if (parent) parent.appendChild(node);
     return node;
   }
 
-  function esc(s) {
-    return String(s ?? "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;");
-  }
-
-  // --- 1. Clipboard Copy Helper ---
-  async function copyTextWithFeedback(btn, textToCopy, successLabel = "Copied ✓") {
-    const originalLabel = btn.dataset.originalLabel || btn.textContent;
-    btn.dataset.originalLabel = originalLabel;
-    try {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(textToCopy);
-      } else {
+  // --- 1. Copy-to-Clipboard Buttons ---
+  document.querySelectorAll("[data-copy-text]").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const payload = btn.getAttribute("data-copy-text") || "";
+      const originalLabel = btn.textContent;
+      try {
+        await navigator.clipboard.writeText(payload);
+        btn.textContent = "Copied!";
+      } catch (_err) {
         const ta = document.createElement("textarea");
-        ta.value = textToCopy;
+        ta.value = payload;
         ta.style.position = "fixed";
         ta.style.opacity = "0";
         document.body.appendChild(ta);
         ta.select();
         document.execCommand("copy");
         document.body.removeChild(ta);
+        btn.textContent = "Copied!";
       }
-      btn.textContent = successLabel;
-      setTimeout(() => {
+      window.setTimeout(() => {
         btn.textContent = originalLabel;
       }, 1800);
-    } catch (_err) {
-      btn.textContent = "Press Ctrl+C";
-    }
-  }
-
-  document.addEventListener("click", (e) => {
-    const copyCmdBtn = e.target.closest("[data-copy-text]");
-    if (copyCmdBtn) {
-      copyTextWithFeedback(copyCmdBtn, copyCmdBtn.getAttribute("data-copy-text"), "Copied Command ✓");
-      return;
-    }
-
-    const copyMermaidBtn = e.target.closest("[data-copy-mermaid]");
-    if (copyMermaidBtn) {
-      const sourceId = copyMermaidBtn.getAttribute("data-copy-mermaid");
-      const scriptEl = document.getElementById(sourceId);
-      if (scriptEl) {
-        copyTextWithFeedback(copyMermaidBtn, scriptEl.textContent.trim(), "Copied Mermaid ✓");
-      }
-    }
+    });
   });
 
-  // --- 2. Topbar Status Reality Filter ([AS-BUILT] / [VISION] ONLY) ---
+  // --- 2. Reality Filter ([AS-BUILT] vs. [VISION]) ---
   const filterBtns = Array.from(document.querySelectorAll(".filter-btn[data-filter]"));
   const filterBanner = document.getElementById("filter-banner");
   const filterBannerText = document.getElementById("filter-banner-text");
   const filterResetBtn = document.getElementById("filter-reset-btn");
 
   const FILTER_DESCRIPTIONS = {
-    "as-built": "[AS-BUILT] — Verified in atobar-flow main: KMS AES-GCM BYOK vault with per-repo/per-role routing, 4-role Spot loop, warm developer worktrees, fresh X11 Evaluator, pure Python arbitrate(), SotaWiki Mermaid, and 1-commit exit.",
-    "vision": "[VISION] — Roadmap & open Jumbo specs (J53/J54): per-invoking-user BYOK billing & profile default keys, unonboarded trigger gate, verifiable price catalog & Fiscal/Architectural equity ledger, multi-repo venture links, and Android KVM QA profile."
+    "as-built": "[AS-BUILT] live on main today (repo KMS BYOK for Claude/Gemini/DeepSeek/Grok, Spec-Sufficiency Gate, Warm Worktrees, Nano Harness, Web X11 QA, Pure-Python Arbitrate, Turn Spend Ledger). [VISION] roadmap items are dimmed.",
+    "vision": "[VISION] roadmap specs (J53 per-invoking-user BYOK & /profile keys, J54 Listed/Ready/Blocked + 1-line uninstall, multi-repo ventures, Android KVM QA, Co-Founder Fiscal + Architectural split). [AS-BUILT] modules are dimmed."
   };
 
   function applyRealityFilter(filterKey) {
@@ -98,10 +83,10 @@
     }
 
     document.body.setAttribute("data-active-filter", filterKey);
-    const matchingNodes = document.querySelectorAll(`[data-status*="${filterKey}"]`);
+    const matchingNodes = document.querySelectorAll(`[data-status="${filterKey}"]`);
     if (filterBanner && filterBannerText) {
       filterBanner.hidden = false;
-      filterBannerText.textContent = `Showing ${matchingNodes.length} elements tagged ${FILTER_DESCRIPTIONS[filterKey] || filterKey}`;
+      filterBannerText.textContent = `Showing ${matchingNodes.length} ${FILTER_DESCRIPTIONS[filterKey] || filterKey}`;
     }
   }
 
@@ -113,59 +98,10 @@
     filterResetBtn.addEventListener("click", () => applyRealityFilter("all"));
   }
 
-  // --- 3. Per-Journey Tab Switcher & Full-Browser Expand Toggle ---
-  function setSlowmoExpanded(stageEl, expand) {
-    if (!stageEl) return;
-    stageEl.classList.toggle("is-expanded", expand);
-    document.body.classList.toggle("has-expanded-slowmo", expand);
-    stageEl.querySelectorAll("[data-slowmo-expand]").forEach((btn) => {
-      btn.setAttribute("aria-expanded", expand ? "true" : "false");
-      btn.innerHTML = expand ? "Exit Full Browser (Esc) &#10005;" : "Expand to Full Browser &#10530;";
-    });
-    if (!expand) {
-      stageEl.scrollIntoView({ behavior: "auto", block: "nearest" });
-    }
-  }
+  // --- 3. Embedded code-slowmo Engine + Full-Screen Stage Controller ---
+  const stageControllers = new Map(); // stageEl -> controller API
+  const allStages = Array.from(document.querySelectorAll(".slowmo-stage"));
 
-  document.addEventListener("click", (e) => {
-    const expandBtn = e.target.closest("[data-slowmo-expand]");
-    if (expandBtn) {
-      const stageEl = expandBtn.closest(".slowmo-stage");
-      const isExpanded = stageEl?.classList.contains("is-expanded");
-      // Collapse any other expanded stage first
-      document.querySelectorAll(".slowmo-stage.is-expanded").forEach((other) => {
-        if (other !== stageEl) setSlowmoExpanded(other, false);
-      });
-      setSlowmoExpanded(stageEl, !isExpanded);
-      return;
-    }
-
-    const tabBtn = e.target.closest(".slowmo-tab-btn[data-journey-tab]");
-    if (!tabBtn) return;
-    const stageEl = tabBtn.closest(".slowmo-stage");
-    if (!stageEl) return;
-    const targetTab = tabBtn.getAttribute("data-journey-tab");
-
-    stageEl.querySelectorAll(".slowmo-tab-btn[data-journey-tab]").forEach((btn) => {
-      btn.setAttribute("aria-selected", btn === tabBtn ? "true" : "false");
-    });
-
-    stageEl.querySelectorAll(".slowmo-pane[data-pane]").forEach((pane) => {
-      pane.hidden = pane.getAttribute("data-pane") !== targetTab;
-    });
-  });
-
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-      const openStage = document.querySelector(".slowmo-stage.is-expanded");
-      if (openStage) {
-        e.preventDefault();
-        setSlowmoExpanded(openStage, false);
-      }
-    }
-  });
-
-  // --- 4. Embedded code-slowmo Interactive User Journey Engine ---
   const slowmoDataEl = document.getElementById("slowmo-journeys-data");
   if (slowmoDataEl) {
     try {
@@ -187,7 +123,7 @@
         });
       }
 
-      // Hover tooltip for code.term
+      // Hover & focus tooltip for code.term inside Full Screen
       const tip = document.getElementById("slowmo-tip");
       function showTip(target) {
         if (!tip) return;
@@ -198,9 +134,9 @@
         const r = target.getBoundingClientRect();
         const tw = tip.offsetWidth || 260;
         const th = tip.offsetHeight || 60;
-        const x = Math.min(window.innerWidth - tw - 10, Math.max(10, r.left));
+        const x = Math.min(window.innerWidth - tw - 12, Math.max(12, r.left));
         let y = r.bottom + 8;
-        if (y + th > window.innerHeight - 10) y = r.top - th - 8;
+        if (y + th > window.innerHeight - 12) y = r.top - th - 8;
         tip.style.left = `${x}px`;
         tip.style.top = `${y}px`;
       }
@@ -209,7 +145,14 @@
         const t = e.target.closest?.("code.term");
         if (t) showTip(t);
       });
+      document.addEventListener("focusin", (e) => {
+        const t = e.target.closest?.("code.term");
+        if (t) showTip(t);
+      });
       document.addEventListener("mouseout", (e) => {
+        if (e.target.closest?.("code.term") && tip) tip.hidden = true;
+      });
+      document.addEventListener("focusout", (e) => {
         if (e.target.closest?.("code.term") && tip) tip.hidden = true;
       });
       window.addEventListener("scroll", () => {
@@ -238,6 +181,8 @@
         const sec = sectionsById[secId];
         if (!sec || sec.type !== "flow") return;
 
+        const stageEl = mountEl.closest(".slowmo-stage");
+        const previewPill = stageEl?.querySelector("[data-preview-pill]");
         const lanes = sec.lanes || [];
         const steps = sec.steps || [];
         const laneMap = Object.fromEntries(lanes.map((l) => [l.id, l]));
@@ -255,7 +200,7 @@
             <button type="button" class="tbtn" data-a="first" aria-label="First step">|&lt;</button>
             <button type="button" class="tbtn" data-a="prev" aria-label="Previous step">&lt;</button>
             <button type="button" class="tbtn primary" data-a="next" aria-label="Next step">Next &gt;</button>
-            <button type="button" class="tbtn" data-a="play" aria-label="Play slow-motion steps">&#9654;</button>
+            <button type="button" class="tbtn" data-a="play" aria-label="Play slow-motion steps">&#9654; Play</button>
             <span class="slowmo-count"></span>
             <div class="slowmo-scrub">
               <input type="range" min="0" max="${Math.max(0, steps.length - 1)}" value="0" aria-label="Step scrubber">
@@ -267,7 +212,7 @@
                 <option value="2">2x</option>
               </select>
             </label>
-            <button type="button" class="slowmo-expand-btn" data-slowmo-expand aria-expanded="false">Expand to Full Browser &#10530;</button>
+            <span class="slowmo-kbd-hint">&larr; &rarr; Space &middot; Esc</span>
           </div>
         `;
 
@@ -280,64 +225,66 @@
         const playBtn = mountEl.querySelector('[data-a="play"]');
         const speedSel = mountEl.querySelector("select");
 
-        const laneW = Math.max(120, ...lanes.map((l) => l.name.length * 8.2 + 28));
+        const laneW = Math.max(126, ...lanes.map((l) => l.name.length * 8.6 + 30));
+        const naturalW = 44 + laneW * lanes.length + 34;
+        const baseW = Math.max(660, naturalW);
+        const spanW = (baseW - 78) / Math.max(1, lanes.length);
         const X = {};
         lanes.forEach((l, idx) => {
-          X[l.id] = 42 + laneW / 2 + idx * laneW;
+          X[l.id] = 44 + spanW / 2 + idx * spanW;
         });
         const loopRight = Math.max(
           0,
           ...steps
             .filter((m) => m.from === m.to && X[m.from] != null)
-            .map((m) => X[m.from] + 34 + String(m.label).length * 7.2 + 16)
+            .map((m) => X[m.from] + 36 + String(m.label).length * 7.6 + 18)
         );
-        const top = 58;
-        const rowH = 48;
-        const W = Math.max(42 + laneW * lanes.length + 32, loopRight);
-        const H = top + steps.length * rowH + 18;
+        const top = 60;
+        const rowH = 52;
+        const W = Math.max(baseW, loopRight);
+        const H = top + steps.length * rowH + 20;
 
         const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": sec.title }, svgBox);
 
         lanes.forEach((l) => {
           const x = X[l.id];
           const rc = roleColors[l.role] || roleColors.fe;
-          el("line", { x1: x, y1: 42, x2: x, y2: H - 6, stroke: "#2b3e6e", "stroke-dasharray": "3 4" }, svg);
+          el("line", { x1: x, y1: 44, x2: x, y2: H - 6, stroke: "#31487d", "stroke-dasharray": "3 4" }, svg);
           const g = el("g", {}, svg);
-          const w = Math.min(laneW - 8, l.name.length * 8.2 + 20);
-          el("rect", { x: x - w / 2, y: 10, width: w, height: 30, rx: 4, fill: rc.fill, stroke: rc.stroke, "stroke-width": "1.6" }, g);
-          el("text", { x, y: 29, "text-anchor": "middle", fill: "#f3f4f9", "font-size": "12.5", "font-weight": "700" }, g, l.name);
+          const w = Math.min(laneW - 8, l.name.length * 8.6 + 22);
+          el("rect", { x: x - w / 2, y: 10, width: w, height: 32, rx: 4, fill: rc.fill, stroke: rc.stroke, "stroke-width": "1.7" }, g);
+          el("text", { x, y: 30, "text-anchor": "middle", fill: "#f3f4f9", "font-size": "13", "font-weight": "700" }, g, l.name);
         });
 
         const msgGroups = steps.map((m, k) => {
-          const yy = top + k * rowH + 22;
+          const yy = top + k * rowH + 24;
           const role = laneMap[m.from]?.role || "fe";
           const rc = roleColors[role] || roleColors.fe;
 
           if (m.phase) {
-            el("line", { x1: 0, y1: yy - 22, x2: W, y2: yy - 22, stroke: "#233663" }, svg);
-            el("text", { x: W - 8, y: yy - 9, "text-anchor": "end", fill: "#7fb8eb", "font-family": "monospace", "font-size": "10.5", "font-weight": "700" }, svg, String(m.phase).toUpperCase());
+            el("line", { x1: 0, y1: yy - 24, x2: W, y2: yy - 24, stroke: "#283e73" }, svg);
+            el("text", { x: W - 8, y: yy - 10, "text-anchor": "end", fill: "#7fb8eb", "font-family": "monospace", "font-size": "11", "font-weight": "700" }, svg, String(m.phase).toUpperCase());
           }
 
           const g = el("g", { style: "cursor:pointer" }, svg);
-          const band = el("rect", { x: 2, y: yy - 20, width: W - 4, height: rowH - 4, rx: 4, fill: "transparent" }, g);
+          const band = el("rect", { x: 2, y: yy - 21, width: W - 4, height: rowH - 4, rx: 4, fill: "transparent" }, g);
           const x1 = X[m.from];
           const x2 = X[m.to];
           let arrowLine;
-          let arrowHead;
 
           if (m.from === m.to) {
-            arrowLine = el("path", { d: `M${x1} ${yy - 6}h26v12h-22`, fill: "none", stroke: rc.stroke, "stroke-width": "1.8" }, g);
-            arrowHead = el("polygon", { points: `${x1 + 2},${yy + 6} ${x1 + 9},${yy + 2} ${x1 + 9},${yy + 10}`, fill: rc.stroke }, g);
-            el("text", { x: x1 + 32, y: yy + 4, fill: "#f3f4f9", "font-size": "12", "font-weight": "600", style: "paint-order:stroke;stroke:#0d183b;stroke-width:4px;stroke-linejoin:round" }, g, m.label);
+            arrowLine = el("path", { d: `M${x1} ${yy - 6}h28v12h-24`, fill: "none", stroke: rc.stroke, "stroke-width": "2" }, g);
+            el("polygon", { points: `${x1 + 2},${yy + 6} ${x1 + 9},${yy + 2} ${x1 + 9},${yy + 10}`, fill: rc.stroke }, g);
+            el("text", { x: x1 + 34, y: yy + 4, fill: "#f3f4f9", "font-size": "12.5", "font-weight": "600", style: "paint-order:stroke;stroke:#0d183b;stroke-width:4px;stroke-linejoin:round" }, g, m.label);
           } else {
             const dir = x2 > x1 ? 1 : -1;
             const xe = x2 - dir * 3;
-            arrowLine = el("line", { x1, y1: yy, x2: xe - dir * 6, y2: yy, stroke: rc.stroke, "stroke-width": "1.8" }, g);
-            arrowHead = el("polygon", { points: `${xe},${yy} ${xe - dir * 8},${yy - 4} ${xe - dir * 8},${yy + 4}`, fill: rc.stroke }, g);
-            el("text", { x: (x1 + x2) / 2, y: yy - 7, "text-anchor": "middle", fill: "#f3f4f9", "font-size": "12", "font-weight": "600", style: "paint-order:stroke;stroke:#0d183b;stroke-width:4px;stroke-linejoin:round" }, g, m.label);
+            arrowLine = el("line", { x1, y1: yy, x2: xe - dir * 6, y2: yy, stroke: rc.stroke, "stroke-width": "2" }, g);
+            el("polygon", { points: `${xe},${yy} ${xe - dir * 8},${yy - 4.5} ${xe - dir * 8},${yy + 4.5}`, fill: rc.stroke }, g);
+            el("text", { x: (x1 + x2) / 2, y: yy - 8, "text-anchor": "middle", fill: "#f3f4f9", "font-size": "12.5", "font-weight": "600", style: "paint-order:stroke;stroke:#0d183b;stroke-width:4px;stroke-linejoin:round" }, g, m.label);
           }
-          el("text", { x: 8, y: yy + 4, fill: "#a9b6d8", "font-family": "monospace", "font-size": "11", "font-weight": "700" }, g, `${k + 1}.`);
-          return { g, band, arrowLine, arrowHead, rc };
+          el("text", { x: 8, y: yy + 4, fill: "#cfd6ea", "font-family": "monospace", "font-size": "11.5", "font-weight": "700" }, g, `${k + 1}.`);
+          return { g, band, arrowLine, rc };
         });
 
         const screens = carryField(steps, "screen");
@@ -351,27 +298,30 @@
           curIdx = Math.max(0, Math.min(steps.length - 1, k));
           rangeEl.value = String(curIdx);
           countEl.textContent = `Step ${curIdx + 1} / ${steps.length}`;
+          if (previewPill) {
+            previewPill.textContent = `Scroll Preview · Step ${curIdx + 1} / ${steps.length}`;
+          }
 
           msgGroups.forEach((item, j) => {
             const isCurrent = j === curIdx;
             const isFuture = j > curIdx;
-            item.g.style.opacity = isFuture ? "0.38" : "1";
-            item.band.setAttribute("fill", isCurrent ? "rgba(47, 109, 182, 0.28)" : "transparent");
+            item.g.style.opacity = isFuture ? "0.52" : "1";
+            item.band.setAttribute("fill", isCurrent ? "rgba(47, 109, 182, 0.34)" : "transparent");
             item.band.setAttribute("stroke", isCurrent ? item.rc.stroke : "none");
-            item.arrowLine.setAttribute("stroke-width", isCurrent ? "2.6" : "1.5");
+            item.arrowLine.setAttribute("stroke-width", isCurrent ? "2.8" : "1.8");
           });
 
           const m = steps[curIdx];
           const fromName = laneMap[m.from]?.name || m.from;
           const toName = laneMap[m.to]?.name || m.to;
-          sayBox.innerHTML = `<span class="stepn">STEP ${curIdx + 1} OF ${steps.length} · ${esc(fromName)} &rarr; ${esc(toName)}</span>${formatProse(m.say)}`;
+          sayBox.innerHTML = `<span class="stepn">STEP ${curIdx + 1} OF ${steps.length} &middot; ${esc(fromName)} &rarr; ${esc(toName)}</span>${formatProse(m.say)}`;
 
           scrWrap.innerHTML = screens[curIdx]
             ? `<span class="slowmo-sub-label">${esc(sec.screenLabel || "What you see")}</span><div class="slowmo-screen">${screens[curIdx]}</div>`
             : "";
 
           stWrap.innerHTML = states[curIdx]
-            ? `<span class="slowmo-sub-label">${esc(sec.stateLabel || "Database state right now")} (yellow = changed)</span>${renderStateHTML(states[curIdx], curIdx > 0 ? states[curIdx - 1] : null)}`
+            ? `<span class="slowmo-sub-label">${esc(sec.stateLabel || "Live state")} (yellow = changed)</span>${renderStateHTML(states[curIdx], curIdx > 0 ? states[curIdx - 1] : null)}`
             : "";
         }
 
@@ -380,7 +330,7 @@
             clearInterval(timer);
             timer = null;
           }
-          playBtn.innerHTML = "&#9654;";
+          playBtn.innerHTML = "&#9654; Play";
           playBtn.setAttribute("aria-label", "Play slow-motion steps");
         }
 
@@ -390,7 +340,7 @@
             return;
           }
           if (curIdx === steps.length - 1) renderStep(0);
-          playBtn.innerHTML = "&#10074;&#10074;";
+          playBtn.innerHTML = "&#10074;&#10074; Pause";
           playBtn.setAttribute("aria-label", "Pause");
           timer = setInterval(() => {
             if (curIdx >= steps.length - 1) {
@@ -432,21 +382,140 @@
         });
 
         renderStep(0);
+
+        if (stageEl) {
+          stageControllers.set(stageEl, {
+            stepsCount: steps.length,
+            getCurIdx: () => curIdx,
+            setStep: (idx) => { stopPlay(); renderStep(idx); },
+            next: () => { stopPlay(); renderStep(curIdx + 1); },
+            prev: () => { stopPlay(); renderStep(curIdx - 1); },
+            togglePlay,
+            stopPlay
+          });
+        }
       });
     } catch (err) {
-      console.error("Failed to initialize code-slowmo user journeys:", err);
+      console.error("Failed to initialize code-slowmo stages:", err);
     }
   }
 
-  // --- 5. Journey Jump Buttons ---
+  // --- 4. Full-Screen Stage Open / Close / Switch & Tab Controls ---
+  function openStageFullScreen(stageEl) {
+    if (!stageEl) return;
+    allStages.forEach((other) => {
+      if (other !== stageEl && other.classList.contains("is-expanded")) {
+        stageControllers.get(other)?.stopPlay();
+        other.classList.remove("is-expanded");
+      }
+    });
+    stageEl.classList.add("is-expanded");
+    document.body.classList.add("has-expanded-slowmo");
+
+    // Highlight matching Full-Screen switcher button inside this stage
+    const stageId = stageEl.getAttribute("data-stage-id") || "";
+    stageEl.querySelectorAll("[data-fs-switch]").forEach((btn) => {
+      btn.classList.toggle("is-current", btn.getAttribute("data-fs-switch") === stageId);
+    });
+
+    const closeBtn = stageEl.querySelector("[data-slowmo-close]");
+    if (closeBtn) closeBtn.focus({ preventScroll: true });
+  }
+
+  function closeStageFullScreen(stageEl) {
+    if (!stageEl) return;
+    stageControllers.get(stageEl)?.stopPlay();
+    stageEl.classList.remove("is-expanded");
+    document.body.classList.remove("has-expanded-slowmo");
+    if (tip) tip.hidden = true;
+    stageEl.scrollIntoView({ behavior: "auto", block: "center" });
+    const launchBtn = stageEl.querySelector("[data-slowmo-open]");
+    if (launchBtn) launchBtn.focus({ preventScroll: true });
+  }
+
+  document.addEventListener("click", (e) => {
+    const openBtn = e.target.closest("[data-slowmo-open]");
+    if (openBtn) {
+      const stageEl = openBtn.closest(".slowmo-stage");
+      openStageFullScreen(stageEl);
+      return;
+    }
+
+    const closeBtn = e.target.closest("[data-slowmo-close]");
+    if (closeBtn) {
+      const stageEl = closeBtn.closest(".slowmo-stage");
+      closeStageFullScreen(stageEl);
+      return;
+    }
+
+    const switchBtn = e.target.closest("[data-fs-switch]");
+    if (switchBtn) {
+      const targetStageId = switchBtn.getAttribute("data-fs-switch");
+      const nextStage = document.querySelector(`.slowmo-stage[data-stage-id="${targetStageId}"]`);
+      if (nextStage) openStageFullScreen(nextStage);
+      return;
+    }
+
+    const tabBtn = e.target.closest(".slowmo-tab-btn[data-journey-tab]");
+    if (tabBtn) {
+      const stageEl = tabBtn.closest(".slowmo-stage");
+      if (!stageEl) return;
+      const targetTab = tabBtn.getAttribute("data-journey-tab");
+      stageEl.querySelectorAll(".slowmo-tab-btn[data-journey-tab]").forEach((btn) => {
+        btn.setAttribute("aria-selected", btn === tabBtn ? "true" : "false");
+      });
+      stageEl.querySelectorAll(".slowmo-pane[data-pane]").forEach((pane) => {
+        pane.hidden = pane.getAttribute("data-pane") !== targetTab;
+      });
+    }
+  });
+
+  document.addEventListener("keydown", (e) => {
+    const openStage = document.querySelector(".slowmo-stage.is-expanded");
+    if (!openStage) return;
+
+    if (e.key === "Escape") {
+      e.preventDefault();
+      closeStageFullScreen(openStage);
+      return;
+    }
+
+    const ctrl = stageControllers.get(openStage);
+    if (!ctrl) return;
+
+    const activeTag = document.activeElement?.tagName || "";
+    const inFormControl = ["INPUT", "SELECT", "TEXTAREA"].includes(activeTag);
+
+    if (!inFormControl && e.key === "ArrowRight") {
+      e.preventDefault();
+      ctrl.next();
+    } else if (!inFormControl && e.key === "ArrowLeft") {
+      e.preventDefault();
+      ctrl.prev();
+    } else if (!inFormControl && activeTag !== "BUTTON" && e.key === " ") {
+      e.preventDefault();
+      ctrl.togglePlay();
+    }
+  });
+
+  // --- 5. True Scrollytelling: Sticky Rail Highlight + Scroll-Driven Preview ---
   const railBtns = Array.from(document.querySelectorAll(".scene-jump-btn[data-scene-target]"));
+  const beatEls = Array.from(document.querySelectorAll(".journey-beat[data-beat-idx]"));
+
+  function setActiveRailIdx(idxStr) {
+    railBtns.forEach((b) => {
+      if (b.getAttribute("data-scene-target") === idxStr) {
+        b.setAttribute("aria-current", "step");
+      } else {
+        b.removeAttribute("aria-current");
+      }
+    });
+  }
+
   railBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
       const targetId = btn.getAttribute("data-scene-target");
-      railBtns.forEach((b) => {
-        if (b === btn) b.setAttribute("aria-current", "step");
-        else b.removeAttribute("aria-current");
-      });
+      setActiveRailIdx(targetId);
       const targetEl = document.getElementById(`journey-${targetId}`);
       if (targetEl) {
         targetEl.scrollIntoView({
@@ -457,28 +526,88 @@
     });
   });
 
-  // --- 6. Interactive Co-Founder BYOK Equity Simulator (50% Fiscal Share + 50% Architectural Yield, Low Numbers) ---
+  if ("IntersectionObserver" in window && beatEls.length > 0) {
+    const railObserver = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((en) => en.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (visible.length > 0) {
+          const idx = visible[0].target.getAttribute("data-beat-idx");
+          if (idx) setActiveRailIdx(idx);
+        }
+      },
+      { rootMargin: "-18% 0px -55% 0px", threshold: [0, 0.25] }
+    );
+    beatEls.forEach((elNode) => railObserver.observe(elNode));
+  }
+
+  // Ambient scroll-linked step progression while stages are inline on the page
+  let scrollTicking = false;
+  function updateScrollDrivenPreviews() {
+    scrollTicking = false;
+    if (prefersReducedMotion.matches || document.body.classList.contains("has-expanded-slowmo")) {
+      return;
+    }
+    const vh = window.innerHeight || 800;
+    allStages.forEach((stageEl) => {
+      if (stageEl.classList.contains("is-expanded")) return;
+      const ctrl = stageControllers.get(stageEl);
+      if (!ctrl || ctrl.stepsCount <= 1) return;
+      const r = stageEl.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > vh) return;
+
+      // Progress 0 when stage top enters lower 78% of viewport -> 1 when stage reaches upper 18%
+      const startY = vh * 0.78;
+      const endY = vh * 0.14;
+      const raw = (startY - r.top) / Math.max(1, startY - endY);
+      const clamped = Math.max(0, Math.min(0.999, raw));
+      const targetStep = Math.floor(clamped * ctrl.stepsCount);
+      if (targetStep !== ctrl.getCurIdx()) {
+        ctrl.setStep(targetStep);
+      }
+    });
+  }
+
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (!scrollTicking) {
+        scrollTicking = true;
+        window.requestAnimationFrame(updateScrollDrivenPreviews);
+      }
+    },
+    { passive: true }
+  );
+
+  // --- 6. Interactive BYOK & Co-Founder Contribution Simulator ---
   const calcInputs = Array.from(document.querySelectorAll("[data-calc-input]"));
 
+  function formatUsdK(val) {
+    return `$${val}K`;
+  }
+
   function updateEquityCalculator() {
-    const f1Stake = Number(document.getElementById("f1-stake")?.value || 40);
-    const f2Stake = Number(document.getElementById("f2-stake")?.value || 60);
-    const f3Stake = Number(document.getElementById("f3-stake")?.value || 50);
+    const f1Stake = Number(document.getElementById("f1-stake")?.value ?? 4);
+    const f2Stake = Number(document.getElementById("f2-stake")?.value ?? 6);
+    const f3Stake = Number(document.getElementById("f3-stake")?.value ?? 5);
 
-    const f1Prs = Number(document.getElementById("f1-prs")?.value || 3);
-    const f2Prs = Number(document.getElementById("f2-prs")?.value || 6);
-    const f3Prs = Number(document.getElementById("f3-prs")?.value || 3);
+    const f1Prs = Number(document.getElementById("f1-prs")?.value ?? 15);
+    const f2Prs = Number(document.getElementById("f2-prs")?.value ?? 30);
+    const f3Prs = Number(document.getElementById("f3-prs")?.value ?? 15);
 
-    const totalApiSpend = Math.max(f1Stake + f2Stake + f3Stake, 1);
-    const totalPrs = Math.max(f1Prs + f2Prs + f3Prs, 1);
+    const rawSpend = f1Stake + f2Stake + f3Stake;
+    const rawPrs = f1Prs + f2Prs + f3Prs;
+    const totalApiSpend = Math.max(rawSpend, 1);
+    const totalPrs = Math.max(rawPrs, 1);
 
     const founders = [
-      { idx: 1, login: "@cofounder-1 (P1 Founding Architect)", stake: f1Stake, prs: f1Prs },
-      { idx: 2, login: "@builder-2 (P2 Software Builder)", stake: f2Stake, prs: f2Prs },
-      { idx: 3, login: "@cofounder-3 (P1 Co-Founder)", stake: f3Stake, prs: f3Prs }
+      { idx: 1, login: "@architect-1", stake: f1Stake, prs: f1Prs },
+      { idx: 2, login: "@builder-2", stake: f2Stake, prs: f2Prs },
+      { idx: 3, login: "@cofounder-3", stake: f3Stake, prs: f3Prs }
     ].map((f) => {
-      const fiscalShare = f.stake / totalApiSpend;
-      const archYield = f.prs / totalPrs;
+      const fiscalShare = rawSpend > 0 ? f.stake / totalApiSpend : 0;
+      const archYield = rawPrs > 0 ? f.prs / totalPrs : 0;
       const blendedEquity = 0.5 * fiscalShare + 0.5 * archYield;
       return {
         ...f,
@@ -492,39 +621,21 @@
       const stakeLabel = document.getElementById(`f${f.idx}-stake-val`);
       const prsLabel = document.getElementById(`f${f.idx}-prs-val`);
       const readoutEl = document.getElementById(`f${f.idx}-readout`);
-      if (stakeLabel) stakeLabel.textContent = `$${f.stake}`;
+      if (stakeLabel) stakeLabel.textContent = formatUsdK(f.stake);
       if (prsLabel) prsLabel.textContent = `${f.prs} PRs`;
       if (readoutEl) {
-        readoutEl.textContent = `Fiscal ${f.fiscalPct}% · Arch ${f.archPct}% → Combined Share ${f.equityPct}%`;
+        readoutEl.textContent = `Fiscal ${f.fiscalPct}% + Arch ${f.archPct}% -> ${f.equityPct}% Share`;
       }
     });
 
     const poolValEl = document.getElementById("calc-monthly-pool");
     const prsValEl = document.getElementById("calc-total-prs");
-    if (poolValEl) poolValEl.textContent = `$${totalApiSpend}`;
-    if (prsValEl) prsValEl.textContent = `${totalPrs} Merged PRs`;
-
-    const ledgerJsonCode = document.getElementById("scene6-live-ledger-json");
-    if (ledgerJsonCode) {
-      const ledgerPayload = {
-        attribution_formula: "0.5 * Fiscal_Share + 0.5 * Architectural_Yield",
-        total_byok_usage_usd: totalApiSpend,
-        total_merged_prs: totalPrs,
-        collaborators: founders.map((f) => ({
-          github_login: f.login.split(" ")[0],
-          byok_spend_usd: f.stake,
-          merged_prs_attributed: f.prs,
-          fiscal_share_pct: Number(f.fiscalPct),
-          architectural_yield_pct: Number(f.archPct),
-          combined_share_pct: Number(f.equityPct)
-        }))
-      };
-      ledgerJsonCode.textContent = JSON.stringify(ledgerPayload, null, 2);
-    }
+    if (poolValEl) poolValEl.textContent = formatUsdK(rawSpend);
+    if (prsValEl) prsValEl.textContent = `${rawPrs} Merged PRs`;
   }
 
   calcInputs.forEach((input) => {
     input.addEventListener("input", updateEquityCalculator);
   });
-  updateEquityCalculator();
+  if (calcInputs.length > 0) updateEquityCalculator();
 })();

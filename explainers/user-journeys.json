@@ -1,7 +1,7 @@
 {
   "eyebrow": "ATOBAR \u00b7 Agentic Teams On BYOK And Repos",
   "title": "How ATOBAR runs your GitHub issues",
-  "question": "What happens, step by step, across the six user journeys in atobar-flow?",
+  "question": "What happens, step by step, across a GitHub issue run and inside the Nano harness?",
   "intro": [
     "ATOBAR stands for Agentic Teams On BYOK And Repos. Collaborators bring their own encrypted language model keys, plan work in GitHub issues, and let isolated cloud machines write, visually test, and merge code.",
     "Step through each journey below using Next, Play, or the slider. Every step updates the screen preview and highlights changed database values in yellow."
@@ -54,7 +54,13 @@
     "arbitrate": "The pure Python function in contracts that checks if all business metrics pass before merging.",
     "loop_rounds": "The Flow Engine database table that records tokens, cost, and state for every agent turn.",
     "tenant_goals": "The Flow Engine database table that tracks repository metric goals and spend caps.",
-    "goal_step": "The pure Python function in flow-engine that checks if all repository target metrics are met after a merge."
+    "goal_step": "The pure Python function in flow-engine that checks if all repository target metrics are met after a merge.",
+    "NanobotRuntime": "The headless runner in flow-agent that executes each agent role through the nanobot-ai Python SDK.",
+    "nanobot_home": "The isolated folder outside your client repository where the Nano harness keeps SOUL.md and session memory.",
+    "SOUL.md": "The per-run persona and rule file written into nanobot_home for the active agent role.",
+    "tools_mcp": "The out-of-process stdio FastMCP server that enforces per-role tool allowlists.",
+    "view_image": "The workspace-jailed multimodal image reader that lets the Evaluator inspect real X11 screenshots.",
+    "FlowHook": "The lifecycle hook around every Nano turn that tracks heartbeats, stalls, and per-tool token spend."
   },
   "sections": [
     {
@@ -165,9 +171,9 @@
         {
           "from": "spot",
           "to": "gh",
-          "label": "open 2-file workflow PR",
-          "say": "The onboarder opens a pull request adding <code>flow-trigger.yml</code> and <code>flow-metrics.yml</code>. Merging it finishes setup with zero lock-in.",
-          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>PR #1 Merged:</b> .github/workflows/flow-trigger.yml + flow-metrics.yml</div></div>",
+          "label": "open trigger & metrics PRs",
+          "say": "Setup opens pull requests for <code>flow-trigger.yml</code> and <code>flow-metrics.yml</code> once Flow Engine compiles your metric. Merging them activates the repo.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>Workflows Active:</b> .github/workflows/flow-trigger.yml + flow-metrics.yml</div></div>",
           "state": {
             "tenants \u00b7 status": "active",
             "repository_wikis \u00b7 status": "ready (Mermaid validated)",
@@ -603,6 +609,126 @@
             "client repo workflows": "removed in 1 commit",
             "runtime sdk imports": "0 (100% standalone repo)",
             "vendor lock-in": "none"
+          }
+        }
+      ]
+    },
+    {
+      "type": "flow",
+      "id": "nano-harness",
+      "eyebrow": "Under the Hood \u00b7 [AS-BUILT]",
+      "title": "Nano Harness: How NanobotRuntime runs a role inside Spot",
+      "intro": [
+        "Above the sandbox, Flow Engine is 100% deterministic Python. Inside the Spot sandbox, NanobotRuntime drives the nanobot-ai loop inside an isolated home folder with server-side tool guards and live cost tracking."
+      ],
+      "lanes": [
+        {
+          "id": "fe",
+          "name": "Flow Engine",
+          "role": "fe"
+        },
+        {
+          "id": "sup",
+          "name": "Spot Runner",
+          "role": "spot"
+        },
+        {
+          "id": "nano",
+          "name": "Nanobot SDK",
+          "role": "cp"
+        },
+        {
+          "id": "mcp",
+          "name": "FastMCP Cage",
+          "role": "spot"
+        },
+        {
+          "id": "gh",
+          "name": "GitHub PR",
+          "role": "github"
+        }
+      ],
+      "screenLabel": "Inside the Spot Sandbox & PR",
+      "stateLabel": "Nano harness & isolation state",
+      "steps": [
+        {
+          "phase": "boot & split",
+          "tick": "Isolate Home",
+          "from": "fe",
+          "to": "sup",
+          "label": "start Spot role task",
+          "say": "Flow Engine starts a role on Spot. Spot Runner creates <code>nanobot_home</code> outside the client git folder and writes <code>SOUL.md</code>.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>Workspace Split (J44):</b> /flow-run/agent_ws/SOUL.md &ne; /worktrees/client-repo</div><div class='scr-box scr-muted'>.git/info/exclude blocks .nanobot/ &amp; SOUL.md from commits</div></div>",
+          "state": {
+            "nanobot_home": "/flow-run/<id>/agent_ws (isolated)",
+            "client worktree": "/worktrees/developer-42 (clean git)",
+            "git exclude guard": ".nanobot/ & SOUL.md excluded"
+          }
+        },
+        {
+          "from": "sup",
+          "to": "nano",
+          "label": "bind RAM key placeholders",
+          "say": "<code>NanobotRuntime</code> writes environment variable placeholders into config so decrypted model keys stay in memory and never touch disk.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>RAM-Only Keys:</b> providers.anthropic.apiKey = \"${FLOW_LLM_API_KEY}\"</div></div>",
+          "state": {
+            "plaintext keys on disk": "0",
+            "active modelPreset": "developer -> claude (high effort)",
+            "untrusted issue text": "wrapped in <untrusted_client_content>"
+          }
+        },
+        {
+          "phase": "tool cage",
+          "tick": "FastMCP Cage",
+          "from": "nano",
+          "to": "mcp",
+          "label": "call stdio MCP tool",
+          "say": "The model calls a tool. <code>tools_mcp</code> checks the role allowlist in a separate process before running the command.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>FastMCP Allowlist:</b> disabledSkills: [\"github\"] &middot; role tools enforced</div></div>",
+          "state": {
+            "raw gh cli skill": "disabled",
+            "stdio mcp server": "enforcing per-role allowlist",
+            "evaluator write tools": "blocked out-of-process"
+          }
+        },
+        {
+          "from": "nano",
+          "to": "nano",
+          "label": "view_image() X11 PNG",
+          "say": "During visual checks, <code>view_image</code> reads X11 screenshots inside the workspace so the model inspects real pixels.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>Multimodal Vision:</b> view_image(.atobar/artifacts/x11_window.png)</div></div>",
+          "state": {
+            "vision path guard": "jailed to WORKSPACE_DIR",
+            "multimodal input": "native PNG blocks loaded",
+            "x11 display": ":99 verified"
+          }
+        },
+        {
+          "phase": "live armor",
+          "tick": "FlowHook Live $",
+          "from": "nano",
+          "to": "gh",
+          "label": "stream heartbeat & $",
+          "say": "After every model turn, <code>FlowHook</code> sends a 15-second heartbeat, resets the 900-second stall timer, and updates pull request spend.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>Pinned PR Telemetry:</b> Turn 6 &middot; 41.2k tokens &middot; $0.38 &middot; heartbeat OK</div></div>",
+          "state": {
+            "FlowHook heartbeat": "every 15s (stall cap 900s)",
+            "per-tool cost_usd": "tracked in by_tool ledger",
+            "pinned pr comment": "updated live"
+          }
+        },
+        {
+          "phase": "envelope",
+          "tick": "Emit Envelope",
+          "from": "sup",
+          "to": "fe",
+          "label": "return verified envelope",
+          "say": "When the role finishes, <code>NanobotRuntime</code> checks the fenced output block and reports completion back to Flow Engine.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>Envelope Verified:</b> flow-ack / flow-verdict schema passed</div></div>",
+          "state": {
+            "envelope parser": "strict schema verified",
+            "loop_rounds \u00b7 runtime": "nanobot",
+            "client git status": "clean (0 harness files)"
           }
         }
       ]

@@ -3,12 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>atobar-flow: Agentic Teams On BYOK And Repos | Hub-and-Spoke Software Factory</title>
-  <meta name="description" content="ATOBAR (Agentic Teams On BYOK And Repos) is a Hub-and-Spoke software factory built around GitHub. Share KMS-encrypted BYOK keys, coordinate in GitHub Issues and Pull Requests, and let isolated Spot roles write, visually verify in X11, and squash-merge code with a 1-commit exit.">
+  <title>atobar-flow | Just GitHub + BYOK for Long-Running Agentic Jobs</title>
+  <meta name="description" content="Whether you are kicking off hours-long coding and visual QA jobs from a GitHub Issue today or pooling per-user BYOK keys across co-founders next, ATOBAR runs isolated Spot + Nano harness agents on your repos with zero lock-in.">
   <meta name="theme-color" content="#edeef3">
   <link rel="icon" type="image/png" href="images/favicon.png">
 
-  <!-- Non-Reflex Technical Typography: Bricolage Grotesque + Atkinson Hyperlegible Next + JetBrains Mono fallback for Commit Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,400..700;1,400..700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
@@ -16,1328 +15,995 @@
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/site.css">
 </head>
-<body>
+<body id="top">
   <a class="skip-link" href="#main-content">Skip to main content</a>
 
-  <!-- ========================================================================
-       STICKY TOP UTILITY BAR & REALITY FILTER ([AS-BUILT] / [VISION] ONLY)
-       ======================================================================== -->
   <header class="topbar" role="banner">
-    <div class="container topbar-inner">
+    <div class="topbar-wrap topbar-inner">
       <a class="brand-lockup" href="#top" aria-label="atobar-flow home">
-        <img class="brand-avatar" src="images/atobar-logo.jpeg" width="38" height="38" alt="atobar-flow pixel-art wolf crest">
-        <span class="brand-text">
-          <span class="brand-name">atobar-flow</span>
-          <span class="brand-sub">Agentic Teams On BYOK And Repos</span>
-        </span>
+        <img class="brand-avatar" src="images/atobar-logo.jpeg" width="34" height="34" alt="atobar-flow pixel-art wolf crest">
+        <span class="brand-name">atobar-flow</span>
       </a>
 
-      <nav class="topnav" aria-label="Primary page sections">
-        <a href="#pitch">Vision</a>
-        <a href="#personas">Personas &amp; Anti-Goals</a>
-        <a href="#journeys">User Journeys (J1&ndash;J6)</a>
-        <a href="#requirements">Requirements</a>
-        <a href="#architecture">Architecture</a>
-        <a href="#onboarding">5-Min Onboarding</a>
+      <nav class="topnav" aria-label="Primary sections">
+        <a href="#journeys">How It Runs</a>
+        <a href="#nano-harness">Nano Harness</a>
+        <a href="#economics">BYOK &amp; Split</a>
+        <a href="#onboarding">5-Min Start</a>
       </nav>
 
       <div class="topbar-controls">
-        <div class="reality-filter" role="group" aria-label="Filter features by ground-truth implementation status">
-          <span class="filter-label">Reality Filter:</span>
+        <div class="reality-filter" role="group" aria-label="Filter features by implementation status">
+          <span class="filter-label">Reality:</span>
           <button type="button" class="filter-btn" data-filter="all" aria-pressed="true">All</button>
-          <button type="button" class="filter-btn" data-filter="as-built" aria-pressed="false" title="Live on main in atobar-flow">[AS-BUILT]</button>
-          <button type="button" class="filter-btn" data-filter="vision" aria-pressed="false" title="Roadmap &amp; open Jumbo specs (J53/J54)">[VISION]</button>
+          <button type="button" class="filter-btn" data-filter="as-built" aria-pressed="false" title="Only features live on main in atobar-flow today">[AS-BUILT]</button>
+          <button type="button" class="filter-btn" data-filter="vision" aria-pressed="false" title="Only roadmap &amp; open Jumbo specs (J53, J54, Ventures)">[VISION]</button>
         </div>
-
-        <a class="repo-link-pill" href="https://github.com/atobar-flow/atobar-flow" target="_blank" rel="noopener">GitHub ↗</a>
+        <a class="repo-link-pill" href="https://github.com/atobar-flow/atobar-flow" target="_blank" rel="noopener">GitHub &nearr;</a>
       </div>
     </div>
 
     <div id="filter-banner" class="filter-banner" hidden aria-live="polite">
-      <div class="container filter-banner-inner">
-        <span id="filter-banner-text" class="mono">Filtering page elements by implementation status.</span>
-        <button type="button" id="filter-reset-btn" class="filter-reset-link">Reset Filter (Show All)</button>
+      <div class="topbar-wrap filter-banner-inner">
+        <span id="filter-banner-text" class="mono">Filtering sections by ground-truth implementation status.</span>
+        <button type="button" id="filter-reset-btn" class="filter-reset-link">Show All</button>
       </div>
     </div>
   </header>
 
   <main id="main-content">
-    <!-- ======================================================================
-         ZONE 1: SINGLE-COLUMN HERO — VISION & BYOK COST ROUTING
-         ====================================================================== -->
     <section id="pitch" class="hero" aria-labelledby="hero-heading">
       <div class="container">
-        <div class="hero-brand-row">
+        <div class="hero-top">
           <img
             class="crest-logo-img"
             src="images/atobar-logo.jpeg"
             width="2048"
             height="2048"
-            alt="ATOBAR pixel-art wolf emblem in a navy crest ring, wearing a pink shirt and royal cobalt tie"
+            alt="ATOBAR pixel-art wolf mascot wearing a beanie, pink shirt, and royal cobalt tie inside a navy crest"
           >
-          <div class="hero-brand-copy">
-            <div class="hero-meta-bar">
-              <span class="badge badge-as-built" data-status="as-built">[AS-BUILT: Hub-and-Spoke Factory]</span>
-              <span class="badge badge-vision" data-status="vision">[VISION: Per-Invoking-User BYOK &amp; Equity Ledger]</span>
+          <div class="hero-headline-wrap">
+            <div class="hero-tag-line">
+              <span>ATOBAR &middot; Agentic Teams On BYOK And Repos</span>
+              <span class="badge badge-as-built" data-status="as-built">[AS-BUILT]</span>
+              <span class="badge badge-vision" data-status="vision">[VISION]</span>
             </div>
-            <h1 id="hero-heading">Agentic Teams On BYOK And Repos (ATOBAR)</h1>
+            <h1 id="hero-heading">Just GitHub + BYOK for Long-Running Agentic Jobs.</h1>
           </div>
         </div>
 
-        <p class="hero-subhead">
-          <strong>ATOBAR</strong> (<em>Agentic Teams On BYOK And Repos</em>) is a Hub-and-Spoke software factory built around GitHub.
-          Co-founders and collaborators bring their own KMS-encrypted LLM API keys (<strong>BYOK</strong>), route costs and models
-          <strong>per repository and per role today</strong> (<code>[AS-BUILT]</code>) with <strong>per-invoking-user billing and profile default keys</strong>
-          next (<code>[VISION]</code>), coordinate strictly through <strong>GitHub Jumbo Issues and Pull Requests</strong>, and let isolated AWS EC2 Spot
-          roles (<code>PLANNER</code> &rarr; <code>DEVELOPER</code> &rarr; <code>EVALUATOR</code> &rarr; <code>ARBITRATOR</code>) write, visually verify in X11,
-          and squash-merge code with a <strong>one-commit exit</strong>.
+        <p class="hero-lead">
+          <strong>Whether you are</strong> a builder kicking off hours-long coding and visual QA runs straight from a GitHub Issue today,
+          <strong>or</strong> co-founders preparing to pool per-user API keys with automatic contribution tracking next, <strong>ATOBAR</strong>
+          turns standard GitHub repositories into an autonomous software team with zero SaaS markup and a one-commit exit.
         </p>
 
-        <p class="hero-subhead">
-          <strong>Fully Forkable for Any Use-Case:</strong> ATOBAR is 100% open-source (MIT) and domain-neutral. You can fork the
-          monorepo, connect your own GitHub App, database, and cloud account, and adapt the roles or verification checks for any workflow:
-          building web and mobile apps, automating internal company tools, running security or compliance fixes, maintaining data pipelines,
-          or keeping documentation in sync with code.
-        </p>
+        <div class="audience-split">
+          <div class="audience-pane" data-status="as-built">
+            <div class="audience-pane-top">
+              <span class="audience-who">LIVE ON MAIN TODAY</span>
+              <span class="badge badge-as-built">[AS-BUILT]</span>
+            </div>
+            <h2>Seal Repo BYOK Keys. Ship Issues on Spot + Nano.</h2>
+            <p>
+              Encrypt repo-level <code>Claude</code>, <code>Gemini</code>, <code>DeepSeek</code>, or <code>Grok</code> keys in AWS KMS, pick models per role,
+              and label an issue <code>flow:feature</code>. Isolated Spot VMs on the <strong>Nano harness</strong> plan, code, steer from PR comments, and prove live X11 windows before merge.
+            </p>
+          </div>
 
-        <!-- 4 Core Vision Pillars -->
-        <div class="venture-ribbon" aria-label="Core ATOBAR Architectural Pillars">
-          <div class="venture-cell" data-status="as-built vision">
-            <span class="venture-cell-num">BYOK Cost Routing</span>
-            <span class="venture-cell-label">Per-Repo &amp; Role Live &middot; Per-User <code>[VISION]</code></span>
-          </div>
-          <div class="venture-cell" data-status="as-built">
-            <span class="venture-cell-num">GitHub Workspace</span>
-            <span class="venture-cell-label">Jumbo Issues &amp; PRs (No Custom IDE)</span>
-          </div>
-          <div class="venture-cell" data-status="as-built vision">
-            <span class="venture-cell-num">Unattended QA</span>
-            <span class="venture-cell-label">Web X11 Live &middot; Android KVM <code>[VISION]</code></span>
-          </div>
-          <div class="venture-cell" data-status="as-built">
-            <span class="venture-cell-num">1-Commit Exit</span>
-            <span class="venture-cell-label">Delete 2 YAML Files &rarr; Zero Lock-In</span>
+          <div class="audience-pane is-vision-pane" data-status="vision">
+            <div class="audience-pane-top">
+              <span class="audience-who">NEXT ON THE ROADMAP (J53 &middot; J54)</span>
+              <span class="badge badge-vision">[VISION]</span>
+            </div>
+            <h2>Pool Per-User Keys &amp; Split Contribution Automatically.</h2>
+            <p>
+              Attach personal <code>/profile</code> default keys so every trigger bills the invoking GitHub user (<code>J53</code>), toggle
+              <code>Listed / Ready / Blocked</code> or <code>&#45;&#45;uninstall</code> in one command (<code>J54</code>), link multi-repo Ventures, run Android KVM QA, and settle <strong>Fiscal + Architectural</strong> shares.
+            </p>
           </div>
         </div>
 
-        <!-- 3 Concrete Architectural Proof Rows -->
-        <div class="proof-ledger" role="list" aria-label="Three verifiable architectural guarantees">
-          <div class="proof-row" role="listitem" data-status="as-built">
-            <span class="proof-idx">PROOF 1</span>
-            <div class="proof-copy">
-              <strong>2 YAML Files in Client Repo:</strong> Client repositories hold only <code>.github/workflows/flow-trigger.yml</code> and
-              <code>flow-metrics.yml</code>. Zero Atobar runtime SDKs. Delete those two files and your repository is 100% standalone.
-            </div>
-            <span class="badge badge-as-built">[AS-BUILT]</span>
+        <div class="equation-strip" data-status="as-built" aria-label="How the live ATOBAR factory runs in three steps">
+          <div class="equation-step">
+            <span class="equation-num">GITHUB WORKSPACE</span>
+            <span class="equation-title">2 YAML Files in Your Repo</span>
+            <span class="equation-desc">No custom IDE, no proprietary SDK. Plan in Issues, review screenshots in PRs, and detach in 1 commit anytime.</span>
           </div>
-
-          <div class="proof-row" role="listitem" data-status="as-built">
-            <span class="proof-idx">PROOF 2</span>
-            <div class="proof-copy">
-              <strong>0 LLM Calls in State &amp; Merge Gates:</strong> <code>step()</code> (<code>machine.py</code>),
-              <code>assess_issue_sufficiency()</code> (<code>sufficiency.py</code>), and <code>arbitrate()</code> (<code>arbitration.py</code>)
-              are 100% deterministic Python. CI enforces <code>tests/test_boundaries.py</code> blocking LLM SDK imports in <code>contracts</code> and <code>flow-engine</code>.
-            </div>
-            <span class="badge badge-as-built">[AS-BUILT]</span>
+          <div class="equation-step">
+            <span class="equation-num">SPOT + NANO HARNESS</span>
+            <span class="equation-title">Fresh VM for Visual QA</span>
+            <span class="equation-desc">Developers reuse warm git worktrees, while Evaluators always cold-boot on a separate VM with live X11 window proof.</span>
           </div>
-
-          <div class="proof-row" role="listitem" data-status="as-built">
-            <span class="proof-idx">PROOF 3</span>
-            <div class="proof-copy">
-              <strong>Fresh Spot VM for Visual QA:</strong> <code>WARM_HANDOVER_FORBIDDEN_ROLES = {"evaluator", "arbitrator"}</code>
-              guarantees <code>EVALUATOR</code> never reuses a <code>DEVELOPER</code> VM, holds a <code>contents: read</code> token, and verifies live X11 windows via <code>xwininfo</code> and <code>ps</code>.
-            </div>
-            <span class="badge badge-as-built">[AS-BUILT]</span>
+          <div class="equation-step">
+            <span class="equation-num">PURE-PYTHON GATES</span>
+            <span class="equation-title">0 LLM Calls in Merge Decisions</span>
+            <span class="equation-desc">State transitions, $25/PR cost circuit breakers, and CI metric gates run in pure Python enforced by CI tests.</span>
           </div>
         </div>
 
         <div class="hero-cta-row">
-          <a class="btn-primary" href="#journeys">Step Through the 6 User Journeys (Slow-Mo) &darr;</a>
-          <a class="btn-secondary" href="explainers/user-journeys.html">Open Standalone code-slowmo Explainer</a>
-          <a class="btn-secondary" href="#architecture">Inspect Package &amp; DB Boundaries</a>
+          <a class="btn-primary" href="#journeys">Watch an Issue Ship in Slow-Mo &darr;</a>
+          <a class="btn-secondary" href="#nano-harness">Inspect the Nano Harness &darr;</a>
+          <a class="btn-secondary" href="explainers/user-journeys.html">Standalone Slow-Mo Page</a>
         </div>
 
         <div class="cli-snippet-box" data-status="as-built">
-          <code class="cli-snippet-code"><span class="prompt-char">$</span>curl -fsSL https://raw.githubusercontent.com/atobar-flow/atobar-flow/main/scripts/onboard.sh | bash</code>
-          <button type="button" class="copy-btn" data-copy-text="curl -fsSL https://raw.githubusercontent.com/atobar-flow/atobar-flow/main/scripts/onboard.sh | bash">Copy CLI</button>
+          <code class="cli-snippet-code"><span class="prompt-char">$</span>curl -fsSL https://&lt;your-cp-host&gt;/onboard.sh | bash</code>
+          <button type="button" class="copy-btn" data-copy-text="curl -fsSL https://<your-cp-host>/onboard.sh | bash">Copy CLI</button>
         </div>
       </div>
     </section>
 
-    <!-- ======================================================================
-         ZONE 2: TARGET PERSONAS (P1 & P2), FORKABILITY & EXPLICIT ANTI-GOALS
-         ====================================================================== -->
-    <section id="personas" class="reference-section" aria-labelledby="personas-heading">
-      <div class="container">
-        <div class="section-intro">
-          <div class="section-intro-copy">
-            <h2 id="personas-heading">Target Personas (<code>P1</code> &amp; <code>P2</code>), Forkability &amp; Explicit Anti-Goals</h2>
-            <p>
-              ATOBAR (<em>Agentic Teams On BYOK And Repos</em>) is built around <strong>two core personas</strong> that absorb planning,
-              swarm wrangling, unattended QA, and contribution tracking directly inside GitHub. Because <strong>ATOBAR itself is the
-              deterministic ledger</strong>, every turn's token usage, cost guardrail, and merged pull request is recorded automatically.
-            </p>
-          </div>
-        </div>
-
-        <div class="ref-block" data-status="as-built vision">
-          <div class="ref-block-header">
-            <h3>Two Target Personas (<code>P1</code> &amp; <code>P2</code>)</h3>
-            <div class="scene-badges">
-              <span class="badge badge-as-built">[AS-BUILT]</span>
-              <span class="badge badge-vision">[VISION]</span>
-            </div>
-          </div>
-
-          <div class="table-scroll">
-            <table class="spec-table">
-              <thead>
-                <tr>
-                  <th scope="col">ID</th>
-                  <th scope="col">Persona</th>
-                  <th scope="col">How They Work</th>
-                  <th scope="col">User Journeys &amp; Capabilities (Including Wrangler &amp; QA Workflows)</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr data-status="as-built vision">
-                  <td><code>P1</code></td>
-                  <td><strong>Co-Founder / Founding Early Architect</strong></td>
-                  <td>
-                    Builds iteratively on GitHub, minimizes operational and tool surfaces, and proportionally calculates contributions with co-founders.
-                  </td>
-                  <td>
-                    <strong>Journeys <code>J1</code>, <code>J2</code>, <code>J5</code>, <code>J6</code>:</strong>
-                    5-minute repo onboarding with only 2 workflow YAML files and a 1-commit exit (<code>J1</code>, <code>J6</code>);
-                    KMS <code>AES-GCM</code> BYOK key routing per repo/role (<code>[AS-BUILT]</code>) and per invoking user (<code>[VISION]</code>);
-                    iterative architecture via GitHub Jumbo Issues, Spec-Sufficiency Gate, and living Mermaid <code>SotaWiki</code> (<code>J2</code>);
-                    deterministic <code>arbitrate()</code> merge gates and proportional <strong>Fiscal Share + Architectural Yield</strong> contribution ledger (<code>J5</code>).
-                  </td>
-                </tr>
-                <tr data-status="as-built vision">
-                  <td><code>P2</code></td>
-                  <td><strong>Software Builder (Long-Running Agentic Jobs)</strong></td>
-                  <td>
-                    Dispatches, steers, and verifies long-running autonomous coding and visual QA jobs across web, API, and mobile repositories.
-                  </td>
-                  <td>
-                    <strong>Journeys <code>J2</code>, <code>J3</code>, <code>J4</code>, <code>J5</code>:</strong>
-                    Warm EC2 Spot VM <code>git worktree</code> handovers across <code>PLANNER &rarr; DEVELOPER</code> and rework rounds (<code>J3</code>, <code>J38</code>);
-                    live pinned-comment telemetry and plain-English <code>@atobar-flow-agent</code> PR course-corrections (<code>J49</code>);
-                    hard-isolated <code>EVALUATOR</code> runs on fresh Spot VMs (<code>WARM_HANDOVER_FORBIDDEN_ROLES</code>, <code>contents: read</code> token)
-                    with Stage 1 <code>file:#L</code> citations and Stage 2 live X11 window/process screenshot proof (<code>[AS-BUILT]</code>) or headless Android KVM emulators (<code>[VISION]</code>, <code>J4</code>).
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="ref-block" data-status="as-built">
-          <div class="ref-block-header">
-            <h3>Forkable for Any Use-Case (Plain-English Design)</h3>
-            <span class="badge badge-as-built">[MIT OPEN-SOURCE &middot; DOMAIN-NEUTRAL]</span>
-          </div>
-
-          <div class="antigoals-grid">
-            <div class="antigoal-item">
-              <span class="antigoal-tag">SELF-HOST OR FORK</span>
-              <h4>Run Your Own Factory Instance</h4>
-              <p>
-                Nothing in ATOBAR is tied to a single hosted domain. Fork <code>atobar-flow</code>, point environment variables at your own
-                GitHub App, Supabase project, and AWS account, and run your own private or public software factory.
-              </p>
-            </div>
-
-            <div class="antigoal-item">
-              <span class="antigoal-tag">ADAPT THE ROLES</span>
-              <h4>Swap Prompts, Tools, or Sandboxes</h4>
-              <p>
-                Use the 4-role loop out of the box for web and backend repos, or customize role prompts and Spot VM images for mobile apps,
-                data pipelines, security patching, test generation, or documentation maintenance.
-              </p>
-            </div>
-
-            <div class="antigoal-item">
-              <span class="antigoal-tag">BUILT-IN LEDGER</span>
-              <h4>ATOBAR Is the Ledger Itself</h4>
-              <p>
-                You do not need a separate billing team or spreadsheet. Every turn automatically logs tokens, cost, and merged PRs in
-                <code>loop_rounds</code> and <code>arbitration_decisions</code>, enforcing budget caps in pure Python.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="ref-block" data-status="as-built">
-          <div class="ref-block-header">
-            <h3>Explicit Anti-Goals: What ATOBAR Refuses to Build</h3>
-            <span class="badge badge-as-built">[ARCHITECTURAL INVARIANTS]</span>
-          </div>
-
-          <div class="antigoals-grid">
-            <div class="antigoal-item">
-              <span class="antigoal-tag">ANTI-GOAL 1</span>
-              <h4>No Custom IDE or Proprietary Chat App</h4>
-              <p>
-                All human planning and code review happen in GitHub Issues and Pull Requests. Collaborators plan in Jumbo Issues,
-                inspect visual screenshots in PRs, and steer active runs with <code>@atobar-flow-agent</code> comments.
-              </p>
-            </div>
-
-            <div class="antigoal-item">
-              <span class="antigoal-tag">ANTI-GOAL 2</span>
-              <h4>No Atobar SDK Inside Client Repos</h4>
-              <p>
-                Client repositories never import <code>atobar-flow</code> packages at runtime. Only two standard GitHub Actions YAML files
-                live in <code>.github/workflows/</code>, guaranteeing a 1-commit exit at any time.
-              </p>
-            </div>
-
-            <div class="antigoal-item">
-              <span class="antigoal-tag">ANTI-GOAL 3</span>
-              <h4>No LLM in Merge or Budget Decisions</h4>
-              <p>
-                State machine transitions (<code>step()</code>), circuit breakers, Spec-Sufficiency checks, and metric gate merges
-                (<code>arbitrate()</code>) are 100% deterministic Python.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ======================================================================
-         ZONE 3: END-TO-END USER JOURNEYS (J1–J6) WITH CODE-SLOWMO DIAGRAMS
-         ====================================================================== -->
     <section id="journeys" class="scrolly-section" aria-labelledby="journeys-heading">
-      <div class="container">
-        <div class="section-intro">
-          <div class="section-intro-copy">
-            <h2 id="journeys-heading">End-to-End User Journeys (<code>J1</code>&ndash;<code>J6</code>) in Slow Motion</h2>
+      <div class="container section-header">
+        <h2 id="journeys-heading">Watch One GitHub Issue Ship Itself</h2>
+        <p>
+          Scroll down to watch each live stage advance automatically, or <strong>hover anywhere over a stage and click</strong> to open it in
+          <strong>Full-Screen Interactive Slow-Mo</strong> with step controls, real code, and trust boundaries.
+        </p>
+      </div>
+
+      <div class="journey-rail-sticky" role="navigation" aria-label="User Journey progress">
+        <div class="scrolly-wide journey-rail-inner">
+          <div class="journey-rail-buttons">
+            <button type="button" class="scene-jump-btn" data-scene-target="1" aria-current="step">J1 &middot; Onboard &amp; BYOK</button>
+            <button type="button" class="scene-jump-btn" data-scene-target="2">J2 &middot; 0-LLM Gate</button>
+            <button type="button" class="scene-jump-btn" data-scene-target="3">J3 &middot; Warm Dev VM</button>
+            <button type="button" class="scene-jump-btn" data-scene-target="4">J4 &middot; Fresh X11 QA</button>
+            <button type="button" class="scene-jump-btn" data-scene-target="5">J5 &middot; Metric Merge</button>
+            <button type="button" class="scene-jump-btn" data-scene-target="6">J6 &middot; 1-Commit Exit</button>
+          </div>
+          <span class="journey-rail-hint">Hover &amp; click any stage for Full Screen &#10530;</span>
+        </div>
+      </div>
+
+      <article id="journey-1" class="journey-beat" data-beat-idx="1">
+        <div class="container beat-lead">
+          <div data-status="as-built">
+            <div class="beat-meta">
+              <span class="beat-step-tag">JOURNEY J1 &middot; 5-MINUTE SETUP</span>
+              <span class="badge badge-as-built">[AS-BUILT: Repo &amp; Role KMS BYOK]</span>
+            </div>
+            <h3>Connect Your Repo &amp; Seal Your API Keys</h3>
             <p>
-              Each journey below is powered by the repository's <strong><code>code-slowmo</code></strong> engine
-              (<code>.pi/skills/code-slowmo</code>). Press <strong>Next &gt;</strong>, <strong>Play &#9654;</strong>, or click any sequence arrow
-              to step through the runtime in slow motion and watch the screen preview and database state update live.
+              A repo admin runs <code>onboard.sh</code>, saves <code>ATOBAR_TENANT_TOKEN</code>, seals repo-level <code>Claude</code>, <code>Gemini</code>,
+              <code>DeepSeek</code>, or <code>Grok</code> keys in AWS KMS, and maps models per role. The Onboarder role publishes a Mermaid
+              <code>SotaWiki</code>, and metric compilation opens your workflow PRs.
             </p>
           </div>
 
-          <div class="scene-rail-nav" role="navigation" aria-label="Jump to User Journey">
-            <span class="scene-rail-hint">Jump to Journey:</span>
-            <div class="scene-rail-buttons">
-              <button type="button" class="scene-jump-btn" data-scene-target="1" aria-current="step">J1</button>
-              <button type="button" class="scene-jump-btn" data-scene-target="2">J2</button>
-              <button type="button" class="scene-jump-btn" data-scene-target="3">J3</button>
-              <button type="button" class="scene-jump-btn" data-scene-target="4">J4</button>
-              <button type="button" class="scene-jump-btn" data-scene-target="5">J5</button>
-              <button type="button" class="scene-jump-btn" data-scene-target="6">J6</button>
-            </div>
+          <div class="vision-note" data-status="vision">
+            <span class="badge badge-vision">[VISION &middot; J53 &amp; J54]</span>
+            <span>
+              Adds per-invoking-user repo keys, personal <code>/profile</code> Default Keys, Superuser EC2 approval (<code>ec2_enabled</code>), and <code>Listed / Ready / Blocked</code> lifecycle controls with <code>onboard.sh &#45;&#45;uninstall</code>.
+            </span>
           </div>
         </div>
 
-        <div class="scrolly-narrative-track">
+        <div class="scrolly-wide" data-status="as-built">
+          <div class="slowmo-stage stage-dark" data-stage-id="j1">
+            <button type="button" class="slowmo-launch-overlay" data-slowmo-open aria-label="Open Journey J1 Onboarding in Full-Screen Interactive Slow-Mo">
+              <span class="slowmo-corner-cue">Full-Screen Slow-Mo &#10530;</span>
+              <span class="slowmo-hover-card">
+                <span class="slowmo-hover-title">&#10530; Open Full-Screen Interactive Slow-Mo</span>
+                <span class="slowmo-hover-sub">Step through J1 Onboarding, KMS envelope code &amp; key isolation rules</span>
+              </span>
+            </button>
 
-          <!-- ==================== JOURNEY J1 ==================== -->
-          <article id="journey-1" class="scene-step" data-status="as-built vision">
-            <header class="scene-step-header">
-              <div class="scene-index-group">
-                <span class="scene-num">JOURNEY J1</span>
-                <span class="persona-pill">P1 Co-Founder / Founding Architect</span>
-                <span class="persona-pill">FR-1 &middot; FR-5 &middot; FR-6</span>
+            <div class="slowmo-topbar">
+              <div class="slowmo-title-group">
+                <span class="slowmo-title">J1 &middot; REPO ONBOARDING &amp; KMS BYOK</span>
+                <span class="slowmo-preview-step-pill" data-preview-pill>Scroll Preview &middot; Step 1 / 6</span>
+                <div class="slowmo-fs-switcher" role="navigation" aria-label="Switch walkthrough in full screen"><button type="button" class="slowmo-fs-jump" data-fs-switch="j1">J1 Onboard</button><button type="button" class="slowmo-fs-jump" data-fs-switch="j2">J2 Gate</button><button type="button" class="slowmo-fs-jump" data-fs-switch="j3">J3 Dev VM</button><button type="button" class="slowmo-fs-jump" data-fs-switch="j4">J4 X11 QA</button><button type="button" class="slowmo-fs-jump" data-fs-switch="j5">J5 Merge</button><button type="button" class="slowmo-fs-jump" data-fs-switch="j6">J6 Exit</button><button type="button" class="slowmo-fs-jump" data-fs-switch="nano">Nano Harness</button></div>
               </div>
-              <div class="scene-badges">
-                <span class="badge badge-as-built" data-status="as-built">[AS-BUILT: Per-Repo / Per-Role KMS BYOK]</span>
-                <span class="badge badge-vision" data-status="vision">[VISION: Per-Invoking-User Billing &amp; Profile Keys]</span>
+              <div class="slowmo-topbar-controls">
+                <div class="slowmo-tabs" role="tablist" aria-label="Journey J1 views">
+                  <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="slowmo" aria-selected="true">1. Slow-Mo Flow</button>
+                  <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="artifact" aria-selected="false">2. Code Artifact</button>
+                  <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="boundary" aria-selected="false">3. Security Boundary</button>
+                </div>
+                <button type="button" class="slowmo-close-btn" data-slowmo-close>Exit Full Screen (Esc) &#10005;</button>
               </div>
-            </header>
-
-            <h3>J1: Repo Onboarding &amp; Shared / Per-User BYOK Routing (~5 Minutes)</h3>
-
-            <div class="scene-prose">
-              <p>
-                A collaborator signs into the Control Panel via GitHub OAuth, installs the <code>atobar-flow-agent</code> GitHub App on the client
-                repository, and runs <code>onboard.sh</code> (<code>J1.1</code>). API keys (<code>gemini</code>, <code>claude</code>,
-                <code>openai</code>, <code>deepseek</code>, <code>grok</code>) are envelope-encrypted with <strong>AWS KMS (<code>AES-GCM</code>)</strong>
-                using <code>(tenant_id, provider)</code> AAD in <code>control-panel/src/control_panel/llm_keys.py</code> and routed per repository and
-                per role in <code>tenant_role_llm</code> (<code>J1.2</code>, <code>[AS-BUILT]</code>).
-              </p>
-              <p>
-                The <code>onboarder</code> Spot role generates the initial <strong><code>SotaWiki</code></strong> (including a validated Mermaid
-                architecture diagram, <code>J50</code>) and opens a PR adding <code>.github/workflows/flow-trigger.yml</code> and
-                <code>flow-metrics.yml</code> (<code>J1.4</code>, <code>[AS-BUILT]</code>). On the Vision roadmap (<code>J1.3</code>, <code>J53</code>),
-                keys transition to <strong>per-invoking-user repository keys</strong> <code>(tenant_id, user_login, provider)</code> and
-                <strong>profile-level Default Keys</strong> (<code>user_llm_keys</code>, <code>GET /profile</code>), while <strong>EC2 Spot provisioning is gated by a per-user feature flag</strong> (<code>platform_users.ec2_enabled</code>, defaulting to <code>false</code> with a thin dim-grey <code>&#10005;</code>-closable top ribbon listing the admin user(s) to ping, toggled by a Superuser in <code>GET /admin/users</code>) and a 2-item trigger hold comment (<code>&lt;!-- atobar:byok-hold:{user_login} --&gt;</code>).
-              </p>
             </div>
 
-            <div class="slowmo-stage stage-dark">
-              <div class="slowmo-topbar">
-                <span class="slowmo-title">CODE-SLOWMO INTERACTIVE WALKTHROUGH &middot; JOURNEY J1</span>
-                <div class="slowmo-topbar-controls">
-                  <div class="slowmo-tabs" role="tablist" aria-label="Journey J1 views">
-                    <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="slowmo" aria-selected="true">1. Slow-Mo Journey</button>
-                    <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="artifact" aria-selected="false">2. Code Artifact</button>
-                    <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="boundary" aria-selected="false">3. DB &amp; Security Boundary</button>
-                  </div>
-                  <button type="button" class="slowmo-expand-btn" data-slowmo-expand aria-expanded="false">Expand to Full Browser &#10530;</button>
+            <div class="slowmo-pane" data-pane="slowmo">
+              <div data-slowmo-mount="j1-onboarding"></div>
+            </div>
+
+            <div class="slowmo-pane" data-pane="artifact" hidden>
+              <div class="artifact-header-bar">
+                <span>control-panel/src/control_panel/llm_keys.py &amp; client_templates.py</span>
+                <span class="badge badge-as-built">[AS-BUILT]</span>
+              </div>
+              <pre class="artifact-code-block"><code># 1. Connect a client repository clone via your Control Panel (~5 minutes):
+$ curl -fsSL https://&lt;your-cp-host&gt;/onboard.sh | bash
+
+# 2. AWS KMS Envelope Encryption (control_panel/llm_keys.py):
+# Validated providers on main today: gemini, claude, deepseek, grok
+context = {"tenant_id": str(tenant_id), "provider": provider}
+ct = AESGCM(dek).encrypt(nonce, plaintext.encode("utf-8"), f"{tenant_id}:{provider}".encode())</code></pre>
+            </div>
+
+            <div class="slowmo-pane" data-pane="boundary" hidden>
+              <div class="boundary-spec-grid">
+                <div class="boundary-box">
+                  <span class="boundary-box-title">SINGLE-WRITER KEY VAULT</span>
+                  <p>
+                    Only <code>control-panel</code> can read or write <code>tenant_llm_keys</code> and <code>tenant_role_llm</code> (enforced by <code>tests/test_table_ownership.py</code>).
+                  </p>
                 </div>
-              </div>
-
-              <div class="slowmo-pane" data-pane="slowmo">
-                <div data-slowmo-mount="j1-onboarding"></div>
-              </div>
-
-              <div class="slowmo-pane" data-pane="artifact" hidden>
-                <div class="artifact-header-bar">
-                  <span>ARTIFACT: KMS Envelope Sealing (control-panel/src/control_panel/llm_keys.py) &amp; 2-File Spoke PR</span>
-                  <span class="badge badge-as-built">[AS-BUILT]</span>
-                </div>
-                <pre class="artifact-code-block"><code># 1. Connect any client repository clone (~5 minutes):
-$ curl -fsSL https://raw.githubusercontent.com/atobar-flow/atobar-flow/main/scripts/onboard.sh | bash
-
-# 2. AWS KMS Envelope Encryption in control-panel/src/control_panel/llm_keys.py:
-# [AS-BUILT]: AAD binds (tenant_id, provider) in public.tenant_llm_keys
-aad = f"{tenant_id}:{provider}".encode("utf-8")
-ciphertext = aesgcm.encrypt(nonce, plaintext_api_key.encode("utf-8"), aad)
-
-# [VISION / J53]: Per-invoking-user repo keys &amp; profile-level Default Keys (public.user_llm_keys):
-# - Repo key PK: (tenant_id, user_login, provider)
-# - Profile key PK: (user_login, provider) with unique partial index where is_default = true
-# - Unonboarded trigger gate: posts &lt;!-- atobar:byok-hold:{user_login} --&gt; before Spot launch</code></pre>
-              </div>
-
-              <div class="slowmo-pane" data-pane="boundary" hidden>
-                <div class="boundary-spec-grid">
-                  <div class="boundary-box">
-                    <span class="boundary-box-title">CP_OWNED_TABLES (SINGLE-WRITER)</span>
-                    <ul>
-                      <li><code>tenant_tokens</code> (SHA-256 hashed <code>atb_...</code> token)</li>
-                      <li><code>tenant_llm_keys</code> (KMS <code>AES-GCM</code> ciphertext + AAD)</li>
-                      <li><code>tenant_role_llm</code> (per-role provider, model, effort)</li>
-                      <li><code>security_audit_log</code> (append-only key mutations)</li>
-                      <li><code>[VISION]</code> <code>user_llm_keys</code> (profile Default Keys)</li>
-                    </ul>
-                  </div>
-                  <div class="boundary-box">
-                    <span class="boundary-box-title">TRUST &amp; KEY ISOLATION BOUNDARY</span>
-                    <p>
-                      Enforced by <code>tests/test_table_ownership.py</code>: only <code>control-panel</code> can read or write
-                      encrypted key tables. Plaintext keys never enter <code>flow-engine</code>; Spot VMs claim them once via
-                      <code>POST /v1/runs/{run_id}/llm-key</code>.
-                    </p>
-                  </div>
+                <div class="boundary-box">
+                  <span class="boundary-box-title">SINGLE-USE INSTANCE CLAIM</span>
+                  <p>
+                    A Spot VM claims its role key once via <code>POST /v1/runs/{run_id}/llm-key</code>, locking the credential to its AWS EC2 instance ID.
+                  </p>
                 </div>
               </div>
             </div>
-          </article>
+          </div>
+        </div>
+      </article>
 
-          <!-- ==================== JOURNEY J2 ==================== -->
-          <article id="journey-2" class="scene-step" data-status="as-built vision">
-            <header class="scene-step-header">
-              <div class="scene-index-group">
-                <span class="scene-num">JOURNEY J2</span>
-                <span class="persona-pill">P1 Founding Architect &amp; P2 Software Builder</span>
-                <span class="persona-pill">FR-1 &middot; FR-3 &middot; FR-7</span>
+      <article id="journey-2" class="journey-beat" data-beat-idx="2">
+        <div class="container beat-lead">
+          <div data-status="as-built">
+            <div class="beat-meta">
+              <span class="beat-step-tag">JOURNEY J2 &middot; ZERO-LLM TRIAGE</span>
+              <span class="badge badge-as-built">[AS-BUILT: Spec-Sufficiency Gate]</span>
+            </div>
+            <h3>Plan in GitHub Issues, Skip Boilerplate When Your Spec Is Clear</h3>
+            <p>
+              Label an issue <code>flow:feature</code> or mention <code>@atobar-flow-agent</code>. A pure-Python Spec-Sufficiency Gate checks whether your issue already names target files and
+              acceptance criteria: fast-tracking clear specs straight to coding, or asking the Planner for a checklist first.
+            </p>
+          </div>
+
+          <div class="vision-note" data-status="vision">
+            <span class="badge badge-vision">[VISION &middot; VENTURES]</span>
+            <span>
+              Adds cross-repo Venture Jumbo Issue links (<code>venture_jumbo_links</code>) coordinating child issues across <code>api</code>, <code>web</code>, and <code>mobile</code> repositories.
+            </span>
+          </div>
+        </div>
+
+        <div class="scrolly-wide" data-status="as-built">
+          <div class="slowmo-stage stage-dark" data-stage-id="j2">
+            <button type="button" class="slowmo-launch-overlay" data-slowmo-open aria-label="Open Journey J2 Planning in Full-Screen Interactive Slow-Mo">
+              <span class="slowmo-corner-cue">Full-Screen Slow-Mo &#10530;</span>
+              <span class="slowmo-hover-card">
+                <span class="slowmo-hover-title">&#10530; Open Full-Screen Interactive Slow-Mo</span>
+                <span class="slowmo-hover-sub">Step through J2 Spec-Sufficiency Gate &amp; flow-plan checklist</span>
+              </span>
+            </button>
+
+            <div class="slowmo-topbar">
+              <div class="slowmo-title-group">
+                <span class="slowmo-title">J2 &middot; JUMBO ISSUE &amp; SPEC-SUFFICIENCY GATE</span>
+                <span class="slowmo-preview-step-pill" data-preview-pill>Scroll Preview &middot; Step 1 / 5</span>
+                <div class="slowmo-fs-switcher" role="navigation" aria-label="Switch walkthrough in full screen"><button type="button" class="slowmo-fs-jump" data-fs-switch="j1">J1 Onboard</button><button type="button" class="slowmo-fs-jump" data-fs-switch="j2">J2 Gate</button><button type="button" class="slowmo-fs-jump" data-fs-switch="j3">J3 Dev VM</button><button type="button" class="slowmo-fs-jump" data-fs-switch="j4">J4 X11 QA</button><button type="button" class="slowmo-fs-jump" data-fs-switch="j5">J5 Merge</button><button type="button" class="slowmo-fs-jump" data-fs-switch="j6">J6 Exit</button><button type="button" class="slowmo-fs-jump" data-fs-switch="nano">Nano Harness</button></div>
               </div>
-              <div class="scene-badges">
-                <span class="badge badge-as-built" data-status="as-built">[AS-BUILT: Spec-Sufficiency Gate J38]</span>
-                <span class="badge badge-vision" data-status="vision">[VISION: Multi-Repo Venture Links]</span>
+              <div class="slowmo-topbar-controls">
+                <div class="slowmo-tabs" role="tablist" aria-label="Journey J2 views">
+                  <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="slowmo" aria-selected="true">1. Slow-Mo Flow</button>
+                  <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="artifact" aria-selected="false">2. Code Artifact</button>
+                  <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="boundary" aria-selected="false">3. Security Boundary</button>
+                </div>
+                <button type="button" class="slowmo-close-btn" data-slowmo-close>Exit Full Screen (Esc) &#10005;</button>
               </div>
-            </header>
-
-            <h3>J2: Jumbo Issue Planning &amp; Deterministic Spec-Sufficiency Gate</h3>
-
-            <div class="scene-prose">
-              <p>
-                Collaborators configure repository Target Metrics, Guardrails, and Goal Budgets (<code>tenant_goals</code>) and open a GitHub Issue
-                (<code>J2.1</code>). When labeled <code>flow:feature</code> / <code>flow:plan</code> or mentioned via
-                <code>@atobar-flow-agent</code>, <code>flow-engine</code> runs <code>resolve_delegated_issue_number()</code> and the deterministic
-                <strong>Spec-Sufficiency Gate</strong> (<code>assess_issue_sufficiency()</code> in
-                <code>flow-engine/src/flow_engine/conductor/sufficiency.py</code>, <code>J38</code>) with <strong>zero LLM calls</strong> (<code>J2.2</code>).
-              </p>
-              <p>
-                Well-specified issues with concrete file targets and acceptance criteria fast-track straight to <code>DEVELOPER</code>; broad issues
-                route to <code>PLANNER</code>, which reads the repository's <code>SotaWiki</code>, posts a <code>flow-plan</code> Task Ledger comment,
-                and pauses at <code>flow:needs-approval</code>. On the Vision roadmap (<code>J2.3</code>), a parent Venture Jumbo Issue links child spoke
-                issues across <code>api</code>, <code>web</code>, and <code>mobile</code> client repos (<code>venture_jumbo_links</code>).
-              </p>
             </div>
 
-            <div class="slowmo-stage stage-dark">
-              <div class="slowmo-topbar">
-                <span class="slowmo-title">CODE-SLOWMO INTERACTIVE WALKTHROUGH &middot; JOURNEY J2</span>
-                <div class="slowmo-topbar-controls">
-                  <div class="slowmo-tabs" role="tablist" aria-label="Journey J2 views">
-                    <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="slowmo" aria-selected="true">1. Slow-Mo Journey</button>
-                    <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="artifact" aria-selected="false">2. Code Artifact</button>
-                    <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="boundary" aria-selected="false">3. DB &amp; Security Boundary</button>
-                  </div>
-                  <button type="button" class="slowmo-expand-btn" data-slowmo-expand aria-expanded="false">Expand to Full Browser &#10530;</button>
-                </div>
-              </div>
+            <div class="slowmo-pane" data-pane="slowmo">
+              <div data-slowmo-mount="j2-planning"></div>
+            </div>
 
-              <div class="slowmo-pane" data-pane="slowmo">
-                <div data-slowmo-mount="j2-planning"></div>
+            <div class="slowmo-pane" data-pane="artifact" hidden>
+              <div class="artifact-header-bar">
+                <span>flow-plan GitHub Comment &amp; conductor/sufficiency.py</span>
+                <span class="badge badge-as-built">[AS-BUILT]</span>
               </div>
-
-              <div class="slowmo-pane" data-pane="artifact" hidden>
-                <div class="artifact-header-bar">
-                  <span>ARTIFACT: flow-plan Task Ledger &amp; Deterministic Sufficiency Gate (conductor/sufficiency.py)</span>
-                  <span class="badge badge-as-built">[AS-BUILT]</span>
-                </div>
-                <pre class="artifact-code-block"><code>&lt;!-- Pinned GitHub Issue Comment posted by PLANNER (grounded in repository_wikis SotaWiki) --&gt;
+              <pre class="artifact-code-block"><code>&lt;!-- Pinned GitHub Issue Comment posted by PLANNER --&gt;
 ### Atobar Execution Plan (`flow-plan` &middot; Issue #42)
-- **Context Anchor:** `SotaWiki` revision `sha256:9c4e1a...` (5 packages verified)
-- **Target Files:** `contracts/src/atobar_contracts/arbitration.py`, `tests/test_boundaries.py`
-- **Task Ledger:**
-  - [ ] WP-1: Add pure `arbitrate(policy, observations)` threshold validator
-  - [ ] WP-2: Enforce `WARM_HANDOVER_FORBIDDEN_ROLES` in `conductor_io.py`
-  - [ ] WP-3: Verify Stage 2 X11 `xwininfo` window proof on `head_sha`
-- **Next Action:** Apply label `flow:approved` or comment `@atobar-flow-agent approve` to launch Spot DEVELOPER.</code></pre>
-              </div>
+- **Context:** Grounded in `SotaWiki` Mermaid map
+- **Scope Files:** `src/store.py`, `tests/test_store.py`
+- **Work Packages:**
+  - [ ] WP-1: Add rate-limit circuit breaker with unit tests
+  - [ ] WP-2: Verify Stage 2 X11 dashboard state
+- **Approve:** Add label `flow:approved` or comment `@atobar-flow-agent approve`.</code></pre>
+            </div>
 
-              <div class="slowmo-pane" data-pane="boundary" hidden>
-                <div class="boundary-spec-grid">
-                  <div class="boundary-box">
-                    <span class="boundary-box-title">FE_OWNED_TABLES (SINGLE-WRITER)</span>
-                    <ul>
-                      <li><code>conductor_events</code> (idempotent webhook deduplication via <code>compute_event_id()</code>)</li>
-                      <li><code>run_credentials</code> (mints single-use <code>FLOW_RUN_CREDENTIAL</code>)</li>
-                      <li><code>repository_wikis</code> (injects <code>architecture_mermaid</code> into Planner prompt)</li>
-                    </ul>
-                  </div>
-                  <div class="boundary-box">
-                    <span class="boundary-box-title">ZERO-LLM INGRESS GATE</span>
-                    <p>
-                      <code>assess_issue_sufficiency()</code> and <code>step()</code> execute inside <code>flow-engine</code> and
-                      <code>contracts</code>, where <code>tests/test_boundaries.py</code> blocks importing any LLM SDK.
-                    </p>
-                  </div>
+            <div class="slowmo-pane" data-pane="boundary" hidden>
+              <div class="boundary-spec-grid">
+                <div class="boundary-box">
+                  <span class="boundary-box-title">0 LLM TOKENS AT INGRESS</span>
+                  <p>
+                    <code>assess_issue_sufficiency()</code> runs inside <code>flow-engine</code>, where CI blocks all LLM SDK imports via <code>tests/test_boundaries.py</code>.
+                  </p>
+                </div>
+                <div class="boundary-box">
+                  <span class="boundary-box-title">READ-ONLY PLANNER</span>
+                  <p>
+                    The Planner role cannot edit files, execute shell commands, or push branches (capped at 8 localization tool turns).
+                  </p>
                 </div>
               </div>
             </div>
-          </article>
+          </div>
+        </div>
+      </article>
 
-          <!-- ==================== JOURNEY J3 ==================== -->
-          <article id="journey-3" class="scene-step" data-status="as-built">
-            <header class="scene-step-header">
-              <div class="scene-index-group">
-                <span class="scene-num">JOURNEY J3</span>
-                <span class="persona-pill">P2 Software Builder (Long-Running Jobs)</span>
-                <span class="persona-pill">FR-2 &middot; NFR-1</span>
+      <article id="journey-3" class="journey-beat" data-beat-idx="3" data-status="as-built">
+        <div class="container beat-lead">
+          <div class="beat-meta">
+            <span class="beat-step-tag">JOURNEY J3 &middot; LONG-RUNNING EXECUTION</span>
+            <span class="badge badge-as-built">[AS-BUILT: Warm Worktrees + Hard QA Wall]</span>
+          </div>
+          <h3>Reuse Warm Dev Machines, Steer in Plain English, Never Contaminate QA</h3>
+          <p>
+            Once approved, the Developer works inside clean <code>git worktree</code> folders on a warm Spot VM while streaming live tool calls and
+            spend to your PR. Comment <code>@atobar-flow-agent</code> anytime to steer. The moment coding ends, the Developer VM shuts down so QA never shares its state.
+          </p>
+        </div>
+
+        <div class="scrolly-wide">
+          <div class="slowmo-stage stage-dark" data-stage-id="j3">
+            <button type="button" class="slowmo-launch-overlay" data-slowmo-open aria-label="Open Journey J3 Execution in Full-Screen Interactive Slow-Mo">
+              <span class="slowmo-corner-cue">Full-Screen Slow-Mo &#10530;</span>
+              <span class="slowmo-hover-card">
+                <span class="slowmo-hover-title">&#10530; Open Full-Screen Interactive Slow-Mo</span>
+                <span class="slowmo-hover-sub">Step through warm git worktrees, PR steering &amp; the hard QA wall</span>
+              </span>
+            </button>
+
+            <div class="slowmo-topbar">
+              <div class="slowmo-title-group">
+                <span class="slowmo-title">J3 &middot; WARM WORKTREES, PR STEERING &amp; QA ISOLATION</span>
+                <span class="slowmo-preview-step-pill" data-preview-pill>Scroll Preview &middot; Step 1 / 5</span>
+                <div class="slowmo-fs-switcher" role="navigation" aria-label="Switch walkthrough in full screen"><button type="button" class="slowmo-fs-jump" data-fs-switch="j1">J1 Onboard</button><button type="button" class="slowmo-fs-jump" data-fs-switch="j2">J2 Gate</button><button type="button" class="slowmo-fs-jump" data-fs-switch="j3">J3 Dev VM</button><button type="button" class="slowmo-fs-jump" data-fs-switch="j4">J4 X11 QA</button><button type="button" class="slowmo-fs-jump" data-fs-switch="j5">J5 Merge</button><button type="button" class="slowmo-fs-jump" data-fs-switch="j6">J6 Exit</button><button type="button" class="slowmo-fs-jump" data-fs-switch="nano">Nano Harness</button></div>
               </div>
-              <div class="scene-badges">
-                <span class="badge badge-as-built" data-status="as-built">[AS-BUILT: Warm Worktrees J38 &amp; Hard QA Boundary J43]</span>
+              <div class="slowmo-topbar-controls">
+                <div class="slowmo-tabs" role="tablist" aria-label="Journey J3 views">
+                  <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="slowmo" aria-selected="true">1. Slow-Mo Flow</button>
+                  <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="artifact" aria-selected="false">2. Code Artifact</button>
+                  <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="boundary" aria-selected="false">3. Security Boundary</button>
+                </div>
+                <button type="button" class="slowmo-close-btn" data-slowmo-close>Exit Full Screen (Esc) &#10005;</button>
               </div>
-            </header>
-
-            <h3>J3: Long-Running Execution, Warm Handover &amp; Plain-English PR Steering</h3>
-
-            <div class="scene-prose">
-              <p>
-                On approval (<code>flow:approved</code> or <code>@atobar-flow-agent approve</code>), <code>CONDUCTOR</code> launches an EC2 Spot VM.
-                <code>PLANNER &rarr; DEVELOPER</code> transitions and rework turns reuse the warm Spot VM inside isolated
-                <code>git worktree</code> directories (<code>prepare_role_worktree()</code> in <code>flow-agent/src/flow_agent/runtime/sandbox.py</code>)
-                via <code>POST /v1/runs/{run_id}/turn-complete</code> (<code>J3.1</code>).
-              </p>
-              <p>
-                Verifying roles (<code>EVALUATOR</code>, <code>ARBITRATOR</code>) <strong>never</strong> accept a warm handover from
-                <code>DEVELOPER</code>: <code>WARM_HANDOVER_FORBIDDEN_ROLES = {"evaluator", "arbitrator"}</code>
-                (<code>contracts/src/atobar_contracts/conductor_io.py</code>, <code>J43</code>) terminates the warm developer VM and forces a fresh
-                Spot VM launch for QA (<code>J3.2</code>). Throughout execution, live tool calls, heartbeats, and spend stream into the pinned GitHub
-                telemetry comment, and collaborators steer active or escalated PRs using <code>@atobar-flow-agent</code> comments (<code>J3.3</code>, <code>J49</code>).
-              </p>
             </div>
 
-            <div class="slowmo-stage stage-dark">
-              <div class="slowmo-topbar">
-                <span class="slowmo-title">CODE-SLOWMO INTERACTIVE WALKTHROUGH &middot; JOURNEY J3</span>
-                <div class="slowmo-topbar-controls">
-                  <div class="slowmo-tabs" role="tablist" aria-label="Journey J3 views">
-                    <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="slowmo" aria-selected="true">1. Slow-Mo Journey</button>
-                    <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="artifact" aria-selected="false">2. Code Artifact</button>
-                    <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="boundary" aria-selected="false">3. DB &amp; Security Boundary</button>
-                  </div>
-                  <button type="button" class="slowmo-expand-btn" data-slowmo-expand aria-expanded="false">Expand to Full Browser &#10530;</button>
+            <div class="slowmo-pane" data-pane="slowmo">
+              <div data-slowmo-mount="j3-execution"></div>
+            </div>
+
+            <div class="slowmo-pane" data-pane="artifact" hidden>
+              <div class="artifact-header-bar">
+                <span>contracts/src/atobar_contracts/conductor_io.py</span>
+                <span class="badge badge-as-built">[AS-BUILT]</span>
+              </div>
+              <pre class="artifact-code-block"><code># Hard physical isolation wall between author and verifier (J43):
+WARM_HANDOVER_FORBIDDEN_ROLES: frozenset[str] = frozenset({
+    "evaluator",
+    "arbitrator",
+})
+
+# Plain-English PR steering on GitHub (J49):
+# "@atobar-flow-agent switch backoff in store.py to exponential jitter"</code></pre>
+            </div>
+
+            <div class="slowmo-pane" data-pane="boundary" hidden>
+              <div class="boundary-spec-grid">
+                <div class="boundary-box">
+                  <span class="boundary-box-title">NO SELF-GRADING HOMEWORK</span>
+                  <p>
+                    <code>WARM_HANDOVER_FORBIDDEN_ROLES</code> guarantees the Evaluator never inherits a Developer's filesystem, background processes, or memory.
+                  </p>
                 </div>
-              </div>
-
-              <div class="slowmo-pane" data-pane="slowmo">
-                <div data-slowmo-mount="j3-execution"></div>
-              </div>
-
-              <div class="slowmo-pane" data-pane="artifact" hidden>
-                <div class="artifact-header-bar">
-                  <span>ARTIFACT: contracts/src/atobar_contracts/conductor_io.py &amp; @atobar-flow-agent Steering</span>
-                  <span class="badge badge-as-built">[AS-BUILT]</span>
-                </div>
-                <pre class="artifact-code-block"><code># contracts/src/atobar_contracts/conductor_io.py (J43 Zero-Trust Handover Guard)
-WARM_HANDOVER_FORBIDDEN_ROLES: frozenset[str] = frozenset({"evaluator", "arbitrator"})
-
-def can_warm_handover(next_role: str) -> bool:
-    """Verifying roles NEVER run on a Spot VM where DEVELOPER had shell access."""
-    return next_role.lower() not in WARM_HANDOVER_FORBIDDEN_ROLES
-
-# POST /v1/runs/{run_id}/turn-complete response when transitioning PLANNER -> DEVELOPER:
-{
-  "action": "continue",
-  "role": "developer",
-  "run_id": "run_01j8x9k2...",
-  "flow_run_credential": "flw_run_9f8a...",
-  "worktree_isolation": true
-}
-
-# Conversational PR Course-Correction (J49): Human comment on PR #48:
-&gt; @atobar-flow-agent switch the retry backoff in store.py to exponential jitter and re-run tests.</code></pre>
-              </div>
-
-              <div class="slowmo-pane" data-pane="boundary" hidden>
-                <div class="boundary-spec-grid">
-                  <div class="boundary-box">
-                    <span class="boundary-box-title">FE_OWNED_TABLES (SINGLE-WRITER)</span>
-                    <ul>
-                      <li><code>run_credentials</code> (<code>instance_id</code> binding, <code>llm_key_claimed</code>, <code>envelope_comment_id</code>)</li>
-                      <li><code>sessions</code> &amp; <code>run_events</code> (live Spot heartbeats &amp; telemetry)</li>
-                      <li><code>loop_rounds</code> (persists machine envelope JSON state, <code>J46</code>)</li>
-                    </ul>
-                  </div>
-                  <div class="boundary-box">
-                    <span class="boundary-box-title">ZERO-TRUST SANDBOX ISOLATION</span>
-                    <p>
-                      Even if untrusted test code inside a client repo compromises the <code>DEVELOPER</code> worktree, it cannot forge an
-                      <code>EVALUATOR</code> verdict because <code>EVALUATOR</code> boots cold on a separate Spot EC2 instance.
-                    </p>
-                  </div>
+                <div class="boundary-box">
+                  <span class="boundary-box-title">CREDENTIAL SCRUBBING</span>
+                  <p>
+                    Between warm worktree turns, prior single-use run tokens and environment keys are scrubbed before claiming the next turn.
+                  </p>
                 </div>
               </div>
             </div>
-          </article>
+          </div>
+        </div>
+      </article>
 
-          <!-- ==================== JOURNEY J4 ==================== -->
-          <article id="journey-4" class="scene-step" data-status="as-built vision">
-            <header class="scene-step-header">
-              <div class="scene-index-group">
-                <span class="scene-num">JOURNEY J4</span>
-                <span class="persona-pill">P2 Software Builder (Unattended QA)</span>
-                <span class="persona-pill">FR-4 &middot; NFR-1</span>
+      <article id="journey-4" class="journey-beat" data-beat-idx="4">
+        <div class="container beat-lead">
+          <div data-status="as-built">
+            <div class="beat-meta">
+              <span class="beat-step-tag">JOURNEY J4 &middot; VISUAL PROOF</span>
+              <span class="badge badge-as-built">[AS-BUILT: Two-Stage Web X11]</span>
+            </div>
+            <h3>Independent Visual QA Inside a Real X11 Desktop</h3>
+            <p>
+              A fresh Evaluator Spot VM boots with a read-only GitHub token, checks exact file-and-line citations first, then launches your app inside
+              X11, attesting real open windows with <code>xwininfo</code> and OS processes via <code>ps</code> before uploading encrypted screenshots to your PR.
+            </p>
+          </div>
+
+          <div class="vision-note" data-status="vision">
+            <span class="badge badge-vision">[VISION &middot; MOBILE KVM]</span>
+            <span>
+              Adds a <code>machine_image_profile: android-studio-kvm-x86</code> Spot AMI booting a headless Android Emulator + ADB for native mobile screenshot QA.
+            </span>
+          </div>
+        </div>
+
+        <div class="scrolly-wide" data-status="as-built">
+          <div class="slowmo-stage stage-dark" data-stage-id="j4">
+            <button type="button" class="slowmo-launch-overlay" data-slowmo-open aria-label="Open Journey J4 Visual QA in Full-Screen Interactive Slow-Mo">
+              <span class="slowmo-corner-cue">Full-Screen Slow-Mo &#10530;</span>
+              <span class="slowmo-hover-card">
+                <span class="slowmo-hover-title">&#10530; Open Full-Screen Interactive Slow-Mo</span>
+                <span class="slowmo-hover-sub">Step through Stage 1 citations, Stage 2 X11 windows &amp; screenshot proof</span>
+              </span>
+            </button>
+
+            <div class="slowmo-topbar">
+              <div class="slowmo-title-group">
+                <span class="slowmo-title">J4 &middot; TWO-STAGE VISUAL QA ON FRESH SPOT</span>
+                <span class="slowmo-preview-step-pill" data-preview-pill>Scroll Preview &middot; Step 1 / 4</span>
+                <div class="slowmo-fs-switcher" role="navigation" aria-label="Switch walkthrough in full screen"><button type="button" class="slowmo-fs-jump" data-fs-switch="j1">J1 Onboard</button><button type="button" class="slowmo-fs-jump" data-fs-switch="j2">J2 Gate</button><button type="button" class="slowmo-fs-jump" data-fs-switch="j3">J3 Dev VM</button><button type="button" class="slowmo-fs-jump" data-fs-switch="j4">J4 X11 QA</button><button type="button" class="slowmo-fs-jump" data-fs-switch="j5">J5 Merge</button><button type="button" class="slowmo-fs-jump" data-fs-switch="j6">J6 Exit</button><button type="button" class="slowmo-fs-jump" data-fs-switch="nano">Nano Harness</button></div>
               </div>
-              <div class="scene-badges">
-                <span class="badge badge-as-built" data-status="as-built">[AS-BUILT: Two-Stage Web X11 QA J39/J49]</span>
-                <span class="badge badge-vision" data-status="vision">[VISION: Android Studio KVM Profile]</span>
+              <div class="slowmo-topbar-controls">
+                <div class="slowmo-tabs" role="tablist" aria-label="Journey J4 views">
+                  <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="slowmo" aria-selected="true">1. Slow-Mo Flow</button>
+                  <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="artifact" aria-selected="false">2. Code Artifact</button>
+                  <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="boundary" aria-selected="false">3. Security Boundary</button>
+                </div>
+                <button type="button" class="slowmo-close-btn" data-slowmo-close>Exit Full Screen (Esc) &#10005;</button>
               </div>
-            </header>
-
-            <h3>J4: Unattended Visual &amp; Mobile QA on a Fresh Spot VM</h3>
-
-            <div class="scene-prose">
-              <p>
-                <code>EVALUATOR</code> boots cold on a dedicated Spot VM with a read-only (<code>contents: read</code>) GitHub token, checks out
-                the exact <code>head_sha</code>, waits for external GitHub Actions CI, and runs Stage 1 static/contract checks requiring exact
-                <code>file:&lt;path&gt;#L&lt;start&gt;-L&lt;end&gt;</code> citations (<code>J4.1</code>, <code>J39</code>).
-              </p>
-              <p>
-                In Stage 2 (<code>J4.2</code>, <code>[AS-BUILT]</code>), <code>EVALUATOR</code> starts the app inside X11
-                (<code>Xvfb :99</code> + <code>Fluxbox</code> + Playwright on <code>web-x11-arm64</code>), records active windows
-                (<code>xwininfo</code>) and OS processes (<code>ps</code>), uploads encrypted screenshots tagged with <code>sha256</code> and
-                <code>data_mode</code> (<code>live</code> | <code>synthetic</code> | <code>hybrid</code>, <code>J49</code>), and posts
-                <code>flow-verdict</code> + <code>flow/eval</code>. On the Vision roadmap (<code>J4.3</code>), setting
-                <code>machine_image_profile: android-studio-kvm-x86</code> boots a KVM Spot AMI with headless Android Emulator and ADB.
-              </p>
             </div>
 
-            <div class="slowmo-stage stage-dark">
-              <div class="slowmo-topbar">
-                <span class="slowmo-title">CODE-SLOWMO INTERACTIVE WALKTHROUGH &middot; JOURNEY J4</span>
-                <div class="slowmo-topbar-controls">
-                  <div class="slowmo-tabs" role="tablist" aria-label="Journey J4 views">
-                    <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="slowmo" aria-selected="true">1. Slow-Mo Journey</button>
-                    <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="artifact" aria-selected="false">2. Code Artifact</button>
-                    <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="boundary" aria-selected="false">3. DB &amp; Security Boundary</button>
-                  </div>
-                  <button type="button" class="slowmo-expand-btn" data-slowmo-expand aria-expanded="false">Expand to Full Browser &#10530;</button>
-                </div>
-              </div>
+            <div class="slowmo-pane" data-pane="slowmo">
+              <div data-slowmo-mount="j4-visual-qa"></div>
+            </div>
 
-              <div class="slowmo-pane" data-pane="slowmo">
-                <div data-slowmo-mount="j4-visual-qa"></div>
+            <div class="slowmo-pane" data-pane="artifact" hidden>
+              <div class="artifact-header-bar">
+                <span>flow-agent/src/flow_agent/tools/vision_tools.py</span>
+                <span class="badge badge-as-built">[AS-BUILT]</span>
               </div>
-
-              <div class="slowmo-pane" data-pane="artifact" hidden>
-                <div class="artifact-header-bar">
-                  <span>ARTIFACT: POST /v1/runs/{run_id}/screenshots Provenance &amp; flow-verdict (J49)</span>
-                  <span class="badge badge-as-built">[AS-BUILT]</span>
-                </div>
-                <pre class="artifact-code-block"><code>// POST /v1/runs/run_01j8x9m4/screenshots metadata payload
-{
-  "head_sha": "9c4e1a28c91d4029e12b3a447f890123456789ab",
-  "stage_1_citations": [
-    "file:control-panel/src/control_panel/web.py#L114-L158",
-    "file:flow-engine/src/flow_engine/conductor/service.py#L412-L449"
-  ],
-  "screenshots": [
-    {
-      "filename": "repo-wiki-mermaid-desktop.png",
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "data_mode": "live",
-      "x11_windows": ["0x400001 \"Atobar Control Panel - Chromium\" 1440x900+0+0"],
-      "process_snapshot": ["uvicorn control_panel.app:app -p 8000", "Xvfb :99 -screen 0 1440x900x24"]
-    }
-  ],
+              <pre class="artifact-code-block"><code>{
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "data_mode": "live",
+  "x11_windows": ["0x400001 Chromium 1440x900+0+0"],
+  "active_processes": ["uvicorn app:app &#45;&#45;port 8000"],
   "verdict": "approved"
 }</code></pre>
-              </div>
+            </div>
 
-              <div class="slowmo-pane" data-pane="boundary" hidden>
-                <div class="boundary-spec-grid">
-                  <div class="boundary-box">
-                    <span class="boundary-box-title">LEAST-PRIVILEGE QA TOKEN</span>
-                    <ul>
-                      <li>GitHub Installation Token scoped strictly to <code>contents: read</code></li>
-                      <li>Cannot push commits, modify workflows, or merge PRs</li>
-                      <li>Encrypted screenshot blobs persisted on Control Panel volume</li>
-                    </ul>
-                  </div>
-                  <div class="boundary-box">
-                    <span class="boundary-box-title">PROVENANCE ENFORCEMENT</span>
-                    <p>
-                      Screenshots without matching <code>head_sha</code>, <code>sha256</code> digest, and <code>data_mode</code> provenance are
-                      rejected before <code>flow-verdict: approved</code> can be recorded.
-                    </p>
-                  </div>
+            <div class="slowmo-pane" data-pane="boundary" hidden>
+              <div class="boundary-spec-grid">
+                <div class="boundary-box">
+                  <span class="boundary-box-title">READ-ONLY GITHUB TOKEN</span>
+                  <p>
+                    The Evaluator receives <code>contents: read</code> permissions only and has zero write/push tools in its MCP server.
+                  </p>
+                </div>
+                <div class="boundary-box">
+                  <span class="boundary-box-title">WINDOW &amp; PROCESS ATTESTATION</span>
+                  <p>
+                    <code>xwininfo -root -children</code> and <code>ps -eo</code> evidence prevent fabricated or static screenshots from passing Stage 2 QA.
+                  </p>
                 </div>
               </div>
             </div>
-          </article>
+          </div>
+        </div>
+      </article>
 
-          <!-- ==================== JOURNEY J5 ==================== -->
-          <article id="journey-5" class="scene-step" data-status="as-built vision">
-            <header class="scene-step-header">
-              <div class="scene-index-group">
-                <span class="scene-num">JOURNEY J5</span>
-                <span class="persona-pill">P1 Founding Architect &amp; P2 Software Builder</span>
-                <span class="persona-pill">FR-3 &middot; FR-5 &middot; FR-6 &middot; NFR-3</span>
+      <article id="journey-5" class="journey-beat" data-beat-idx="5" data-status="as-built">
+        <div class="container beat-lead">
+          <div class="beat-meta">
+            <span class="beat-step-tag">JOURNEY J5 &middot; PURE-PYTHON ARBITRATION</span>
+            <span class="badge badge-as-built">[AS-BUILT: arbitrate() &amp; SotaWiki]</span>
+          </div>
+          <h3>No LLM Ever Decides Whether Code Merges</h3>
+          <p>
+            When CI is green and the Evaluator approves, pure-Python <code>arbitrate()</code> verifies signed CI metrics against your thresholds,
+            squash-merges the PR under <code>auto_merge</code>, and queues a coalesced Mermaid <code>SotaWiki</code> refresh.
+          </p>
+        </div>
+
+        <div class="scrolly-wide">
+          <div class="slowmo-stage stage-dark" data-stage-id="j5">
+            <button type="button" class="slowmo-launch-overlay" data-slowmo-open aria-label="Open Journey J5 Arbitration in Full-Screen Interactive Slow-Mo">
+              <span class="slowmo-corner-cue">Full-Screen Slow-Mo &#10530;</span>
+              <span class="slowmo-hover-card">
+                <span class="slowmo-hover-title">&#10530; Open Full-Screen Interactive Slow-Mo</span>
+                <span class="slowmo-hover-sub">Step through signed CI metrics, pure-Python arbitrate() &amp; SotaWiki refresh</span>
+              </span>
+            </button>
+
+            <div class="slowmo-topbar">
+              <div class="slowmo-title-group">
+                <span class="slowmo-title">J5 &middot; METRIC GATE, AUTO-MERGE &amp; LIVING SOTAWIKI</span>
+                <span class="slowmo-preview-step-pill" data-preview-pill>Scroll Preview &middot; Step 1 / 3</span>
+                <div class="slowmo-fs-switcher" role="navigation" aria-label="Switch walkthrough in full screen"><button type="button" class="slowmo-fs-jump" data-fs-switch="j1">J1 Onboard</button><button type="button" class="slowmo-fs-jump" data-fs-switch="j2">J2 Gate</button><button type="button" class="slowmo-fs-jump" data-fs-switch="j3">J3 Dev VM</button><button type="button" class="slowmo-fs-jump" data-fs-switch="j4">J4 X11 QA</button><button type="button" class="slowmo-fs-jump" data-fs-switch="j5">J5 Merge</button><button type="button" class="slowmo-fs-jump" data-fs-switch="j6">J6 Exit</button><button type="button" class="slowmo-fs-jump" data-fs-switch="nano">Nano Harness</button></div>
               </div>
-              <div class="scene-badges">
-                <span class="badge badge-as-built" data-status="as-built">[AS-BUILT: Pure arbitrate(), SotaWiki &amp; Turn Ledger]</span>
-                <span class="badge badge-vision" data-status="vision">[VISION: Price Catalog &amp; Co-Founder Equity Ledger]</span>
-              </div>
-            </header>
-
-            <h3>J5: Deterministic Metric Gate, Built-In Ledger &amp; Living <code>SotaWiki</code></h3>
-
-            <div class="scene-prose">
-              <p>
-                Once CI is green, <code>flow-verdict</code> is <code>approved</code>, and <code>flow-ack</code> has zero open disputes on
-                <code>head_sha</code>, the serverless <code>ARBITRATOR</code> verifies <code>flow-metrics.json</code> provenance from GitHub Actions
-                and runs pure Python <strong><code>arbitrate(policy, observations)</code></strong>
-                (<code>contracts/src/atobar_contracts/arbitration.py</code>, zero LLM) (<code>J5.1</code>). Based on
-                <code>arbitration.mode</code> (<code>shadow</code> &rarr; <code>recommend</code> &rarr; <code>auto_merge</code>), the PR is
-                recorded, recommended, or squash-merged, and <code>repository_wikis</code> queues a coalesced Mermaid <code>SotaWiki</code>
-                refresh after <code>N</code> merges (<code>J5.2</code>, <code>J50</code>).
-              </p>
-              <p>
-                <strong>ATOBAR itself is the ledger:</strong> every turn automatically records token usage and spend in
-                <code>loop_rounds.cost_usd</code> and <code>tenant_goals.spent_usd</code> (<code>[AS-BUILT]</code>). On the Vision roadmap
-                (<code>J5.3</code>, <code>[VISION]</code>), server-side price snapshots and per-user lineage attribute
-                <strong>Fiscal Share</strong> (<code>key_contributor_login</code> / <code>invoking_user</code>) and
-                <strong>Architectural Yield</strong> (<code>architect_github_login</code> authoring Jumbo Issues and PR course-corrections).
-              </p>
-            </div>
-
-            <div class="slowmo-stage stage-dark">
-              <div class="slowmo-topbar">
-                <span class="slowmo-title">CODE-SLOWMO INTERACTIVE WALKTHROUGH &middot; JOURNEY J5</span>
-                <div class="slowmo-topbar-controls">
-                  <div class="slowmo-tabs" role="tablist" aria-label="Journey J5 views">
-                    <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="slowmo" aria-selected="true">1. Slow-Mo Journey</button>
-                    <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="artifact" aria-selected="false">2. Code Artifact</button>
-                    <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="boundary" aria-selected="false">3. DB &amp; Security Boundary</button>
-                  </div>
-                  <button type="button" class="slowmo-expand-btn" data-slowmo-expand aria-expanded="false">Expand to Full Browser &#10530;</button>
+              <div class="slowmo-topbar-controls">
+                <div class="slowmo-tabs" role="tablist" aria-label="Journey J5 views">
+                  <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="slowmo" aria-selected="true">1. Slow-Mo Flow</button>
+                  <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="artifact" aria-selected="false">2. Code Artifact</button>
+                  <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="boundary" aria-selected="false">3. Security Boundary</button>
                 </div>
-              </div>
-
-              <div class="slowmo-pane" data-pane="slowmo">
-                <div data-slowmo-mount="j5-arbitration"></div>
-              </div>
-
-              <div class="slowmo-pane" data-pane="artifact" hidden>
-                <div class="artifact-header-bar">
-                  <span>ARTIFACT: Pure arbitrate() Gate (contracts/src/atobar_contracts/arbitration.py) &amp; Live Equity JSON</span>
-                  <span class="badge badge-as-built">[AS-BUILT + VISION]</span>
-                </div>
-                <pre class="artifact-code-block"><code># 1. Pure deterministic gate in contracts/src/atobar_contracts/arbitration.py (Zero LLM):
-decision = arbitrate(
-    policy=ArbitrationPolicy(mode="auto_merge", required_metrics=["test_pass_rate", "p95_latency_ms"]),
-    observations=[
-        MetricObservation(key="test_pass_rate", value=1.0, threshold=1.0, operator=">="),
-        MetricObservation(key="p95_latency_ms", value=42.8, threshold=120.0, operator="<="),
-    ],
-)
-# 2. Trigger coalesced SotaWiki refresh counter (J50):
-store.rpc("flow_record_default_branch_merge_for_wiki", {"p_repo_name": "atobar-flow/client-spoke"})</code></pre>
-                <div class="artifact-header-bar" style="margin-top: var(--space-3);">
-                  <span>LIVE SIMULATOR OUTPUT (Updated by Sliders Below):</span>
-                  <span class="badge badge-vision">[VISION]</span>
-                </div>
-                <pre class="artifact-code-block"><code id="scene6-live-ledger-json">{}</code></pre>
-              </div>
-
-              <div class="slowmo-pane" data-pane="boundary" hidden>
-                <div class="boundary-spec-grid">
-                  <div class="boundary-box">
-                    <span class="boundary-box-title">FE_OWNED_TABLES &amp; RPCS</span>
-                    <ul>
-                      <li><code>metric_observations</code> &amp; <code>arbitration_decisions</code></li>
-                      <li><code>loop_rounds</code> (<code>cost_usd</code>, <code>tokens</code>, <code>usage_detail</code>)</li>
-                      <li><code>repository_wikis</code> (<code>architecture_mermaid</code>, <code>merges_since_refresh</code>)</li>
-                      <li>RPCs: <code>flow_record_default_branch_merge_for_wiki</code>, <code>goal_record_spend</code></li>
-                    </ul>
-                  </div>
-                  <div class="boundary-box">
-                    <span class="boundary-box-title">DETERMINISTIC ATTRIBUTION FORMULA</span>
-                    <p>
-                      <code>Fiscal_Share(i) = Spend(i) / Total_Spend</code><br>
-                      <code>Architectural_Yield(i) = Merged_PRs(i) / Total_PRs</code><br>
-                      Computed in pure Python without LLM judgment.
-                    </p>
-                  </div>
-                </div>
+                <button type="button" class="slowmo-close-btn" data-slowmo-close>Exit Full Screen (Esc) &#10005;</button>
               </div>
             </div>
 
-            <!-- Interactive Co-Founder BYOK Equity Simulator (Low Illustrative Units) -->
-            <div class="equity-calc-panel stage-dark" aria-labelledby="calc-heading" data-status="vision">
-              <div class="equity-calc-header">
-                <span id="calc-heading" class="equity-calc-title">Interactive Co-Founder BYOK Equity Simulator (50% Fiscal Share + 50% Architectural Yield)</span>
-                <span class="badge badge-vision">[VISION: Equity Attribution]</span>
+            <div class="slowmo-pane" data-pane="slowmo">
+              <div data-slowmo-mount="j5-arbitration"></div>
+            </div>
+
+            <div class="slowmo-pane" data-pane="artifact" hidden>
+              <div class="artifact-header-bar">
+                <span>contracts/src/atobar_contracts/arbitration.py</span>
+                <span class="badge badge-as-built">[AS-BUILT]</span>
               </div>
+              <pre class="artifact-code-block"><code># 100% deterministic Python merge gate (0 LLM imports):
+decision = arbitrate(policy=tenant.arbitration_policy, observations=verified_metrics)
+# Modes per repo: "shadow" -> "recommend" -> "auto_merge"
 
-              <div class="founder-sliders-grid">
-                <div class="founder-control-row">
-                  <div class="founder-row-top">
-                    <span class="founder-id">@cofounder-1 (P1 Founding Architect)</span>
-                    <span id="f1-readout" class="founder-equity-readout">Fiscal 26.7% &middot; Arch 25.0% &rarr; Combined Share 25.8%</span>
-                  </div>
-                  <div class="founder-inputs">
-                    <label class="slider-field" for="f1-stake">
-                      <span class="slider-label-line"><span>BYOK API Spend:</span><strong id="f1-stake-val">$40</strong></span>
-                      <input id="f1-stake" type="range" min="10" max="200" step="5" value="40" data-calc-input>
-                    </label>
-                    <label class="slider-field" for="f1-prs">
-                      <span class="slider-label-line"><span>Shipped Jumbo PRs:</span><strong id="f1-prs-val">3 PRs</strong></span>
-                      <input id="f1-prs" type="range" min="1" max="20" step="1" value="3" data-calc-input>
-                    </label>
-                  </div>
-                </div>
+# Coalesced SotaWiki refresh after N default-branch merges (J50):
+store.flow_record_default_branch_merge_for_wiki(tenant_id=tenant.id)</code></pre>
+            </div>
 
-                <div class="founder-control-row">
-                  <div class="founder-row-top">
-                    <span class="founder-id">@builder-2 (P2 Software Builder)</span>
-                    <span id="f2-readout" class="founder-equity-readout">Fiscal 40.0% &middot; Arch 50.0% &rarr; Combined Share 45.0%</span>
-                  </div>
-                  <div class="founder-inputs">
-                    <label class="slider-field" for="f2-stake">
-                      <span class="slider-label-line"><span>BYOK API Spend:</span><strong id="f2-stake-val">$60</strong></span>
-                      <input id="f2-stake" type="range" min="10" max="200" step="5" value="60" data-calc-input>
-                    </label>
-                    <label class="slider-field" for="f2-prs">
-                      <span class="slider-label-line"><span>Shipped Jumbo PRs:</span><strong id="f2-prs-val">6 PRs</strong></span>
-                      <input id="f2-prs" type="range" min="1" max="20" step="1" value="6" data-calc-input>
-                    </label>
-                  </div>
+            <div class="slowmo-pane" data-pane="boundary" hidden>
+              <div class="boundary-spec-grid">
+                <div class="boundary-box">
+                  <span class="boundary-box-title">APPEND-ONLY METRIC PROVENANCE</span>
+                  <p>
+                    <code>metric_observations</code> is insert-only and cross-checked against the GitHub Actions run on the exact PR <code>head_sha</code>.
+                  </p>
                 </div>
-
-                <div class="founder-control-row">
-                  <div class="founder-row-top">
-                    <span class="founder-id">@cofounder-3 (P1 Co-Founder)</span>
-                    <span id="f3-readout" class="founder-equity-readout">Fiscal 33.3% &middot; Arch 25.0% &rarr; Combined Share 29.2%</span>
-                  </div>
-                  <div class="founder-inputs">
-                    <label class="slider-field" for="f3-stake">
-                      <span class="slider-label-line"><span>BYOK API Spend:</span><strong id="f3-stake-val">$50</strong></span>
-                      <input id="f3-stake" type="range" min="10" max="200" step="5" value="50" data-calc-input>
-                    </label>
-                    <label class="slider-field" for="f3-prs">
-                      <span class="slider-label-line"><span>Shipped Jumbo PRs:</span><strong id="f3-prs-val">3 PRs</strong></span>
-                      <input id="f3-prs" type="range" min="1" max="20" step="1" value="3" data-calc-input>
-                    </label>
-                  </div>
-                </div>
-              </div>
-
-              <div class="equity-summary-bar">
-                <div class="equity-stat-cell">
-                  <span class="equity-stat-label">TOTAL BYOK USAGE</span>
-                  <span id="calc-monthly-pool" class="equity-stat-val">$150</span>
-                </div>
-                <div class="equity-stat-cell">
-                  <span class="equity-stat-label">SHIPPED FEATURES</span>
-                  <span id="calc-total-prs" class="equity-stat-val">12 Merged PRs</span>
-                </div>
-                <div class="equity-stat-cell">
-                  <span class="equity-stat-label">WEIGHTING RULE</span>
-                  <span class="equity-stat-val">50% Fiscal / 50% Arch</span>
+                <div class="boundary-box">
+                  <span class="boundary-box-title">STALE SHA INVALIDATION</span>
+                  <p>
+                    Any new commit pushed to the PR branch immediately invalidates prior approvals and metric observations.
+                  </p>
                 </div>
               </div>
             </div>
-          </article>
+          </div>
+        </div>
+      </article>
 
-          <!-- ==================== JOURNEY J6 ==================== -->
-          <article id="journey-6" class="scene-step" data-status="as-built vision">
-            <header class="scene-step-header">
-              <div class="scene-index-group">
-                <span class="scene-num">JOURNEY J6</span>
-                <span class="persona-pill">P1 Co-Founder / Founding Architect</span>
-                <span class="persona-pill">FR-3 &middot; NFR-4</span>
+      <article id="journey-6" class="journey-beat" data-beat-idx="6" data-status="as-built">
+        <div class="container beat-lead">
+          <div class="beat-meta">
+            <span class="beat-step-tag">JOURNEY J6 &middot; GUARDRAILS &amp; CLEAN EXIT</span>
+            <span class="badge badge-as-built">[AS-BUILT: Circuit Breakers &amp; 1-Commit Exit]</span>
+          </div>
+          <h3>Hard Spend Caps While You Build. One Commit to Walk Away.</h3>
+          <p>
+            Deterministic circuit breakers cap per-PR spend, review rounds, and wall-clock time. Whenever your goal is met (or whenever you want to leave), deleting
+            two workflow files leaves a 100% standard GitHub repository.
+          </p>
+        </div>
+
+        <div class="scrolly-wide">
+          <div class="slowmo-stage stage-dark" data-stage-id="j6">
+            <button type="button" class="slowmo-launch-overlay" data-slowmo-open aria-label="Open Journey J6 Clean Exit in Full-Screen Interactive Slow-Mo">
+              <span class="slowmo-corner-cue">Full-Screen Slow-Mo &#10530;</span>
+              <span class="slowmo-hover-card">
+                <span class="slowmo-hover-title">&#10530; Open Full-Screen Interactive Slow-Mo</span>
+                <span class="slowmo-hover-sub">Step through goal_step() guardrails &amp; the 1-commit exit</span>
+              </span>
+            </button>
+
+            <div class="slowmo-topbar">
+              <div class="slowmo-title-group">
+                <span class="slowmo-title">J6 &middot; CIRCUIT BREAKERS &amp; 1-COMMIT CLEAN EXIT</span>
+                <span class="slowmo-preview-step-pill" data-preview-pill>Scroll Preview &middot; Step 1 / 2</span>
+                <div class="slowmo-fs-switcher" role="navigation" aria-label="Switch walkthrough in full screen"><button type="button" class="slowmo-fs-jump" data-fs-switch="j1">J1 Onboard</button><button type="button" class="slowmo-fs-jump" data-fs-switch="j2">J2 Gate</button><button type="button" class="slowmo-fs-jump" data-fs-switch="j3">J3 Dev VM</button><button type="button" class="slowmo-fs-jump" data-fs-switch="j4">J4 X11 QA</button><button type="button" class="slowmo-fs-jump" data-fs-switch="j5">J5 Merge</button><button type="button" class="slowmo-fs-jump" data-fs-switch="j6">J6 Exit</button><button type="button" class="slowmo-fs-jump" data-fs-switch="nano">Nano Harness</button></div>
               </div>
-              <div class="scene-badges">
-                <span class="badge badge-as-built" data-status="as-built">[AS-BUILT: Goal Loop, Circuit Breakers &amp; 1-Commit Exit]</span>
-                <span class="badge badge-vision" data-status="vision">[VISION: Contribution Ledger Export]</span>
+              <div class="slowmo-topbar-controls">
+                <div class="slowmo-tabs" role="tablist" aria-label="Journey J6 views">
+                  <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="slowmo" aria-selected="true">1. Slow-Mo Flow</button>
+                  <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="artifact" aria-selected="false">2. Code Artifact</button>
+                  <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="boundary" aria-selected="false">3. Security Boundary</button>
+                </div>
+                <button type="button" class="slowmo-close-btn" data-slowmo-close>Exit Full Screen (Esc) &#10005;</button>
               </div>
-            </header>
-
-            <h3>J6: Goal Completion, Circuit Breakers &amp; Zero-Lock-In Sunset</h3>
-
-            <div class="scene-prose">
-              <p>
-                After each merge, <strong><code>goal_step()</code></strong> (<code>flow-engine/src/flow_engine/conductor/goal.py</code>)
-                re-evaluates default-branch metrics against <code>tenant_goals</code>. When all target metrics pass, the goal moves to
-                <code>met</code> and regression guardrails protect future PRs (<code>J6.1</code>). Hard deterministic circuit breakers
-                (<code>max_pr_cost_usd</code> default <code>$25</code>, <code>max_goal_cost_usd</code> default <code>$100</code>,
-                <code>max_review_rounds</code> default <code>4</code>, <code>max_repeat_finding</code>, <code>max_pr_wall_clock_minutes</code>)
-                prevent runaway loops.
-              </p>
-              <p>
-                Collaborators can export the Contribution Ledger (<code>[VISION]</code>) and hand off or sunset any client repository by deleting
-                <code>.github/workflows/flow-trigger.yml</code> and <code>flow-metrics.yml</code> in a <strong>single commit</strong>
-                (<code>J6.2</code>, <code>[AS-BUILT]</code>).
-              </p>
             </div>
 
-            <div class="slowmo-stage stage-dark">
-              <div class="slowmo-topbar">
-                <span class="slowmo-title">CODE-SLOWMO INTERACTIVE WALKTHROUGH &middot; JOURNEY J6</span>
-                <div class="slowmo-topbar-controls">
-                  <div class="slowmo-tabs" role="tablist" aria-label="Journey J6 views">
-                    <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="slowmo" aria-selected="true">1. Slow-Mo Journey</button>
-                    <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="artifact" aria-selected="false">2. Code Artifact</button>
-                    <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="boundary" aria-selected="false">3. DB &amp; Security Boundary</button>
-                  </div>
-                  <button type="button" class="slowmo-expand-btn" data-slowmo-expand aria-expanded="false">Expand to Full Browser &#10530;</button>
-                </div>
-              </div>
+            <div class="slowmo-pane" data-pane="slowmo">
+              <div data-slowmo-mount="j6-sunset"></div>
+            </div>
 
-              <div class="slowmo-pane" data-pane="slowmo">
-                <div data-slowmo-mount="j6-sunset"></div>
+            <div class="slowmo-pane" data-pane="artifact" hidden>
+              <div class="artifact-header-bar">
+                <span>1-Commit Detach &amp; Circuit Breakers (machine.py)</span>
+                <span class="badge badge-as-built">[AS-BUILT]</span>
               </div>
-
-              <div class="slowmo-pane" data-pane="artifact" hidden>
-                <div class="artifact-header-bar">
-                  <span>ARTIFACT: 1-Commit Clean Sunset &amp; Deterministic Circuit Breakers (contracts/src/atobar_contracts/machine.py)</span>
-                  <span class="badge badge-as-built">[AS-BUILT]</span>
-                </div>
-                <pre class="artifact-code-block"><code># Detach any client repository in a single commit (Zero residual SDKs or vendor lock-in):
+              <pre class="artifact-code-block"><code># Detach any client repository in a single commit today:
 $ git rm .github/workflows/flow-trigger.yml .github/workflows/flow-metrics.yml
-$ git commit -m "chore: detach atobar-flow spoke workflows"
-$ gh secret delete ATOBAR_TENANT_TOKEN
+$ git commit -m "chore: detach atobar-flow workflows"
 
-# Deterministic Circuit Breakers in contracts/src/atobar_contracts/machine.py &amp; goal.py:
-# - max_pr_cost_usd           (default $25.0 per PR)
-# - max_goal_cost_usd         (default $100.0 per repository goal)
-# - max_review_rounds         (default 4 rounds)
-# - max_repeat_finding        (escalates identical QA findings to human review)
-# - max_pr_wall_clock_minutes (bounds Spot instance runtime)</code></pre>
-              </div>
+# Hard Python circuit breakers:
+# max_pr_cost_usd ($25) | max_goal_cost_usd ($100) | max_review_rounds (4)</code></pre>
+            </div>
 
-              <div class="slowmo-pane" data-pane="boundary" hidden>
-                <div class="boundary-spec-grid">
-                  <div class="boundary-box">
-                    <span class="boundary-box-title">OUTER-LOOP TABLES &amp; RPCS (FE)</span>
-                    <ul>
-                      <li><code>tenant_goals</code> (<code>status</code>, <code>budget_usd</code>, <code>spent_usd</code>, <code>stall_count</code>)</li>
-                      <li>RPCs: <code>goal_record_merge</code>, <code>goal_record_spend</code></li>
-                    </ul>
-                  </div>
-                  <div class="boundary-box">
-                    <span class="boundary-box-title">ZERO RUNTIME LOCK-IN</span>
-                    <p>
-                      Because ATOBAR never injects a runtime SDK into client packages, your repository remains 100% standard
-                      Python, TypeScript, Go, Rust, or Kotlin before, during, and after onboarding.
-                    </p>
-                  </div>
+            <div class="slowmo-pane" data-pane="boundary" hidden>
+              <div class="boundary-spec-grid">
+                <div class="boundary-box">
+                  <span class="boundary-box-title">ZERO RUNTIME COUPLING</span>
+                  <p>
+                    Your application code never imports an Atobar package: Python, TypeScript, Go, Rust, or Kotlin repos stay untouched.
+                  </p>
+                </div>
+                <div class="boundary-box">
+                  <span class="boundary-box-title">HUMAN ESCALATION ON BREAKER TRIP</span>
+                  <p>
+                    If a PR hits a cost, stall, or repeat-finding limit, Conductor posts <code>flow-escalation</code> and hands control cleanly to you.
+                  </p>
                 </div>
               </div>
             </div>
-          </article>
-
+          </div>
         </div>
-      </div>
+      </article>
     </section>
 
-    <!-- ======================================================================
-         ZONE 4: FUNCTIONAL (FR-1..FR-7) & NON-FUNCTIONAL REQUIREMENTS (NFR-1..NFR-4)
-         ====================================================================== -->
-    <section id="requirements" class="reference-section" aria-labelledby="req-heading">
+    <section id="nano-harness" class="surface-navy" data-status="as-built" aria-labelledby="nano-heading">
       <div class="container">
-        <div class="section-intro">
-          <div class="section-intro-copy">
-            <h2 id="req-heading">Functional (<code>FR-1</code>&ndash;<code>FR-7</code>) &amp; Non-Functional Requirements (<code>NFR-1</code>&ndash;<code>NFR-4</code>)</h2>
-            <p>
-              Complete requirement specification grounded against the <code>atobar-flow</code> codebase, badged strictly as
-              <code>[AS-BUILT]</code> (live on <code>main</code>) or <code>[VISION]</code> (roadmap &amp; open Jumbo specs).
-            </p>
-          </div>
+        <div class="beat-meta">
+          <span class="badge badge-as-built">[AS-BUILT: flow-agent + nanobot-ai SDK + FastMCP]</span>
         </div>
-
-        <div class="ref-block" data-status="as-built vision">
-          <div class="ref-block-header">
-            <h3>Functional Requirements (<code>FR-1</code>&ndash;<code>FR-7</code>)</h3>
-            <div class="scene-badges">
-              <span class="badge badge-as-built">[AS-BUILT]</span>
-              <span class="badge badge-vision">[VISION]</span>
-            </div>
-          </div>
-
-          <div class="table-scroll">
-            <table class="spec-table">
-              <thead>
-                <tr>
-                  <th scope="col">ID</th>
-                  <th scope="col">Requirement</th>
-                  <th scope="col">Status</th>
-                  <th scope="col">Implementation Summary &amp; Codebase Anchor</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr data-status="as-built">
-                  <td><code>FR-1</code></td>
-                  <td><strong>Bare-Bones GitHub Hub &amp; Spoke Ingress</strong></td>
-                  <td><span class="badge badge-as-built">[AS-BUILT]</span></td>
-                  <td>Client repos hold only <code>flow-trigger.yml</code> and <code>flow-metrics.yml</code>. All webhooks and OIDC/Bearer events enter via <code>POST /v1/events</code> and <code>POST /v1/metrics</code> (<code>control-panel/src/control_panel/app.py</code>).</td>
-                </tr>
-                <tr data-status="as-built">
-                  <td><code>FR-2</code></td>
-                  <td><strong>4-Role Loop &amp; Warm Developer Handover</strong></td>
-                  <td><span class="badge badge-as-built">[AS-BUILT]</span></td>
-                  <td><code>PLANNER</code>, <code>DEVELOPER</code>, <code>EVALUATOR</code>, and <code>ARBITRATOR</code> coordinate through GitHub comments. <code>DEVELOPER</code> reuses a warm Spot VM across turns (<code>J38</code>); <code>EVALUATOR</code> always runs on a fresh Spot VM (<code>J43</code>).</td>
-                </tr>
-                <tr data-status="as-built">
-                  <td><code>FR-3</code></td>
-                  <td><strong>Deterministic Conductor &amp; Circuit Breakers</strong></td>
-                  <td><span class="badge badge-as-built">[AS-BUILT]</span></td>
-                  <td>Pure <code>step()</code> state machine (<code>contracts/src/atobar_contracts/machine.py</code>) enforces <code>max_review_rounds</code>, <code>max_repeat_finding</code>, <code>max_pr_cost_usd</code>, <code>max_pr_wall_clock_minutes</code>, and <code>tenant_goals</code> budgets without calling an LLM.</td>
-                </tr>
-                <tr data-status="as-built vision">
-                  <td><code>FR-4</code></td>
-                  <td><strong>Unattended Visual QA &amp; Spot Image Profiles</strong></td>
-                  <td><span class="badge badge-as-built">[AS-BUILT]</span> <span class="badge badge-vision">[VISION]</span></td>
-                  <td>Stage 1 static <code>file:#L</code> check + Stage 2 Web X11 screenshot capture with <code>xwininfo</code>/<code>ps</code> proof (<code>J39</code>, <code>J49</code>, <code>[AS-BUILT]</code>). <code>[VISION]</code> adds <code>android-studio-kvm-x86</code> and <code>fullstack-compose</code> image profiles.</td>
-                </tr>
-                <tr data-status="as-built vision">
-                  <td><code>FR-5</code></td>
-                  <td><strong>KMS BYOK Vault, Granular Key Routing &amp; Built-In Ledger</strong></td>
-                  <td><span class="badge badge-as-built">[AS-BUILT]</span> <span class="badge badge-vision">[VISION]</span></td>
-                  <td>KMS <code>AES-GCM</code> keys with <code>(tenant_id, provider)</code> AAD, per-repo/per-role model routing (<code>tenant_role_llm</code>), single-use <code>/llm-key</code> claim, and turn spend in <code>loop_rounds.cost_usd</code> (<code>[AS-BUILT]</code>). <code>[VISION]</code> adds per-invoking-user billing, profile default keys, and Superuser EC2 provisioning gate (<code>platform_users.ec2_enabled</code>, dim-grey top ribbon &amp; <code>/admin/users</code> in <code>J53</code>), verifiable price snapshots, and Fiscal + Architectural equity attribution.</td>
-                </tr>
-                <tr data-status="as-built">
-                  <td><code>FR-6</code></td>
-                  <td><strong>Living Architecture Wiki (<code>SotaWiki</code>)</strong></td>
-                  <td><span class="badge badge-as-built">[AS-BUILT]</span></td>
-                  <td><code>onboarder</code> synthesizes structured repo knowledge with a validated Mermaid diagram (<code>validate_mermaid_diagram</code> in <code>contracts/src/atobar_contracts/wiki.py</code>) and auto-refreshes it after N default-branch merges (<code>J50</code>).</td>
-                </tr>
-                <tr data-status="vision">
-                  <td><code>FR-7</code></td>
-                  <td><strong>Multi-Repo Venture Grouping</strong></td>
-                  <td><span class="badge badge-vision">[VISION]</span></td>
-                  <td>Group multiple microservice <code>tenants</code> under one <code>venture_id</code> and track cross-repo Jumbo Issue dependencies (<code>venture_jumbo_links</code>).</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="ref-block" data-status="as-built">
-          <div class="ref-block-header">
-            <h3>Non-Functional Requirements (<code>NFR-1</code>&ndash;<code>NFR-4</code>)</h3>
-            <span class="badge badge-as-built">[AS-BUILT &middot; CI ENFORCED]</span>
-          </div>
-
-          <div class="table-scroll">
-            <table class="spec-table">
-              <thead>
-                <tr>
-                  <th scope="col">ID</th>
-                  <th scope="col">Requirement</th>
-                  <th scope="col">Status</th>
-                  <th scope="col">Architectural Rule &amp; Verification Guard</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr data-status="as-built">
-                  <td><code>NFR-1</code></td>
-                  <td><strong>Zero-Trust Sandbox Isolation</strong></td>
-                  <td><span class="badge badge-as-built">[AS-BUILT]</span></td>
-                  <td>Spot VMs hold zero database keys, authenticate via single-run <code>FLOW_RUN_CREDENTIAL</code> + <code>X-Instance-ID</code>, receive role-scoped GitHub tokens (<code>contents: read</code> for <code>EVALUATOR</code>), and wrap GitHub text in <code>&lt;untrusted_content&gt;</code> delimiters.</td>
-                </tr>
-                <tr data-status="as-built">
-                  <td><code>NFR-2</code></td>
-                  <td><strong>Single-Writer Table Ownership</strong></td>
-                  <td><span class="badge badge-as-built">[AS-BUILT]</span></td>
-                  <td><code>control-panel</code> writes only <code>CP_OWNED_TABLES</code>; <code>flow-engine</code> writes only <code>FE_OWNED_TABLES</code> and <code>FE_OWNED_RPCS</code> (enforced by <code>tests/test_table_ownership.py</code>).</td>
-                </tr>
-                <tr data-status="as-built">
-                  <td><code>NFR-3</code></td>
-                  <td><strong>Deterministic Control &amp; Arbitration</strong></td>
-                  <td><span class="badge badge-as-built">[AS-BUILT]</span></td>
-                  <td><code>atobar_contracts</code> and <code>flow_engine</code> never import LLM SDKs (enforced at CI time by <code>tests/test_boundaries.py</code>).</td>
-                </tr>
-                <tr data-status="as-built">
-                  <td><code>NFR-4</code></td>
-                  <td><strong>1-Commit Client Repo Exit</strong></td>
-                  <td><span class="badge badge-as-built">[AS-BUILT]</span></td>
-                  <td>Deleting <code>.github/workflows/flow-trigger.yml</code> and <code>flow-metrics.yml</code> completely disconnects a client repo with zero broken imports or runtime dependencies.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ======================================================================
-         ZONE 5: ARCHITECTURE — 5-PACKAGE MONOREPO & SINGLE-WRITER DB OWNERSHIP
-         ====================================================================== -->
-    <section id="architecture" class="reference-section" aria-labelledby="arch-heading">
-      <div class="container">
-        <div class="section-intro">
-          <div class="section-intro-copy">
-            <h2 id="arch-heading">Monorepo Package &amp; Single-Writer Database Boundaries</h2>
-            <p>
-              All factory logic lives in five Python packages inside <code>atobar-flow</code>, with strict package import and database
-              write boundaries enforced in CI by <code>tests/test_boundaries.py</code> and <code>tests/test_table_ownership.py</code>.
-            </p>
-          </div>
-        </div>
-
-        <div class="ref-block" data-status="as-built">
-          <div class="ref-block-header">
-            <h3>1. Five-Package Monorepo Responsibilities (<code>tests/test_boundaries.py</code>)</h3>
-            <span class="badge badge-as-built">[AS-BUILT]</span>
-          </div>
-
-          <div class="table-scroll">
-            <table class="spec-table">
-              <thead>
-                <tr>
-                  <th scope="col">Package</th>
-                  <th scope="col">Monorepo Path</th>
-                  <th scope="col">Core Responsibilities &amp; Key Modules</th>
-                  <th scope="col">LLM Imports Allowed?</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><code>atobar_contracts</code></td>
-                  <td><code>contracts/src/atobar_contracts/</code></td>
-                  <td>
-                    Schemas (<code>manifest.py</code>, <code>goal.py</code>, <code>envelopes.py</code>, <code>wiki.py</code>), pure
-                    <code>step()</code> state machine (<code>machine.py</code>), pure <code>arbitrate()</code> gate
-                    (<code>arbitration.py</code>), <code>WARM_HANDOVER_FORBIDDEN_ROLES</code> (<code>conductor_io.py</code>), Spot launcher (<code>github_rest.py</code>).
-                  </td>
-                  <td><span class="llm-ban-pill">NO (CI Blocked)</span></td>
-                </tr>
-                <tr>
-                  <td><code>flow_engine</code></td>
-                  <td><code>flow-engine/src/flow_engine/</code></td>
-                  <td>
-                    Internal FastAPI service (<code>api.py</code>), single-writer <code>SupabaseStore</code> (<code>store.py</code>),
-                    deterministic Spec-Sufficiency Gate (<code>conductor/sufficiency.py</code>), outer goal loop (<code>conductor/goal.py</code>),
-                    Spot GC reaper (<code>conductor/gc.py</code>).
-                  </td>
-                  <td><span class="llm-ban-pill">NO (CI Blocked)</span></td>
-                </tr>
-                <tr>
-                  <td><code>control_panel</code></td>
-                  <td><code>control-panel/src/control_panel/</code></td>
-                  <td>
-                    Public FastAPI gateway &amp; Web UI (<code>app.py</code>, <code>web.py</code>), AWS KMS
-                    <code>AES-GCM</code> BYOK vault (<code>llm_keys.py</code>), GitHub OIDC &amp; tenant token auth (<code>oidc.py</code>,
-                    <code>tokens.py</code>), encrypted screenshot storage.
-                  </td>
-                  <td><span class="llm-ban-pill">NO (CI Blocked)</span></td>
-                </tr>
-                <tr>
-                  <td><code>flow_agent</code></td>
-                  <td><code>flow-agent/src/flow_agent/</code></td>
-                  <td>
-                    Isolated EC2 Spot sandbox runner (<code>main.py</code>), agent roles (<code>planner</code>, <code>developer</code>,
-                    <code>evaluator</code>, <code>arbitrator</code>, <code>onboarder</code>, <code>metric_compiler</code>),
-                    <code>nanobot</code> loop (<code>agents/</code>), stdio MCP tool server (<code>tools_mcp/</code>).
-                  </td>
-                  <td><span class="llm-allow-pill">YES (Spot Sandbox Only)</span></td>
-                </tr>
-                <tr>
-                  <td><code>atobar_ops</code></td>
-                  <td><code>atobar-ops/src/atobar_ops/</code></td>
-                  <td>
-                    Operator &amp; harness CLI (<code>verify</code>, <code>ship</code>, <code>review</code>, <code>watch</code>,
-                    <code>rerun</code>, <code>ssm</code>, <code>db</code>, <code>cp</code>, <code>ci</code>, <code>jumbo</code>,
-                    <code>labels</code>, <code>sessions</code>).
-                  </td>
-                  <td><span class="llm-ban-pill">NO (CI Blocked)</span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="ref-block" data-status="as-built vision">
-          <div class="ref-block-header">
-            <h3>2. Single-Writer Database Ownership Matrix (<code>tests/test_table_ownership.py</code>)</h3>
-            <div class="scene-badges">
-              <span class="badge badge-as-built">[AS-BUILT: 15 Tables + 8 RPCs]</span>
-              <span class="badge badge-vision">[VISION: Per-User Keys &amp; Venture Tables]</span>
-            </div>
-          </div>
-
-          <div class="ownership-split">
-            <div class="ownership-panel">
-              <div class="ownership-panel-head">
-                <h4>control-panel (CP_OWNED_TABLES)</h4>
-                <span class="badge badge-as-built">4 As-Built Tables &middot; KMS &amp; Auth</span>
-              </div>
-              <table class="spec-table">
-                <thead>
-                  <tr>
-                    <th scope="col">Table</th>
-                    <th scope="col">Single-Writer Responsibility</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><code>tenant_tokens</code></td>
-                    <td>SHA-256 hashed <code>atb_...</code> client spoke bearer tokens.</td>
-                  </tr>
-                  <tr>
-                    <td><code>tenant_llm_keys</code></td>
-                    <td>KMS <code>AES-GCM</code> encrypted BYOK keys with <code>(tenant_id, provider)</code> AAD (<code>[AS-BUILT]</code>) &rarr; <code>(tenant_id, user_login, provider)</code> per-collaborator keys (<code>[VISION]</code>).</td>
-                  </tr>
-                  <tr>
-                    <td><code>tenant_role_llm</code></td>
-                    <td>Per-role <code>(provider, model, reasoning_effort)</code> bindings across Planner, Developer, Evaluator, Onboarder.</td>
-                  </tr>
-                  <tr>
-                    <td><code>security_audit_log</code></td>
-                    <td>Append-only security audit log for BYOK key, token, and admin mutations.</td>
-                  </tr>
-                  <tr data-status="vision">
-                    <td><code>user_llm_keys</code> <span class="badge badge-vision">[VISION]</span></td>
-                    <td>Profile-level encrypted BYOK keys and single Default Profile Key (<code>is_default = true</code>) across repositories.</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div class="ownership-panel">
-              <div class="ownership-panel-head">
-                <h4>flow-engine (FE_OWNED_TABLES &amp; FE_OWNED_RPCS)</h4>
-                <span class="badge badge-as-built">11 As-Built Tables &middot; 8 Atomic RPCs</span>
-              </div>
-              <table class="spec-table">
-                <thead>
-                  <tr>
-                    <th scope="col">Tables / RPCs</th>
-                    <th scope="col">Single-Writer Responsibility</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><code>tenants</code>, <code>tenants_manifest_history</code></td>
-                    <td>Tenant lifecycle state, manifest JSON, and immutable manifest audit history.</td>
-                  </tr>
-                  <tr>
-                    <td><code>metric_definitions</code>, <code>metric_definitions_history</code>, <code>metric_observations</code></td>
-                    <td>Compiled metric specs, history, and append-only CI metric observations.</td>
-                  </tr>
-                  <tr>
-                    <td><code>run_credentials</code>, <code>sessions</code>, <code>session_events</code>, <code>run_events</code></td>
-                    <td>Single-run token hashes, <code>instance_id</code> binding, <code>llm_key_claimed</code>, Spot heartbeats, and live telemetry stream.</td>
-                  </tr>
-                  <tr>
-                    <td><code>loop_rounds</code>, <code>conductor_events</code>, <code>arbitration_decisions</code></td>
-                    <td>Per-turn token/cost ledger, envelope JSON state, webhook deduplication, and pure <code>arbitrate()</code> decisions.</td>
-                  </tr>
-                  <tr>
-                    <td><code>repository_wikis</code>, <code>tenant_goals</code></td>
-                    <td><code>SotaWiki</code> Mermaid content + coalesced refresh queue (<code>J50</code>), and outer-loop target budgets (<code>goal_step()</code>).</td>
-                  </tr>
-                  <tr>
-                    <td><code>FE_OWNED_RPCS</code> (8 Postgres Functions)</td>
-                    <td>
-                      <code>approve_metric</code>, <code>flow_claim_wiki_refresh</code>, <code>flow_complete_wiki_refresh_run</code>,
-                      <code>flow_record_default_branch_merge_for_wiki</code>, <code>flow_update_wiki_policy</code>,
-                      <code>flow_upsert_wiki_content</code>, <code>goal_record_spend</code>, <code>goal_record_merge</code>.
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ======================================================================
-         ZONE 6: 5-MINUTE ONBOARDING & FOOTER
-         ====================================================================== -->
-    <section id="onboarding" class="onboarding-section" aria-labelledby="onboarding-heading">
-      <div class="container">
-        <h2 id="onboarding-heading">Onboard a Client Repository in 5 Minutes (<code>J1.1</code>&ndash;<code>J1.4</code>)</h2>
+        <h2 id="nano-heading">Two Clean Layers: ATOBAR Above &times; Nano Harness Below</h2>
         <p>
-          Run <code>onboard.sh</code> inside any git repository clone where you have GitHub admin permissions. The script verifies prerequisites
-          (<code>git</code>, <code>gh</code>, <code>curl</code>), guides you through installing the <code>atobar-flow-agent</code> GitHub App,
-          saves your repository's <code>ATOBAR_TENANT_TOKEN</code> secret, and opens the onboarding pull request.
+          Why don't hours-long autonomous runs drift, leak your keys, or commit junk files into your pull requests?
+          Because ATOBAR separates <strong>deterministic factory orchestration above</strong> from the hardened
+          <strong><code>nanobot</code> execution harness below</strong>.
         </p>
 
-        <div class="cli-snippet-box" style="margin-bottom: var(--space-4);">
-          <code class="cli-snippet-code"><span class="prompt-char">$</span>curl -fsSL https://raw.githubusercontent.com/atobar-flow/atobar-flow/main/scripts/onboard.sh | bash</code>
-          <button type="button" class="copy-btn" data-copy-text="curl -fsSL https://raw.githubusercontent.com/atobar-flow/atobar-flow/main/scripts/onboard.sh | bash">Copy Command</button>
+        <div class="stack-layers">
+          <div class="stack-layer-box">
+            <div class="stack-layer-head">
+              <span class="stack-layer-tag">LAYER 1 (ABOVE) &middot; DETERMINISTIC FACTORY CONTROL PLANE</span>
+              <span class="badge badge-as-built">0 LLM Imports Allowed</span>
+            </div>
+            <h3><code>contracts</code> + <code>flow-engine</code> + <code>control-panel</code></h3>
+            <p style="margin-bottom: 0;">
+              Handles GitHub webhooks, KMS key sealing, pure-Python <code>step()</code> transitions, Spec-Sufficiency triage, Spot VM lifecycle,
+              <code>WARM_HANDOVER_FORBIDDEN_ROLES</code>, budget circuit breakers, and pure-Python <code>arbitrate()</code> merges.
+            </p>
+          </div>
+
+          <div class="stack-connector" aria-hidden="true">
+            <span>&darr; Single-Run Spot Credential + Scoped Worktree &darr;</span>
+          </div>
+
+          <div class="stack-layer-box is-nano">
+            <div class="stack-layer-head">
+              <span class="stack-layer-tag">LAYER 2 (BELOW) &middot; THE NANO AGENT HARNESS INSIDE SPOT</span>
+              <span class="badge badge-as-built">NanobotRuntime + stdio FastMCP</span>
+            </div>
+            <h3><code>flow-agent</code> &times; <code>nanobot-ai</code> Headless Loop</h3>
+            <p>
+              Inside every EC2 Spot sandbox, <code>NanobotRuntime</code> drives the <code>nanobot-ai</code> SDK behind four adversarial and reliability guards:
+            </p>
+
+            <div class="nano-pillars">
+              <div class="nano-pillar">
+                <span class="nano-pillar-num">WORKSPACE SPLIT &middot; J44</span>
+                <h4><code>nanobot_home</code> &ne; Client Repo</h4>
+                <p>
+                  Writes the role's <code>SOUL.md</code> and <code>.nanobot/</code> memory outside your git checkout and adds <code>.git/info/exclude</code> rules so harness files never pollute commits.
+                </p>
+              </div>
+
+              <div class="nano-pillar">
+                <span class="nano-pillar-num">RAM-ONLY BYOK</span>
+                <h4>Multi-Provider Fan-Out</h4>
+                <p>
+                  Renders <code>${FLOW_LLM_API_KEY_*}</code> placeholders in config so <code>Claude</code>, <code>Gemini</code>, <code>DeepSeek</code>, <code>Grok</code>, and <code>OpenAI</code> keys stay in memory only.
+                </p>
+              </div>
+
+              <div class="nano-pillar">
+                <span class="nano-pillar-num">FASTMCP TOOL CAGE</span>
+                <h4>Out-of-Process Role Guards</h4>
+                <p>
+                  Disables raw <code>gh</code> CLI, enforces per-role tool allowlists in a separate stdio FastMCP process, and jails <code>view_image</code> so Evaluators inspect real X11 PNGs.
+                </p>
+              </div>
+
+              <div class="nano-pillar">
+                <span class="nano-pillar-num">FLOWHOOK ARMOR</span>
+                <h4>Built for Multi-Hour Jobs</h4>
+                <p>
+                  Wraps every turn with 15s heartbeats, a 900s stall detector, <code>&lt;untrusted_client_content&gt;</code> prompt-injection tags, envelope repair, and live per-tool <code>$</code> spend.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scrolly-wide">
+        <div class="slowmo-stage stage-dark" data-stage-id="nano">
+          <button type="button" class="slowmo-launch-overlay" data-slowmo-open aria-label="Open Nano Harness walkthrough in Full-Screen Interactive Slow-Mo">
+            <span class="slowmo-corner-cue">Full-Screen Slow-Mo &#10530;</span>
+            <span class="slowmo-hover-card">
+              <span class="slowmo-hover-title">&#10530; Inspect the Nano Harness in Full Screen</span>
+              <span class="slowmo-hover-sub">Watch NanobotRuntime isolate SOUL.md, cage FastMCP tools &amp; stream live $ spend</span>
+            </span>
+          </button>
+
+          <div class="slowmo-topbar">
+            <div class="slowmo-title-group">
+              <span class="slowmo-title">NANO HARNESS &middot; INSIDE AN EC2 SPOT ROLE RUN</span>
+              <span class="slowmo-preview-step-pill" data-preview-pill>Scroll Preview &middot; Step 1 / 6</span>
+              <div class="slowmo-fs-switcher" role="navigation" aria-label="Switch walkthrough in full screen"><button type="button" class="slowmo-fs-jump" data-fs-switch="j1">J1 Onboard</button><button type="button" class="slowmo-fs-jump" data-fs-switch="j2">J2 Gate</button><button type="button" class="slowmo-fs-jump" data-fs-switch="j3">J3 Dev VM</button><button type="button" class="slowmo-fs-jump" data-fs-switch="j4">J4 X11 QA</button><button type="button" class="slowmo-fs-jump" data-fs-switch="j5">J5 Merge</button><button type="button" class="slowmo-fs-jump" data-fs-switch="j6">J6 Exit</button><button type="button" class="slowmo-fs-jump" data-fs-switch="nano">Nano Harness</button></div>
+            </div>
+            <div class="slowmo-topbar-controls">
+              <div class="slowmo-tabs" role="tablist" aria-label="Nano Harness views">
+                <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="slowmo" aria-selected="true">1. Slow-Mo Flow</button>
+                <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="artifact" aria-selected="false">2. Code Artifact</button>
+                <button type="button" role="tab" class="slowmo-tab-btn" data-journey-tab="boundary" aria-selected="false">3. Security Boundary</button>
+              </div>
+              <button type="button" class="slowmo-close-btn" data-slowmo-close>Exit Full Screen (Esc) &#10005;</button>
+            </div>
+          </div>
+
+          <div class="slowmo-pane" data-pane="slowmo">
+            <div data-slowmo-mount="nano-harness"></div>
+          </div>
+
+          <div class="slowmo-pane" data-pane="artifact" hidden>
+            <div class="artifact-header-bar">
+              <span>flow-agent/src/flow_agent/agents/nanobot_config.py &amp; nanobot_runtime.py</span>
+              <span class="badge badge-as-built">[AS-BUILT]</span>
+            </div>
+            <pre class="artifact-code-block"><code># 1. Separate factory-owned nanobot_home from untrusted client git worktree (J44):
+nanobot_home = run_root / "agent_ws"
+(nanobot_home / "SOUL.md").write_text(system_prompt, encoding="utf-8")
+_git_exclude_runtime_files(client_ws)  # Excludes .nanobot/, SOUL.md, .atobar/
+
+# 2. Memory-only BYOK placeholders + out-of-process stdio FastMCP server:
+config_data = {
+  "providers": {"anthropic": {"apiKey": "${FLOW_LLM_API_KEY}"}},
+  "agents": {"defaults": {"modelPreset": role, "disabledSkills": ["github"]}},
+  "tools": {
+    "restrictToWorkspace": True,
+    "mcpServers": {"flow": {"args": ["run", "python", "-m", "flow_agent.tools_mcp.server", "&#45;&#45;role", role]}},
+  },
+}</code></pre>
+          </div>
+
+          <div class="slowmo-pane" data-pane="boundary" hidden>
+            <div class="boundary-spec-grid">
+              <div class="boundary-box">
+                <span class="boundary-box-title">SERVER-SIDE ALLOWLISTS</span>
+                <p>
+                  Even if prompted adversarially, an agent inside <code>nanobot</code> cannot widen its own tool surface because <code>tools_mcp</code> enforces <code>ROLE_ALLOWLISTS</code> in a separate OS process.
+                </p>
+              </div>
+              <div class="boundary-box">
+                <span class="boundary-box-title">PLUGGABLE AGENTRUNTIME SEAM</span>
+                <p>
+                  Deterministic layers never depend on <code>nanobot</code> internals: any future harness can plug into the same <code>AgentRuntime</code> + <code>tools_mcp</code> contract.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="economics" class="economics-section" aria-labelledby="economics-heading">
+      <div class="container">
+        <h2 id="economics-heading">Built-In Turn Cost Today. Co-Founder Split Next.</h2>
+        <p>
+          Today on <code>main</code>, every role turn records tokens and USD spend against hard repo and PR circuit breakers. Next on the
+          <code>J53</code> and Venture roadmap, per-invoking-user keys attribute <strong>Fiscal Share</strong> (BYOK compute paid) alongside
+          <strong>Architectural Yield</strong> (shipped specs &amp; PRs).
+        </p>
+
+        <div class="live-ledger-strip" data-status="as-built" aria-label="Live cost tracking on main today">
+          <div class="live-ledger-item">
+            <span class="badge badge-as-built" style="margin-bottom: 0.4rem;">[AS-BUILT &middot; LIVE TODAY]</span>
+            <strong>Per-Turn Usage &amp; USD Ledger</strong>
+            <span><code>loop_rounds.cost_usd</code> and <code>sessions.usage</code> log cache-aware tokens and per-tool spend on every turn.</span>
+          </div>
+          <div class="live-ledger-item">
+            <span class="badge badge-as-built" style="margin-bottom: 0.4rem;">[AS-BUILT &middot; LIVE TODAY]</span>
+            <strong>Repository Goal Spend Roll-Up</strong>
+            <span><code>tenant_goals.spent_usd</code> aggregates spend across merges via atomic <code>goal_record_spend</code> RPCs.</span>
+          </div>
+          <div class="live-ledger-item">
+            <span class="badge badge-as-built" style="margin-bottom: 0.4rem;">[AS-BUILT &middot; LIVE TODAY]</span>
+            <strong>Deterministic Circuit Breakers</strong>
+            <span>Pure Python halts runaway loops at <code>$25/PR</code>, <code>$100/goal</code>, <code>4</code> review rounds, or <code>900s</code> stalls.</span>
+          </div>
         </div>
 
-        <ol class="onboarding-steps-list">
-          <li class="onboarding-step-li" data-status="as-built">
-            <div class="onboarding-step-head">
-              <span class="onboarding-step-num">STEP J1.1: GITHUB APP &amp; TOKEN</span>
+        <div class="equity-calc-panel" data-status="vision" aria-label="Interactive Collaborator Contribution Simulator">
+          <div class="equity-calc-header">
+            <span class="equity-calc-title">Co-Founder Pooled BYOK &amp; Shipped-PR Split Simulator</span>
+            <span class="badge badge-vision">[VISION &middot; J53 Per-User Keys + 50/50 Ledger]</span>
+          </div>
+
+          <div class="founder-sliders-grid">
+            <div class="founder-control-row">
+              <div class="founder-row-top">
+                <span class="founder-id">@architect-1</span>
+                <span id="f1-readout" class="founder-equity-readout">Fiscal 26.7% + Arch 25.0% -&gt; 25.8% Share</span>
+              </div>
+              <div class="founder-inputs">
+                <label class="slider-field" for="f1-stake">
+                  <span class="slider-label-line"><span>BYOK Spend</span><strong id="f1-stake-val">$4K</strong></span>
+                  <input id="f1-stake" type="range" min="0" max="30" step="1" value="4" data-calc-input>
+                </label>
+                <label class="slider-field" for="f1-prs">
+                  <span class="slider-label-line"><span>Merged PRs</span><strong id="f1-prs-val">15 PRs</strong></span>
+                  <input id="f1-prs" type="range" min="0" max="60" step="1" value="15" data-calc-input>
+                </label>
+              </div>
+            </div>
+
+            <div class="founder-control-row">
+              <div class="founder-row-top">
+                <span class="founder-id">@builder-2</span>
+                <span id="f2-readout" class="founder-equity-readout">Fiscal 40.0% + Arch 50.0% -&gt; 45.0% Share</span>
+              </div>
+              <div class="founder-inputs">
+                <label class="slider-field" for="f2-stake">
+                  <span class="slider-label-line"><span>BYOK Spend</span><strong id="f2-stake-val">$6K</strong></span>
+                  <input id="f2-stake" type="range" min="0" max="30" step="1" value="6" data-calc-input>
+                </label>
+                <label class="slider-field" for="f2-prs">
+                  <span class="slider-label-line"><span>Merged PRs</span><strong id="f2-prs-val">30 PRs</strong></span>
+                  <input id="f2-prs" type="range" min="0" max="60" step="1" value="30" data-calc-input>
+                </label>
+              </div>
+            </div>
+
+            <div class="founder-control-row">
+              <div class="founder-row-top">
+                <span class="founder-id">@cofounder-3</span>
+                <span id="f3-readout" class="founder-equity-readout">Fiscal 33.3% + Arch 25.0% -&gt; 29.2% Share</span>
+              </div>
+              <div class="founder-inputs">
+                <label class="slider-field" for="f3-stake">
+                  <span class="slider-label-line"><span>BYOK Spend</span><strong id="f3-stake-val">$5K</strong></span>
+                  <input id="f3-stake" type="range" min="0" max="30" step="1" value="5" data-calc-input>
+                </label>
+                <label class="slider-field" for="f3-prs">
+                  <span class="slider-label-line"><span>Merged PRs</span><strong id="f3-prs-val">15 PRs</strong></span>
+                  <input id="f3-prs" type="range" min="0" max="60" step="1" value="15" data-calc-input>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="equity-summary-bar">
+            <div class="equity-stat-cell">
+              <span class="equity-stat-label">TOTAL BYOK SPEND</span>
+              <span id="calc-monthly-pool" class="equity-stat-val">$15K</span>
+            </div>
+            <div class="equity-stat-cell">
+              <span class="equity-stat-label">SHIPPED OUTPUT</span>
+              <span id="calc-total-prs" class="equity-stat-val">60 Merged PRs</span>
+            </div>
+            <div class="equity-stat-cell">
+              <span class="equity-stat-label">MAX PER-FOUNDER SLIDER</span>
+              <span class="equity-stat-val">$30K Cap</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="invariants-grid" data-status="as-built">
+          <div class="invariant-col">
+            <span class="invariant-head">NEVER A CUSTOM IDE</span>
+            <h3>GitHub Issues &amp; PRs Only</h3>
+            <p>
+              No proprietary chat app to babysit. Plan in Issues, inspect X11 screenshots in PRs, and steer active jobs with <code>@atobar-flow-agent</code> comments.
+            </p>
+          </div>
+
+          <div class="invariant-col">
+            <span class="invariant-head">NEVER VENDOR LOCK-IN</span>
+            <h3>Forkable MIT Monorepo</h3>
+            <p>
+              Self-host on your own GitHub App, Supabase, and AWS account, and adapt roles for web/mobile apps, internal tools, security fixes, or docs.
+            </p>
+          </div>
+
+          <div class="invariant-col">
+            <span class="invariant-head">NEVER LLM MERGE GATES</span>
+            <h3>Pure Python Control</h3>
+            <p>
+              <code>step()</code>, Spec-Sufficiency triage, spend circuit breakers, and <code>arbitrate()</code> are 100% deterministic Python.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="onboarding" class="onboarding-section" aria-labelledby="onboarding-heading">
+      <div class="container">
+        <h2 id="onboarding-heading">Start on Any GitHub Repo in 5 Minutes</h2>
+        <p>
+          Run <code>onboard.sh</code> from your Control Panel inside any local clone where you have repo admin access. It verifies <code>git</code>,
+          <code>gh</code>, and <code>curl</code>, guides GitHub App installation, stores <code>ATOBAR_TENANT_TOKEN</code>, and opens your trigger workflow PR.
+        </p>
+
+        <div class="cli-snippet-box" data-status="as-built">
+          <code class="cli-snippet-code"><span class="prompt-char">$</span>curl -fsSL https://&lt;your-cp-host&gt;/onboard.sh | bash</code>
+          <button type="button" class="copy-btn" data-copy-text="curl -fsSL https://<your-cp-host>/onboard.sh | bash">Copy Command</button>
+        </div>
+
+        <ol class="onboarding-steps">
+          <li class="onboarding-step" data-status="as-built">
+            <div class="onboarding-step-top">
+              <span class="onboarding-step-num">STEP 1 &middot; APP &amp; SECRET</span>
               <span class="badge badge-as-built">[AS-BUILT]</span>
             </div>
-            <p>Install the <code>atobar-flow-agent</code> GitHub App on your client repo and save <code>ATOBAR_TENANT_TOKEN</code> via <code>gh secret set</code>.</p>
+            <p>Install <code>atobar-flow-agent</code> on your repo and save <code>ATOBAR_TENANT_TOKEN</code> via <code>gh secret set</code>.</p>
           </li>
 
-          <li class="onboarding-step-li" data-status="as-built">
-            <div class="onboarding-step-head">
-              <span class="onboarding-step-num">STEP J1.2: KMS BYOK &amp; PER-ROLE ROUTING</span>
+          <li class="onboarding-step" data-status="as-built">
+            <div class="onboarding-step-top">
+              <span class="onboarding-step-num">STEP 2 &middot; REPO KMS BYOK</span>
               <span class="badge badge-as-built">[AS-BUILT]</span>
             </div>
-            <p>Save your provider API keys (<code>claude</code>, <code>gemini</code>, <code>openai</code>, <code>deepseek</code>, <code>grok</code>) in the KMS <code>AES-GCM</code> vault and bind models per role in <code>tenant_role_llm</code>.</p>
+            <p>Seal repo keys (<code>Claude</code>, <code>Gemini</code>, <code>DeepSeek</code>, <code>Grok</code>) in AWS KMS and set role models.</p>
           </li>
 
-          <li class="onboarding-step-li" data-status="vision">
-            <div class="onboarding-step-head">
-              <span class="onboarding-step-num">STEP J1.3: PER-INVOKING-USER &amp; PROFILE DEFAULT KEYS</span>
+          <li class="onboarding-step" data-status="vision">
+            <div class="onboarding-step-top">
+              <span class="onboarding-step-num">STEP 3 &middot; PER-USER &amp; LIFECYCLE</span>
               <span class="badge badge-vision">[VISION]</span>
             </div>
-            <p>Collaborators attach personal repo keys or a Default Profile Key (<code>/profile</code>) so every run bills the invoking GitHub user.</p>
+            <p>Attach personal <code>/profile</code> keys for per-user billing (<code>J53</code>) and toggle <code>&#45;&#45;disable</code> / <code>&#45;&#45;uninstall</code> (<code>J54</code>).</p>
           </li>
 
-          <li class="onboarding-step-li" data-status="as-built">
-            <div class="onboarding-step-head">
-              <span class="onboarding-step-num">STEP J1.4: SOTAWIKI &amp; 2-FILE PR</span>
+          <li class="onboarding-step" data-status="as-built">
+            <div class="onboarding-step-top">
+              <span class="onboarding-step-num">STEP 4 &middot; MERGE &amp; SHIP</span>
               <span class="badge badge-as-built">[AS-BUILT]</span>
             </div>
-            <p>The <code>onboarder</code> Spot role synthesizes your initial Mermaid <code>SotaWiki</code> and opens a PR with <code>flow-trigger.yml</code> and <code>flow-metrics.yml</code>.</p>
+            <p>Merge the generated <code>flow-trigger.yml</code> and compiled <code>flow-metrics.yml</code> PRs, then label your first issue.</p>
           </li>
         </ol>
+
+        <div class="upstream-specs-box">
+          <div class="upstream-specs-head">
+            <h3>Want the Full Architect Spec Sheet? Read It Live Upstream</h3>
+            <p>
+              Package boundary rules, single-writer database tables, and requirement matrices live directly in the
+              <code>atobar-flow</code> monorepo so they never drift from CI-enforced code:
+            </p>
+          </div>
+
+          <div class="upstream-links-grid">
+            <a class="upstream-doc-link" href="https://github.com/atobar-flow/atobar-flow/blob/main/docs/PRD.md" target="_blank" rel="noopener">
+              <span class="upstream-doc-path">docs/PRD.md &nearr;</span>
+              <span class="upstream-doc-desc">Personas, Journeys J1&ndash;J6, FR-1..FR-7 &amp; NFR-1..NFR-4</span>
+            </a>
+
+            <a class="upstream-doc-link" href="https://github.com/atobar-flow/atobar-flow/blob/main/docs/HLD.md" target="_blank" rel="noopener">
+              <span class="upstream-doc-path">docs/HLD.md &nearr;</span>
+              <span class="upstream-doc-desc">5-Package Monorepo Boundaries &amp; 15-Table Single-Writer Matrix</span>
+            </a>
+
+            <a class="upstream-doc-link" href="https://github.com/atobar-flow/atobar-flow/blob/main/docs/SWARM_ARCHITECTURE.md" target="_blank" rel="noopener">
+              <span class="upstream-doc-path">docs/SWARM_ARCHITECTURE.md &nearr;</span>
+              <span class="upstream-doc-desc">Stigmergic PR Envelopes, NanobotRuntime &amp; FastMCP Isolation</span>
+            </a>
+
+            <a class="upstream-doc-link" href="https://github.com/atobar-flow/atobar-flow/blob/main/docs/ONBOARDING.md" target="_blank" rel="noopener">
+              <span class="upstream-doc-path">docs/ONBOARDING.md &nearr;</span>
+              <span class="upstream-doc-desc">Step-by-Step Client Repo Setup, Metrics &amp; Self-Hosting Guide</span>
+            </a>
+          </div>
+        </div>
       </div>
     </section>
   </main>
@@ -1345,12 +1011,12 @@ $ gh secret delete ATOBAR_TENANT_TOKEN
   <footer class="site-footer" role="contentinfo">
     <div class="container footer-inner">
       <div class="footer-copy">
-        <strong>atobar-flow</strong>: Agentic Teams On BYOK And Repos (ATOBAR). Open-source under the MIT License.
-        Zero runtime lock-in.
+        <strong>atobar-flow</strong> &middot; Agentic Teams On BYOK And Repos. MIT Open Source &middot; Zero Lock-In.
       </div>
       <div class="footer-links">
-        <a href="https://github.com/atobar-flow/atobar-flow" target="_blank" rel="noopener">atobar-flow Monorepo</a>
-        <a href="explainers/user-journeys.html">code-slowmo Explainer</a>
+        <a href="https://github.com/atobar-flow/atobar-flow" target="_blank" rel="noopener">GitHub Monorepo</a>
+        <a href="https://github.com/atobar-flow/atobar-flow/blob/main/docs/HLD.md" target="_blank" rel="noopener">Live HLD</a>
+        <a href="explainers/user-journeys.html">Standalone Slow-Mo</a>
         <a href="onboard.sh">onboard.sh</a>
         <a href="LICENSE">MIT License</a>
       </div>
@@ -1362,7 +1028,7 @@ $ gh secret delete ATOBAR_TENANT_TOKEN
 {
   "eyebrow": "ATOBAR \u00b7 Agentic Teams On BYOK And Repos",
   "title": "How ATOBAR runs your GitHub issues",
-  "question": "What happens, step by step, across the six user journeys in atobar-flow?",
+  "question": "What happens, step by step, across a GitHub issue run and inside the Nano harness?",
   "intro": [
     "ATOBAR stands for Agentic Teams On BYOK And Repos. Collaborators bring their own encrypted language model keys, plan work in GitHub issues, and let isolated cloud machines write, visually test, and merge code.",
     "Step through each journey below using Next, Play, or the slider. Every step updates the screen preview and highlights changed database values in yellow."
@@ -1415,7 +1081,13 @@ $ gh secret delete ATOBAR_TENANT_TOKEN
     "arbitrate": "The pure Python function in contracts that checks if all business metrics pass before merging.",
     "loop_rounds": "The Flow Engine database table that records tokens, cost, and state for every agent turn.",
     "tenant_goals": "The Flow Engine database table that tracks repository metric goals and spend caps.",
-    "goal_step": "The pure Python function in flow-engine that checks if all repository target metrics are met after a merge."
+    "goal_step": "The pure Python function in flow-engine that checks if all repository target metrics are met after a merge.",
+    "NanobotRuntime": "The headless runner in flow-agent that executes each agent role through the nanobot-ai Python SDK.",
+    "nanobot_home": "The isolated folder outside your client repository where the Nano harness keeps SOUL.md and session memory.",
+    "SOUL.md": "The per-run persona and rule file written into nanobot_home for the active agent role.",
+    "tools_mcp": "The out-of-process stdio FastMCP server that enforces per-role tool allowlists.",
+    "view_image": "The workspace-jailed multimodal image reader that lets the Evaluator inspect real X11 screenshots.",
+    "FlowHook": "The lifecycle hook around every Nano turn that tracks heartbeats, stalls, and per-tool token spend."
   },
   "sections": [
     {
@@ -1526,9 +1198,9 @@ $ gh secret delete ATOBAR_TENANT_TOKEN
         {
           "from": "spot",
           "to": "gh",
-          "label": "open 2-file workflow PR",
-          "say": "The onboarder opens a pull request adding <code>flow-trigger.yml</code> and <code>flow-metrics.yml</code>. Merging it finishes setup with zero lock-in.",
-          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>PR #1 Merged:</b> .github/workflows/flow-trigger.yml + flow-metrics.yml</div></div>",
+          "label": "open trigger & metrics PRs",
+          "say": "Setup opens pull requests for <code>flow-trigger.yml</code> and <code>flow-metrics.yml</code> once Flow Engine compiles your metric. Merging them activates the repo.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>Workflows Active:</b> .github/workflows/flow-trigger.yml + flow-metrics.yml</div></div>",
           "state": {
             "tenants \u00b7 status": "active",
             "repository_wikis \u00b7 status": "ready (Mermaid validated)",
@@ -1967,12 +1639,132 @@ $ gh secret delete ATOBAR_TENANT_TOKEN
           }
         }
       ]
+    },
+    {
+      "type": "flow",
+      "id": "nano-harness",
+      "eyebrow": "Under the Hood \u00b7 [AS-BUILT]",
+      "title": "Nano Harness: How NanobotRuntime runs a role inside Spot",
+      "intro": [
+        "Above the sandbox, Flow Engine is 100% deterministic Python. Inside the Spot sandbox, NanobotRuntime drives the nanobot-ai loop inside an isolated home folder with server-side tool guards and live cost tracking."
+      ],
+      "lanes": [
+        {
+          "id": "fe",
+          "name": "Flow Engine",
+          "role": "fe"
+        },
+        {
+          "id": "sup",
+          "name": "Spot Runner",
+          "role": "spot"
+        },
+        {
+          "id": "nano",
+          "name": "Nanobot SDK",
+          "role": "cp"
+        },
+        {
+          "id": "mcp",
+          "name": "FastMCP Cage",
+          "role": "spot"
+        },
+        {
+          "id": "gh",
+          "name": "GitHub PR",
+          "role": "github"
+        }
+      ],
+      "screenLabel": "Inside the Spot Sandbox & PR",
+      "stateLabel": "Nano harness & isolation state",
+      "steps": [
+        {
+          "phase": "boot & split",
+          "tick": "Isolate Home",
+          "from": "fe",
+          "to": "sup",
+          "label": "start Spot role task",
+          "say": "Flow Engine starts a role on Spot. Spot Runner creates <code>nanobot_home</code> outside the client git folder and writes <code>SOUL.md</code>.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>Workspace Split (J44):</b> /flow-run/agent_ws/SOUL.md &ne; /worktrees/client-repo</div><div class='scr-box scr-muted'>.git/info/exclude blocks .nanobot/ &amp; SOUL.md from commits</div></div>",
+          "state": {
+            "nanobot_home": "/flow-run/<id>/agent_ws (isolated)",
+            "client worktree": "/worktrees/developer-42 (clean git)",
+            "git exclude guard": ".nanobot/ & SOUL.md excluded"
+          }
+        },
+        {
+          "from": "sup",
+          "to": "nano",
+          "label": "bind RAM key placeholders",
+          "say": "<code>NanobotRuntime</code> writes environment variable placeholders into config so decrypted model keys stay in memory and never touch disk.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>RAM-Only Keys:</b> providers.anthropic.apiKey = \"${FLOW_LLM_API_KEY}\"</div></div>",
+          "state": {
+            "plaintext keys on disk": "0",
+            "active modelPreset": "developer -> claude (high effort)",
+            "untrusted issue text": "wrapped in <untrusted_client_content>"
+          }
+        },
+        {
+          "phase": "tool cage",
+          "tick": "FastMCP Cage",
+          "from": "nano",
+          "to": "mcp",
+          "label": "call stdio MCP tool",
+          "say": "The model calls a tool. <code>tools_mcp</code> checks the role allowlist in a separate process before running the command.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>FastMCP Allowlist:</b> disabledSkills: [\"github\"] &middot; role tools enforced</div></div>",
+          "state": {
+            "raw gh cli skill": "disabled",
+            "stdio mcp server": "enforcing per-role allowlist",
+            "evaluator write tools": "blocked out-of-process"
+          }
+        },
+        {
+          "from": "nano",
+          "to": "nano",
+          "label": "view_image() X11 PNG",
+          "say": "During visual checks, <code>view_image</code> reads X11 screenshots inside the workspace so the model inspects real pixels.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>Multimodal Vision:</b> view_image(.atobar/artifacts/x11_window.png)</div></div>",
+          "state": {
+            "vision path guard": "jailed to WORKSPACE_DIR",
+            "multimodal input": "native PNG blocks loaded",
+            "x11 display": ":99 verified"
+          }
+        },
+        {
+          "phase": "live armor",
+          "tick": "FlowHook Live $",
+          "from": "nano",
+          "to": "gh",
+          "label": "stream heartbeat & $",
+          "say": "After every model turn, <code>FlowHook</code> sends a 15-second heartbeat, resets the 900-second stall timer, and updates pull request spend.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>Pinned PR Telemetry:</b> Turn 6 &middot; 41.2k tokens &middot; $0.38 &middot; heartbeat OK</div></div>",
+          "state": {
+            "FlowHook heartbeat": "every 15s (stall cap 900s)",
+            "per-tool cost_usd": "tracked in by_tool ledger",
+            "pinned pr comment": "updated live"
+          }
+        },
+        {
+          "phase": "envelope",
+          "tick": "Emit Envelope",
+          "from": "sup",
+          "to": "fe",
+          "label": "return verified envelope",
+          "say": "When the role finishes, <code>NanobotRuntime</code> checks the fenced output block and reports completion back to Flow Engine.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>Envelope Verified:</b> flow-ack / flow-verdict schema passed</div></div>",
+          "state": {
+            "envelope parser": "strict schema verified",
+            "loop_rounds \u00b7 runtime": "nanobot",
+            "client git status": "clean (0 harness files)"
+          }
+        }
+      ]
     }
   ],
   "takeaway": "ATOBAR (Agentic Teams On BYOK And Repos) keeps your repo 100% standard GitHub. Isolated Spot roles write and visually test code, pure Python gates merge it, and two YAML files detach in one commit.",
   "footer": "Built with code-slowmo from the real atobar-flow codebase."
 }
   </script>
-  <script src="js/scrolly.js" defer></script>
+  <script src="js/scrolly.js"></script>
 </body>
 </html>
