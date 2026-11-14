@@ -416,7 +416,8 @@ select:focus-visible,
 }
 
 .surface-navy code,
-.stage-dark code {
+.stage-dark code,
+.equation-strip code {
   background-color: oklch(0.320 0.095 266.8);
   color: var(--accent-cyan);
 }
@@ -603,10 +604,10 @@ body[data-active-filter="vision"] .onboarding-step[data-status="vision"] {
   margin-bottom: 0;
 }
 
-/* 3-Step Upbeat Equation Strip */
+/* 4-Pillar Upbeat Equation Strip (Symmetric 2x2 Grid) */
 .equation-strip {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   background-color: var(--bg-stage-navy);
   color: var(--ink-on-navy);
   border-radius: var(--radius-md);
@@ -618,11 +619,16 @@ body[data-active-filter="vision"] .onboarding-step[data-status="vision"] {
 .equation-step {
   padding: var(--space-4) var(--space-5);
   border-right: 1px solid var(--border-on-navy);
+  border-bottom: 1px solid var(--border-on-navy);
   min-width: 0;
 }
 
-.equation-step:last-child {
+.equation-step:nth-child(2n) {
   border-right: none;
+}
+
+.equation-step:nth-last-child(-n + 2) {
+  border-bottom: none;
 }
 
 .equation-num {
@@ -1947,7 +1953,8 @@ body[data-active-filter="vision"] .onboarding-step[data-status="vision"] {
   .equation-strip {
     grid-template-columns: minmax(0, 1fr);
   }
-  .equation-step {
+  .equation-step,
+  .equation-step:nth-last-child(-n + 2) {
     border-right: none;
     border-bottom: 1px solid var(--border-on-navy);
   }

@@ -116,8 +116,8 @@
             </div>
             <h2>Seal Repo BYOK Keys. Ship Issues on Spot + Nano.</h2>
             <p>
-              Encrypt repo-level <code>Claude</code>, <code>Gemini</code>, <code>DeepSeek</code>, or <code>Grok</code> keys in AWS KMS, pick models per role,
-              and label an issue <code>flow:feature</code>. Isolated Spot VMs on the <strong>Nano harness</strong> plan, code, steer from PR comments, and prove live X11 windows before merge.
+              Encrypt repo-level <code>Claude</code>, <code>Gemini</code>, <code>DeepSeek</code>, or <code>Grok</code> keys in AWS KMS and pick any model per role.
+              A <strong>Per-Repo Knowledge Engine</strong> briefs <strong>Nano harness</strong> Spot VMs on your codebase&rsquo;s best practices so jobs plan, code, steer from PRs, and prove live X11 windows.
             </p>
           </div>
 
@@ -134,11 +134,16 @@
           </div>
         </div>
 
-        <div class="equation-strip" data-status="as-built" aria-label="How the live ATOBAR factory runs in three steps">
+        <div class="equation-strip" data-status="as-built" aria-label="How the live ATOBAR factory runs in four pillars">
           <div class="equation-step">
             <span class="equation-num">GITHUB WORKSPACE</span>
             <span class="equation-title">2 YAML Files in Your Repo</span>
             <span class="equation-desc">No custom IDE, no proprietary SDK. Plan in Issues, review screenshots in PRs, and detach in 1 commit anytime.</span>
+          </div>
+          <div class="equation-step">
+            <span class="equation-num">PER-REPO KNOWLEDGE ENGINE</span>
+            <span class="equation-title">Any BYOK Model, House Rules</span>
+            <span class="equation-desc">Compiles your layout, <code>AGENTS.md</code> conventions, and Mermaid map once so every model on <code>nanobot</code> starts as a codebase insider.</span>
           </div>
           <div class="equation-step">
             <span class="equation-num">SPOT + NANO HARNESS</span>
@@ -193,13 +198,13 @@
           <div data-status="as-built">
             <div class="beat-meta">
               <span class="beat-step-tag">JOURNEY J1 &middot; 5-MINUTE SETUP</span>
-              <span class="badge badge-as-built">[AS-BUILT: Repo &amp; Role KMS BYOK]</span>
+              <span class="badge badge-as-built">[AS-BUILT: KMS BYOK &amp; Knowledge Engine]</span>
             </div>
-            <h3>Connect Your Repo &amp; Seal Your API Keys</h3>
+            <h3>Connect Your Repo, Seal Keys &amp; Compile Repo Knowledge</h3>
             <p>
-              A repo admin runs <code>onboard.sh</code>, saves <code>ATOBAR_TENANT_TOKEN</code>, seals repo-level <code>Claude</code>, <code>Gemini</code>,
-              <code>DeepSeek</code>, or <code>Grok</code> keys in AWS KMS, and maps models per role. The Onboarder role publishes a Mermaid
-              <code>SotaWiki</code>, and metric compilation opens your workflow PRs.
+              Run <code>onboard.sh</code>, save <code>ATOBAR_TENANT_TOKEN</code>, seal repo-level <code>Claude</code>, <code>Gemini</code>,
+              <code>DeepSeek</code>, or <code>Grok</code> keys in AWS KMS, and map models per role. The Onboarder compiles your
+              <strong>Per-Repo Knowledge Engine</strong> (<code>SotaWiki</code> Mermaid map + <code>AGENTS.md</code> conventions) so any model you choose starts knowing your house style.
             </p>
           </div>
 
@@ -292,7 +297,7 @@ ct = AESGCM(dek).encrypt(nonce, plaintext.encode("utf-8"), f"{tenant_id}:{provid
           <div class="vision-note" data-status="vision">
             <span class="badge badge-vision">[VISION &middot; VENTURES]</span>
             <span>
-              Adds cross-repo Venture Jumbo Issue links (<code>venture_jumbo_links</code>) coordinating child issues across <code>api</code>, <code>web</code>, and <code>mobile</code> repositories.
+              Adds cross-repo Venture Jumbo Issue links (<code>venture_jumbo_links</code>) and shared Knowledge Engine contracts across <code>api</code>, <code>web</code>, and <code>mobile</code> repositories.
             </span>
           </div>
         </div>
@@ -530,12 +535,12 @@ WARM_HANDOVER_FORBIDDEN_ROLES: frozenset[str] = frozenset({
         <div class="container beat-lead">
           <div class="beat-meta">
             <span class="beat-step-tag">JOURNEY J5 &middot; PURE-PYTHON ARBITRATION</span>
-            <span class="badge badge-as-built">[AS-BUILT: arbitrate() &amp; SotaWiki]</span>
+            <span class="badge badge-as-built">[AS-BUILT: arbitrate() &amp; Knowledge Refresh]</span>
           </div>
           <h3>No LLM Ever Decides Whether Code Merges</h3>
           <p>
             When CI is green and the Evaluator approves, pure-Python <code>arbitrate()</code> verifies signed CI metrics against your thresholds,
-            squash-merges the PR under <code>auto_merge</code>, and queues a coalesced Mermaid <code>SotaWiki</code> refresh.
+            squash-merges the PR under <code>auto_merge</code>, and queues a coalesced <code>SotaWiki</code> refresh so repo knowledge never drifts behind <code>HEAD</code>.
           </p>
         </div>
 
@@ -699,13 +704,13 @@ $ git commit -m "chore: detach atobar-flow workflows"
             </div>
             <h3><code>contracts</code> + <code>flow-engine</code> + <code>control-panel</code></h3>
             <p style="margin-bottom: 0;">
-              Handles GitHub webhooks, KMS key sealing, pure-Python <code>step()</code> transitions, Spec-Sufficiency triage, Spot VM lifecycle,
-              <code>WARM_HANDOVER_FORBIDDEN_ROLES</code>, budget circuit breakers, and pure-Python <code>arbitrate()</code> merges.
+              Handles GitHub webhooks, KMS key sealing, your <code>SotaWiki</code> Knowledge Engine, pure-Python <code>step()</code> transitions, Spec-Sufficiency triage,
+              <code>WARM_HANDOVER_FORBIDDEN_ROLES</code>, spend circuit breakers, and pure-Python <code>arbitrate()</code> merges.
             </p>
           </div>
 
           <div class="stack-connector" aria-hidden="true">
-            <span>&darr; Single-Run Spot Credential + Scoped Worktree &darr;</span>
+            <span>&darr; Single-Run Spot Credential + Phase-0 Repo Knowledge + Scoped Worktree &darr;</span>
           </div>
 
           <div class="stack-layer-box is-nano">
@@ -715,7 +720,7 @@ $ git commit -m "chore: detach atobar-flow workflows"
             </div>
             <h3><code>flow-agent</code> &times; <code>nanobot-ai</code> Headless Loop</h3>
             <p>
-              Inside every EC2 Spot sandbox, <code>NanobotRuntime</code> drives the <code>nanobot-ai</code> SDK behind four adversarial and reliability guards:
+              Inside every EC2 Spot sandbox, <code>NanobotRuntime</code> drives the <code>nanobot-ai</code> SDK behind four adversarial and context-efficiency guards:
             </p>
 
             <div class="nano-pillars">
@@ -728,10 +733,10 @@ $ git commit -m "chore: detach atobar-flow workflows"
               </div>
 
               <div class="nano-pillar">
-                <span class="nano-pillar-num">RAM-ONLY BYOK</span>
-                <h4>Multi-Provider Fan-Out</h4>
+                <span class="nano-pillar-num">KNOWLEDGE ENGINE &times; BYOK &middot; J38 / J50</span>
+                <h4>Any Model &rarr; Codebase Insider</h4>
                 <p>
-                  Renders <code>${FLOW_LLM_API_KEY_*}</code> placeholders in config so <code>Claude</code>, <code>Gemini</code>, <code>DeepSeek</code>, <code>Grok</code>, and <code>OpenAI</code> keys stay in memory only.
+                  Pairs RAM-only <code>${FLOW_LLM_API_KEY_*}</code> keys (<code>Claude</code>, <code>Gemini</code>, <code>DeepSeek</code>, <code>Grok</code>, <code>OpenAI</code>) with Phase-0 <code>SotaWiki</code> + <code>AGENTS.md</code> rules so every model knows your codebase from Turn 1.
                 </p>
               </div>
 
@@ -795,7 +800,8 @@ nanobot_home = run_root / "agent_ws"
 (nanobot_home / "SOUL.md").write_text(system_prompt, encoding="utf-8")
 _git_exclude_runtime_files(client_ws)  # Excludes .nanobot/, SOUL.md, .atobar/
 
-# 2. Memory-only BYOK placeholders + out-of-process stdio FastMCP server:
+# 2. Phase-0 Repo Knowledge + RAM-only BYOK placeholders + stdio FastMCP:
+wiki = fetch_run_wiki(cp_url, run_id, run_cred)  # SotaWiki + Mermaid map
 config_data = {
   "providers": {"anthropic": {"apiKey": "${FLOW_LLM_API_KEY}"}},
   "agents": {"defaults": {"modelPreset": role, "disabledSkills": ["github"]}},
@@ -1098,7 +1104,7 @@ config_data = {
     "ATOBAR_TENANT_TOKEN": "The secret token saved in your GitHub repo so its workflows can talk to the Control Panel.",
     "tenant_llm_keys": "The Control Panel database table that stores encrypted API keys.",
     "tenant_role_llm": "The Control Panel database table that maps each agent role to a model provider and model name.",
-    "SotaWiki": "The living architecture wiki with a validated Mermaid diagram stored for each repository.",
+    "SotaWiki": "The per-repo Knowledge Engine snapshot (purpose, stack, layout, invariants, and Mermaid diagram) injected so any BYOK model follows your repo's best practices.",
     "assess_issue_sufficiency": "The deterministic Python function in flow-engine that checks if an issue is detailed enough to skip planning.",
     "flow-plan": "The structured markdown checklist comment that the Planner role posts on a GitHub issue.",
     "flow:needs-approval": "The GitHub label that pauses an issue until a human approves the plan.",
@@ -1217,8 +1223,8 @@ config_data = {
           "from": "fe",
           "to": "spot",
           "label": "start onboarder role",
-          "say": "Flow Engine starts the onboarder role on a Spot machine. The onboarder scans your repo and builds the initial <code>SotaWiki</code> architecture diagram.",
-          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>Spot Onboarder:</b> validated Mermaid SotaWiki generated</div></div>",
+          "say": "Flow Engine starts the onboarder role on a Spot machine. The onboarder scans your repo layout and conventions to build the <code>SotaWiki</code> Knowledge Engine map.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>Spot Onboarder:</b> Knowledge Engine (Mermaid SotaWiki) compiled</div></div>",
           "state": {
             "repository_wikis \u00b7 status": "ready (Mermaid validated)",
             "tenant_llm_keys": "sealed (AAD: tenant_id + provider)",
@@ -1321,7 +1327,7 @@ config_data = {
           "from": "fe",
           "to": "spot",
           "label": "launch PLANNER with SotaWiki",
-          "say": "Flow Engine starts the Planner role on a Spot machine and injects the repository's <code>SotaWiki</code> architecture map so the agent knows the module layout.",
+          "say": "Flow Engine starts the Planner role on Spot and injects your <code>SotaWiki</code> Knowledge Engine map so any BYOK model starts knowing your module layout.",
           "screen": "<div class='scr-col'><div class='scr-box'><b>Spot Planner running:</b> reading SotaWiki &amp; repo tree (read-only)</div></div>",
           "state": {
             "active role": "planner (read-only worktree)",
@@ -1602,8 +1608,8 @@ config_data = {
           "from": "fe",
           "to": "gh",
           "label": "squash-merge PR & queue SotaWiki",
-          "say": "Under auto-merge mode, Flow Engine squash-merges the pull request and increments the merge counter on <code>SotaWiki</code> so the architecture diagram stays current.",
-          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>PR #48 Squash-Merged:</b> SotaWiki refresh queued after N merges</div></div>",
+          "say": "Under auto-merge mode, Flow Engine squash-merges the pull request and queues a coalesced <code>SotaWiki</code> Knowledge Engine refresh after N merges.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>PR #48 Squash-Merged:</b> Knowledge Engine refresh queued after N merges</div></div>",
           "state": {
             "pr #48 \u00b7 state": "merged to main",
             "repository_wikis": "merges_since_refresh += 1 (coalesced)",
@@ -1725,9 +1731,9 @@ config_data = {
         {
           "from": "sup",
           "to": "nano",
-          "label": "bind RAM key placeholders",
-          "say": "<code>NanobotRuntime</code> writes environment variable placeholders into config so decrypted model keys stay in memory and never touch disk.",
-          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>RAM-Only Keys:</b> providers.anthropic.apiKey = \"${FLOW_LLM_API_KEY}\"</div></div>",
+          "label": "bind RAM keys & SotaWiki",
+          "say": "<code>NanobotRuntime</code> binds memory-only key placeholders and Phase-0 <code>SotaWiki</code> context so any BYOK model follows your repo's best practices.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>RAM Keys + Knowledge Engine:</b> ${FLOW_LLM_API_KEY} + SotaWiki injected</div></div>",
           "state": {
             "plaintext keys on disk": "0",
             "active modelPreset": "developer -> claude (high effort)",

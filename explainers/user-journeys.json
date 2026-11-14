@@ -41,7 +41,7 @@
     "ATOBAR_TENANT_TOKEN": "The secret token saved in your GitHub repo so its workflows can talk to the Control Panel.",
     "tenant_llm_keys": "The Control Panel database table that stores encrypted API keys.",
     "tenant_role_llm": "The Control Panel database table that maps each agent role to a model provider and model name.",
-    "SotaWiki": "The living architecture wiki with a validated Mermaid diagram stored for each repository.",
+    "SotaWiki": "The per-repo Knowledge Engine snapshot (purpose, stack, layout, invariants, and Mermaid diagram) injected so any BYOK model follows your repo's best practices.",
     "assess_issue_sufficiency": "The deterministic Python function in flow-engine that checks if an issue is detailed enough to skip planning.",
     "flow-plan": "The structured markdown checklist comment that the Planner role posts on a GitHub issue.",
     "flow:needs-approval": "The GitHub label that pauses an issue until a human approves the plan.",
@@ -160,8 +160,8 @@
           "from": "fe",
           "to": "spot",
           "label": "start onboarder role",
-          "say": "Flow Engine starts the onboarder role on a Spot machine. The onboarder scans your repo and builds the initial <code>SotaWiki</code> architecture diagram.",
-          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>Spot Onboarder:</b> validated Mermaid SotaWiki generated</div></div>",
+          "say": "Flow Engine starts the onboarder role on a Spot machine. The onboarder scans your repo layout and conventions to build the <code>SotaWiki</code> Knowledge Engine map.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>Spot Onboarder:</b> Knowledge Engine (Mermaid SotaWiki) compiled</div></div>",
           "state": {
             "repository_wikis \u00b7 status": "ready (Mermaid validated)",
             "tenant_llm_keys": "sealed (AAD: tenant_id + provider)",
@@ -264,7 +264,7 @@
           "from": "fe",
           "to": "spot",
           "label": "launch PLANNER with SotaWiki",
-          "say": "Flow Engine starts the Planner role on a Spot machine and injects the repository's <code>SotaWiki</code> architecture map so the agent knows the module layout.",
+          "say": "Flow Engine starts the Planner role on Spot and injects your <code>SotaWiki</code> Knowledge Engine map so any BYOK model starts knowing your module layout.",
           "screen": "<div class='scr-col'><div class='scr-box'><b>Spot Planner running:</b> reading SotaWiki &amp; repo tree (read-only)</div></div>",
           "state": {
             "active role": "planner (read-only worktree)",
@@ -545,8 +545,8 @@
           "from": "fe",
           "to": "gh",
           "label": "squash-merge PR & queue SotaWiki",
-          "say": "Under auto-merge mode, Flow Engine squash-merges the pull request and increments the merge counter on <code>SotaWiki</code> so the architecture diagram stays current.",
-          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>PR #48 Squash-Merged:</b> SotaWiki refresh queued after N merges</div></div>",
+          "say": "Under auto-merge mode, Flow Engine squash-merges the pull request and queues a coalesced <code>SotaWiki</code> Knowledge Engine refresh after N merges.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>PR #48 Squash-Merged:</b> Knowledge Engine refresh queued after N merges</div></div>",
           "state": {
             "pr #48 \u00b7 state": "merged to main",
             "repository_wikis": "merges_since_refresh += 1 (coalesced)",
@@ -668,9 +668,9 @@
         {
           "from": "sup",
           "to": "nano",
-          "label": "bind RAM key placeholders",
-          "say": "<code>NanobotRuntime</code> writes environment variable placeholders into config so decrypted model keys stay in memory and never touch disk.",
-          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>RAM-Only Keys:</b> providers.anthropic.apiKey = \"${FLOW_LLM_API_KEY}\"</div></div>",
+          "label": "bind RAM keys & SotaWiki",
+          "say": "<code>NanobotRuntime</code> binds memory-only key placeholders and Phase-0 <code>SotaWiki</code> context so any BYOK model follows your repo's best practices.",
+          "screen": "<div class='scr-col'><div class='scr-box scr-hot'><b>RAM Keys + Knowledge Engine:</b> ${FLOW_LLM_API_KEY} + SotaWiki injected</div></div>",
           "state": {
             "plaintext keys on disk": "0",
             "active modelPreset": "developer -> claude (high effort)",
